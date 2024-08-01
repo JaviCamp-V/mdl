@@ -5,8 +5,15 @@ import { getArticles } from '@/server/dramaActions';
 import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
 import { Box, List, ListItem, Typography } from '@mui/material'
 import React from 'react'
+import { Metadata, NextPage } from 'next/types';
+type PageProps = {
+  searchParams: any
+};
+export const revalidate = 0;
 
-const Home = async() => {
+export const dynamic = 'force-dynamic'
+
+const Home: NextPage<PageProps>  = async () => {
   const current = await getAirings();
   const startingThisWeek = await getStartingThisWeek();
   const endingThisWeek = await getEndingThisWeek();
