@@ -13,7 +13,7 @@ import SideBar from '../sidebar';
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: { xs: '#00568C', md: '#00568C' } }}>
+    <AppBar sx={{ backgroundColor: { xs: '#00568C', md: '#00568C' }, zIndex: 10000 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box

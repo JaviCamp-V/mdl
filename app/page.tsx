@@ -1,15 +1,56 @@
-import { List, ListItem, Typography } from '@mui/material'
+import NewsArticle from '@/components/Article';
+import Carousel from '@/components/Carousel';
+import DramaCard from '@/components/DramaCard';
+import { getArticles } from '@/server/dramaActions';
+import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
+import { Box, List, ListItem, Typography } from '@mui/material'
 import React from 'react'
 
-const Home = () => {
+const Home = async() => {
+  const current = await getAirings();
+  const startingThisWeek = await getStartingThisWeek();
+  const endingThisWeek = await getEndingThisWeek();
+  const mostPopular = await getPopular();
+  const boxStyle = {
+    marginTop: 4,
+    backgroundColor: '#242526',
+    borderRadius: 2,
+    padding: 2,
+    overflow: 'hidden'
+  };
+
+  const data = {
+    'Most Popular': mostPopular,
+    'Top Airing': current,
+    'Starting this Week': startingThisWeek,
+    'Ending this Week': endingThisWeek
+  }
   return (
-    <div>
-      <Typography color="error">testing</Typography>
+    <Box>
+
+      { Object.entries(data).map(([title, dramas]) => (
+        <Box padding={2} key={title}>
+          <Typography color="primary" marginBottom={2}>
+            {title}
+          </Typography>
+          <Carousel>
+            {dramas.map((drama) => (
+              <DramaCard
+                key={drama.id}
+                title={drama.name}
+                country={drama.origin_country.join(', ')}
+                src={drama.poster_path}
+                id={drama.id}
+              />
+            ))}
+          </Carousel>
+        </Box>
+      ))}
       <List>
         <ListItem> sidebar</ListItem>
         <ListItem> hero</ListItem>
         <ListItem> news</ListItem>
-        <ListItem> recent review</ListItem> 
+        <ListItem> recent review</ListItem>
         <ListItem> trending</ListItem>
         <ListItem> starting</ListItem>
         <ListItem>ending</ListItem>
@@ -18,7 +59,7 @@ const Home = () => {
         <ListItem> top upcoming</ListItem>
         <ListItem> most popular</ListItem>
       </List>
-    </div>
+    </Box>
   );
 };
 

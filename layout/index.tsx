@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import React from 'react';
 import Navbar from './navbar';
 import Footer from './footer';
@@ -10,7 +10,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({children}) => {
   return (
     <React.Fragment>
       <Navbar />
-      {children}
+      <Paper sx={{ backgroundColor: '#18191A', color: "#fff!important", paddingTop: 8}}> {children}</Paper>
+
       <Footer />
     </React.Fragment>
   );
