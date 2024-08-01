@@ -4,6 +4,7 @@ import countries from '@/libs/countires';
 import DramaDetails from '@/types/drama/IDramaDetails';
 import { minusDays, minusYears } from '@/utils/dateUtils';
 import { formatDate } from '@/utils/formatters';
+import logger from '@/utils/logger';
 
 interface SearchResult {
   adult: boolean;
@@ -48,14 +49,15 @@ const endpoints = {
 
 const getDetails = async (id: number, all?:boolean ): Promise<DramaDetails | null> => {
   try {
+    logger.info(`Getting details for drama with id: ${id}`);
     const params = all
       ? new URLSearchParams({
           append_to_response: 'watch/providers,images,alternative_titles,images,aggregate_credits,external_ids'
         })
       : new URLSearchParams();
     return tmdbClient.get<DramaDetails>(endpoints.details.replace(':id', id.toString()), params);
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    logger.error(`Error getting details for drama with id: ${id} - ${e?.message}`);;
     return null;
   }
 }
@@ -214,49 +216,53 @@ const discoverDramas = async(params: any): Promise<PageResponse> => {
 
 const getStartingThisWeek = async(): Promise<SearchResult[]> => {
   try {
+    logger.info(`Getting dramas starting this week`);
     const response = await tmdbClient.get<PageResponse>(endpoints.discover, startingThisWeek)
     return response.results.filter(
       (drama) => drama?.poster_path && drama.original_name !== drama.name && drama.genre_ids.length
     ).sort((a, b) => a.popularity - b.popularity);
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    logger.error(`Error getting dramas starting this week - ${e?.message}`);
     return [];
   }
 }
 
 const getEndingThisWeek = async(): Promise<SearchResult[]> => {
   try {
+    logger.info(`Getting dramas ending this week`);
     const response = await tmdbClient.get<PageResponse>(endpoints.discover, endingThisWeek)
     const filtered  = response.results
          .filter((drama) => drama?.poster_path && drama.original_name !== drama.name && drama.genre_ids.length)// filter out where name is not english
          .sort((a, b) => a.popularity - b.popularity);
     return filtered;  
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    logger.error(`Error getting dramas ending this week - ${e?.message}`);
     return [];
   }
 }
 
 const getAirings = async(): Promise<SearchResult[]> => {
   try {
+    logger.info(`Getting dramas airing`);
     const response = await tmdbClient.get<PageResponse>(endpoints.discover, onTheAir)
     return response.results.filter(
       (drama) => drama?.poster_path && drama.original_name !== drama.name && drama.genre_ids.length
     )
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    logger.error(`Error getting dramas airing - ${e?.message}`);
     return [];
   }
 }
 
 const getPopular = async(): Promise<SearchResult[]> => {
   try {
+    logger.info(`Getting popular dramas`);
     const response = await tmdbClient.get<PageResponse>(endpoints.discover, mostPopular)
     return response.results.filter(
       (drama) => drama?.poster_path && drama.original_name !== drama.name && drama.genre_ids.length
     )
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    logger.error(`Error getting popular dramas - ${e?.message}`);
     return [];
   }
 }
