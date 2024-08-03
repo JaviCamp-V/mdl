@@ -1,10 +1,14 @@
-import NewsArticle from '@/components/Article';
 import Carousel from '@/components/Carousel';
 import DramaCard from '@/components/DramaCard';
-import { getArticles } from '@/server/dramaActions';
 import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
 import { Box, List, ListItem, Typography } from '@mui/material'
+import { Metadata } from 'next/types';
 import React from 'react'
+
+export const metadata: Metadata = {
+  title: 'Discover, Rate, and Watch the Best Dramas',
+  description: 'Idle cloning of mdl site'
+};
 
 const Home = async() => {
   const current = await getAirings();

@@ -12,6 +12,7 @@ import { Metadata, NextPage } from 'next/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { object } from 'yup';
+import MediaType from '@/types/tmdb/IMediaType';
 
 type PageProps = {
   params: { id: number };
@@ -65,7 +66,6 @@ const DramaDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
     const ads = country.ads ?? [];
     return [...flatrate, ...ads];
   });
-
   const unqiueProviders = providers.reduce((acc, provider) => {
     if (!acc.find((p) => p.provider_id === provider.provider_id)) {
       acc.push(provider);
@@ -86,7 +86,7 @@ const DramaDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
             <Grid container spacing={3} padding={2}>
               <Grid item xs={12} md={3}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <DramaPoster src={drama.poster_path} width={200} height={300} id={id} />
+                  <DramaPoster src={drama.poster_path} width={200} height={300} id={id} mediaType={MediaType.tv} />
                   <Typography>Currently Watching</Typography>
                 </Box>
               </Grid>

@@ -9,7 +9,7 @@ import theme from '@/theme/index';
 import MainLayout from '@/layout';
 
 export const metadata: Metadata = {
-  title: 'My Drama List',
+  title: { default: 'MyDramaList', template: `%s - MyDramaList` },
   description: 'Idle cloning of mdl site'
 };
 
