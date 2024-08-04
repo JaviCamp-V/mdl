@@ -1,19 +1,25 @@
-import NewsArticle from '@/components/Article';
+import React from 'react';
+
+import { Metadata, NextPage } from 'next/types';
+import { Box, List, ListItem, Typography } from '@mui/material';
+
+import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
+
 import Carousel from '@/components/Carousel';
 import DramaCard from '@/components/DramaCard';
-import { getArticles } from '@/server/dramaActions';
-import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
-import { Box, List, ListItem, Typography } from '@mui/material'
-import React from 'react'
-import { Metadata, NextPage } from 'next/types';
+
 type PageProps = {
   searchParams: any
 };
+
 export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
-export const dynamic = 'force-dynamic'
+export const metadata: Metadata = {
+  title: 'Discover, Rate, and Watch the Best Asian Dramas and Movies',
+};
 
-const Home: NextPage<PageProps>  = async () => {
+const Home:NextPage<PageProps> = async () => {
   const current = await getAirings();
   const startingThisWeek = await getStartingThisWeek();
   const endingThisWeek = await getEndingThisWeek();
@@ -35,7 +41,7 @@ const Home: NextPage<PageProps>  = async () => {
   return (
     <Box>
 
-      { Object.entries(data).map(([title, dramas]) => (
+      { Object.entries(data).filter(([_, dramas])=> dramas?.length).map(([title, dramas]) => (
         <Box padding={2} key={title}>
           <Typography color="primary" marginBottom={2}>
             {title}

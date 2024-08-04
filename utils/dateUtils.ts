@@ -50,4 +50,9 @@ const createDate = (date: string, time: string, timezone: string): Date => {
     const zonedDate = fromZonedTime(dateTimeString, timezone);
     return zonedDate;
 };
-export { daysBetween, minusDays, plusDays, minusYears, plusYears, minusMonths, plusMonths, createDate };
+
+const calculateAge = (birthdate: Date): number => {
+  return Math.floor((new Date().valueOf() - birthdate.getTime()) / 3.15576e10);
+
+}
+export { daysBetween, minusDays, plusDays, minusYears, plusYears, minusMonths, plusMonths, createDate, calculateAge };
