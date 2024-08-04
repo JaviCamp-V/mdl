@@ -18,7 +18,7 @@ const DramaCard: React.FC<DramaCardProps> = ({ title, country, src, id }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
       <Box sx={{ width: 156, height: 250 }}>
-        <DramaPoster src={src} id={id} width={156} height={250} mediaType={MediaType.tv} />
+        <DramaPoster src={src} id={id} mediaType={MediaType.tv} />
       </Box>
       <Link href={routes.tv.replace(':id', id.toString())} style={{ textDecoration: 'none' }}>
         <Typography sx={{ color: '#2196f3', fontWeight: 700 }}>{title}</Typography>
