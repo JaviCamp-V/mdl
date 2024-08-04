@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Grid, Typography } from '@mui/material';
 import Roles from './Roles';
 import BioData from './BioData';
-import Socials from './Socials';
+import Socials from '../Socials';
 import DramaPoster from '../Poster';
 import MediaType from '@/types/tmdb/IMediaType';
 import PersonDetailsType from '@/types/tmdb/IPeople';

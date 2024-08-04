@@ -11,7 +11,7 @@ import MediaType from '@/types/tmdb/IMediaType';
 import DramaPoster from '@/components/Poster';
 import PersonDetails from '@/components/PersonDetails';
 import BioData from '@/components/PersonDetails/BioData';
-import Socials from '@/components/PersonDetails/Socials';
+import Socials from '@/components/Socials';
 
 type PageProps = {
   params: { id: number };

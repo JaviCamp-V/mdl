@@ -11,9 +11,6 @@ import MainLayout from '@/layout';
 export const metadata: Metadata = {
   title: { default: 'MyDramaList', template: `%s - MyDramaList` },
   description: 'Idle cloning of mdl site',
-  icons: {
-    icon: '/favicon.ico',
-  }
 };
 
 type Props = { children: React.ReactNode };
