@@ -10,7 +10,6 @@ type MediaOverviewProps = {
 }
 const MediaOverview: React.FC<MediaOverviewProps> = async({id, type, overview}) => {
  const translations = await getTranslations(type, id);
- console.log(translations);
  if ( translations.length === 0) {
     translations.push({
       iso_3166_1: 'en',

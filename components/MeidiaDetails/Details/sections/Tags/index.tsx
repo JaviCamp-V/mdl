@@ -14,13 +14,13 @@ interface TagsProps {
 const Tags:React.FC<TagsProps> = async({id, mediaType}) => {
     const tags = await getTags(mediaType, id);
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
         <Typography color={color} fontWeight={500} paddingRight={1}>
           Tags:
         </Typography>
         {tags?.map((tag, index, arr) => (
           <React.Fragment key={tag.id}>
-            <Link key={tag.id} href={`${routes.search}?keywords=${tag.name}`} style={{ textDecoration: 'none' }}>
+            <Link key={tag.id} href={`${routes.search}?keywords=${tag.id}`} style={{ textDecoration: 'none' }}>
               <Typography color="primary">{capitalCase(tag.name)}</Typography>
             </Link>
             {index < arr.length - 1 && (

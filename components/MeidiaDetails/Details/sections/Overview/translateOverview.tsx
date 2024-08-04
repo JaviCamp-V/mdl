@@ -15,7 +15,7 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => 
   );
   return (
     <Box>
-      <Box sx={{ width: { xs: '90%', sm: '80%' } }}>
+      <Box>
         <Typography
           fontSize={14}
           whiteSpace="pre-line"
@@ -33,7 +33,6 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => 
           flexWrap: 'wrap',
           gap: 1,
           marginTop: 1,
-          width: { xs: '100%', sm: '90%' }
         }}
       >
         {translations.map((translation) => (

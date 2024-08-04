@@ -73,65 +73,64 @@ export default ResponsiveSearchField;
 
 export const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor,sx, ...props }) => {
   return (
-      <TextField
-        // variant="filled"
-        size="small"
-        {...props}
-        sx={{
-          ...sx,
-          '& .MuiInputBase-root': {
-            backgroundColor: fieldColor, // Change background color here
-            paddingRight: '0 !important', // Adjust padding-right to zero,
-            color: '#fff', // Change text color here,
-            
-          },
-          '& input': {
-            '&:-webkit-autofill': {
-              WebkitBoxShadow: `0 0 0 1000px ${fieldColor} inset`, // Prevent autofill from changing background
-              WebkitTextFillColor: '#fff' // Adjust text color if needed
-            }
-          },
-          '& .MuiInputBase-input': {
-            paddingRight: 2 // Add padding before the endAdornment
-          },
-
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: borderColor // Default border color
-              // borderRight: 'none'
-            },
-            '&:hover fieldset': {
-              borderColor: borderColor // Border color on hover
-              // borderRight: 'none'
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: borderColor // Border color when focused
-              // borderRight: 'none'
-            }
+    <TextField
+      size="small"
+      hideError
+      {...props}
+      sx={{
+        ...sx,
+        '& .MuiInputBase-root': {
+          backgroundColor: fieldColor, // Change background color here
+          paddingRight: '0 !important', // Adjust padding-right to zero,
+          color: '#fff' // Change text color here,
+        },
+        '& input': {
+          '&:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0 1000px ${fieldColor} inset`, // Prevent autofill from changing background
+            WebkitTextFillColor: '#fff' // Adjust text color if needed
           }
-        }}
-        InputProps={{
-          endAdornment: (
-            <Box
-              sx={{
-                borderLeft: `1.5px solid ${borderColor}`, // Add border to separate icon
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <IconButton>
-                <SearchIcon
-                  sx={{
-                    fontSize: 22,
-                    color: '#fff'
-                  }}
-                />
-              </IconButton>
-            </Box>
-          )
-        }}
-      />
- );
+        },
+        '& .MuiInputBase-input': {
+          paddingRight: 2 // Add padding before the endAdornment
+        },
+
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: borderColor // Default border color
+            // borderRight: 'none'
+          },
+          '&:hover fieldset': {
+            borderColor: borderColor // Border color on hover
+            // borderRight: 'none'
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: borderColor // Border color when focused
+            // borderRight: 'none'
+          }
+        }
+      }}
+      InputProps={{
+        endAdornment: (
+          <Box
+            sx={{
+              borderLeft: `1.5px solid ${borderColor}`, // Add border to separate icon
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <IconButton type="submit">
+              <SearchIcon
+                sx={{
+                  fontSize: 22,
+                  color: '#fff'
+                }}
+              />
+            </IconButton>
+          </Box>
+        )
+      }}
+    />
+  );
 };
 

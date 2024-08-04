@@ -28,11 +28,13 @@ export interface PersonSearchResult extends PersonBase {
   popularity: number;
   known_for_department: string;
   known_for: MediaSearchResult [];
+  biography: string;
+  place_of_birth: string;
 }
 
 export default interface SearchResponse {
     page: number;
-    results: MediaSearchResult[] | PersonSearchResult[];
+    results: MediaSearchResult[] & PersonSearchResult[];
     total_results: number;
     total_pages: number;
 }

@@ -1,14 +1,17 @@
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Link from 'next/link';
 import React from 'react';
+
+import Link from 'next/link';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
-import ExpandableMenuItem from '@/components/ExpandableMenuItem';
+import AppBar from '@mui/material/AppBar';
 import { Typography } from '@mui/material';
-import SearchField from '@/components/RHFElements/SearchField';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container/Container';
+
 import SideBar from '../sidebar';
+
+import SearchForm from '@/components/Forms/SearchForm';
+import ExpandableMenuItem from '@/components/ExpandableMenuItem';
 
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
@@ -86,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 paddingY: 1
               }}
             >
-              <SearchField name="search" placeholder="Find Asian Dramas, Movies, Actors and more..." fullWidth />
+              <SearchForm />
 
               <Box
                 sx={{

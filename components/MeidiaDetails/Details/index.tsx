@@ -25,12 +25,12 @@ interface DetailsTabPanelProps {
 }
 const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, mediaType, overview, genres, original_title, external_ids }) => {
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} sx={{marginRight: 2, width: "90%"}}>
       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
         <Box sx={{ width: '90%', height: { xs: '70vh', sm: '50vh' } }}>
           <DramaPoster src={poster_path} id={id} mediaType={mediaType} />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: "90%" }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90%' }}>
           <Socials {...external_ids} />
         </Box>
         <ButtonGroup variant="contained" sx={{ width: '90%' }} size="large">
@@ -54,22 +54,15 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, medi
           </IconButton>
         </ButtonGroup>
       </Grid>
-      <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0, width: '90%' }}>
+      <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0, }}>
         <MediaOverview id={id} type={mediaType} overview={overview} />
-        <Box sx={{ display: 'inline', whiteSpace: 'pre-line', marginTop: 2 }}>
-          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 2 }}>
+          <Typography color={color} fontWeight={500} paddingRight={1}>
             Native Title:
           </Typography>
-          <Typography sx={{ display: 'inline' }} color={color}>
-            {original_title}
-          </Typography>
+          <Typography color={color}>{original_title}</Typography>
         </Box>
-        <Box sx={{ display: 'inline', whiteSpace: 'pre-line'}}>
-          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
-            Also Known As:
-          </Typography>
-          <Titles id={id} mediaType={mediaType} />
-        </Box>
+        <Titles id={id} mediaType={mediaType} />
         <Credits id={id} mediaType={mediaType} view="creator" />
         <Genres genres={genres} />
         <Tags id={id} mediaType={mediaType} />
