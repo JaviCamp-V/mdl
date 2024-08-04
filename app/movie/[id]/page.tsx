@@ -32,8 +32,8 @@ const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchPar
   };
 
   return (
-    <Box sx={{  padding: 4, marginX: 2 }}>
-      <Grid container spacing={3} sx={{ padding: 4 }}>
+    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
+      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
         <Grid item xs={12} md={8.5}>
           <GeneralDetails details={response} type={MediaType.movie} tab={tab} containerStyle={boxStyle} />
         </Grid>

@@ -6,8 +6,7 @@ import { Metadata } from 'next/types';
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'Discover, Rate, and Watch the Best Dramas',
-  description: 'Idle cloning of mdl site'
+  title: 'Discover, Rate, and Watch the Best Asian Dramas and Movies',
 };
 
 const Home = async() => {
@@ -32,7 +31,7 @@ const Home = async() => {
   return (
     <Box>
 
-      { Object.entries(data).map(([title, dramas]) => (
+      { Object.entries(data).filter(([_, dramas])=> dramas?.length).map(([title, dramas]) => (
         <Box padding={2} key={title}>
           <Typography color="primary" marginBottom={2}>
             {title}

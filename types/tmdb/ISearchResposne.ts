@@ -18,6 +18,7 @@ export interface TVSearchResult extends BaseMediaItem {
   genre_ids: number[];
   first_air_date: string;
   origin_country: string[];
+  episode_count: number;
 }
 
 export type MediaSearchResult = TVSearchResult | MovieSearchResult;
