@@ -8,9 +8,11 @@ import Tags from './sections/Tags';
 import Genre from '@/types/tmdb/IGenre';
 import Genres from './sections/Genres';
 import Titles from './sections/Titles';
-import CrewSummary from '../../Credits/CrewSummary';
 import Iconify from '@/components/Icon/Iconify';
-import Credits from '../../Credits';
+import Credits from '../Credits';
+import Socials from '@/components/Socials';
+import ExternalID from '@/types/tmdb/IExternalID';
+import { color } from '@/libs/common';
 
 interface DetailsTabPanelProps {
   id: number;
@@ -19,14 +21,17 @@ interface DetailsTabPanelProps {
   genres: Genre[];
   overview: string;
   original_title: string;
+  external_ids: ExternalID;
 }
-const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, mediaType, overview, genres, original_title }) => {
-  const color = 'hsl(0deg 0% 100% / 87%)';
+const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, mediaType, overview, genres, original_title, external_ids }) => {
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
         <Box sx={{ width: '90%', height: { xs: '70vh', sm: '50vh' } }}>
           <DramaPoster src={poster_path} id={id} mediaType={mediaType} />
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: "90%" }}>
+          <Socials {...external_ids} />
         </Box>
         <ButtonGroup variant="contained" sx={{ width: '90%' }} size="large">
           <Button variant="contained" sx={{ width: '75%' }}>
@@ -59,30 +64,15 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, medi
             {original_title}
           </Typography>
         </Box>
-        <Box sx={{ display: 'inline', whiteSpace: 'pre-line', width: '80%' }}>
+        <Box sx={{ display: 'inline', whiteSpace: 'pre-line'}}>
           <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
             Also Known As:
           </Typography>
           <Titles id={id} mediaType={mediaType} />
         </Box>
         <Credits id={id} mediaType={mediaType} view="creator" />
-        <Box sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
-          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
-            Genres:
-          </Typography>
-          <Genres genres={genres} />
-        </Box>
-        <Box sx={{ display: 'inline', width: { xs: '100%', sm: '80%' } }}>
-          <Typography
-            sx={{ display: 'inline', whiteSpace: 'pre-line' }}
-            color={color}
-            fontWeight={500}
-            paddingRight={1}
-          >
-            Tags:
-          </Typography>
-          <Tags id={id} mediaType={mediaType} />
-        </Box>
+        <Genres genres={genres} />
+        <Tags id={id} mediaType={mediaType} />
       </Grid>
     </Grid>
   );

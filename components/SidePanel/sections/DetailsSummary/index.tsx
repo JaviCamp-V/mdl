@@ -1,5 +1,5 @@
-import Genres from '@/components/GeneralDetails/tabs/Details/sections/Genres';
-import Tags from '@/components/GeneralDetails/tabs/Details/sections/Tags';
+import Genres from '@/components/MeidiaDetails/Details/sections/Genres';
+import Tags from '@/components/MeidiaDetails/Details/sections/Tags';
 import { getTVContentRating } from '@/server/tmdb2Actions';
 import { lookupShow } from '@/server/tvMazeActions';
 import MediaType from '@/types/tmdb/IMediaType';
@@ -31,32 +31,32 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
     const response = await lookupShow(details.external_ids.tvdb_id);
     daysAiring = response?.schedule?.days.join(', ') ?? 'N/A';
     const ratings = await getTVContentRating(details.id);
-    contentRating = ratings
-          ?.filter(({ iso_3166_1 })=> ['US', ...details.origin_country].includes(iso_3166_1))
-          ?.map(({ rating }) => rating)
-          ?.join(', ')
-      || 'Not Yet Rated';
+    contentRating =
+      ratings
+        ?.filter(({ iso_3166_1 }) => ['US', ...details.origin_country].includes(iso_3166_1))
+        ?.map(({ rating }) => rating)
+        ?.join(', ') || 'Not Yet Rated';
   }
 
   const data = {
     title: type === MediaType.movie ? details.title : details.name,
-    country: details.production_countries.map(({ name }) => name).join(', '),
+    country: details.production_countries.map(({ name }) => name).join(', ') || 'N/A',
     ...(type === MediaType.tv
       ? {
-          episodes: details.number_of_episodes,
+          episodes: details.number_of_episodes || 'N/A',
           airs: `${details.first_air_date ? formatShortDate(formatStringDate(details.first_air_date)) : 'TBD'} - ${
             details.last_air_date ? formatShortDate(formatStringDate(details.last_air_date)) : 'TBD'
           }`,
-          airsOn: daysAiring,
-          originalNetwork: details.networks.map(({ name }) => name).join(', '),
+          airsOn: daysAiring || 'N/A',
+          originalNetwork: details.networks.map(({ name }) => name).join(', ') || 'N/A',
           contentRating
         }
       : {
-          releaseDate: formatShortDate(formatStringDate(details.release_date)),
+          releaseDate: formatShortDate(formatStringDate(details.release_date)) || 'TBD',
           duration: details.runtime ? formatRuntime(details.runtime) : 'N/A'
         })
   };
-    
+
   const color = 'hsl(0deg 0% 100% / 87%)';
 
   return (
@@ -73,18 +73,8 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
       ))}
       {tab && (
         <React.Fragment>
-          <Box sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
-            <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
-              Genres:
-            </Typography>
-            <Genres genres={details.genres} />
-          </Box>
-          <Box sx={{ display: 'inline', whiteSpace: 'pre-line', paddingRight: 2 }}>
-            <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
-              Tags:
-            </Typography>
-            <Tags id={details.id} mediaType={type} />
-          </Box>
+          <Genres genres={details.genres} />
+          <Tags id={details.id} mediaType={type} />
         </React.Fragment>
       )}
     </Box>

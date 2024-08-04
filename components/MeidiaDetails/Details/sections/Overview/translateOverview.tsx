@@ -11,7 +11,7 @@ interface TranslateOverviewProps {
 
 const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => {
   const [currentTranslation, setCurrentTranslation] = React.useState<Translation>(
-    translations.find((translation) => translation.iso_639_1 === 'en') || translations[0]
+    translations.find((translation) => translation?.iso_639_1 === 'en') || translations[0]
   );
   return (
     <Box>
@@ -23,7 +23,7 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => 
           lineHeight={1.5}
           sx={{ WebkitFontSmoothing: 'antialiased' }}
         >
-          {currentTranslation.data.overview}
+          {currentTranslation?.data?.overview}
         </Typography>
       </Box>
       <Box
@@ -45,7 +45,9 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => 
               color: color,
               borderColor: '#606266',
               textTransform: 'capitalize',
-              backgroundColor: translation.iso_639_1 === currentTranslation.iso_639_1 ? '#1c1c1d' : '#3a3b3c'
+              backgroundColor: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? '#1c1c1d' : '#3a3b3c',
+              pointerEvents: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? 'none' : 'auto',
+              cursor: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? 'default' : 'pointer'
             }}
           >
             {translation.name}

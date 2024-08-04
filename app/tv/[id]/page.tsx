@@ -1,4 +1,4 @@
-import GeneralDetails from '@/components/GeneralDetails';
+import GeneralDetails from '@/components/MeidiaDetails';
 import SidePanel from '@/components/SidePanel';
 import { getDetails } from '@/server/tmdb2Actions';
 import MediaType from '@/types/tmdb/IMediaType';

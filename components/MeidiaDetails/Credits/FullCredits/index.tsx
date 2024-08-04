@@ -1,19 +1,29 @@
 import DramaPoster from '@/components/Poster';
 import MediaType from '@/types/tmdb/IMediaType';
-import { Cast, Credits } from '@/types/tmdb/IPeople';
+import { Cast, Credits, Crew } from '@/types/tmdb/IPeople';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { capitalCase } from 'change-case';
+import { camelCase, capitalCase } from 'change-case';
 import Link from 'next/link';
 import React from 'react';
 
 const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
+
+   const groupByJob = crew?.reduce((acc, member) => {
+    const job = camelCase(member.job);
+    const list = job in acc ? acc[job] : [];
+    return { ...acc, [job]: [...list, member] };
+   }, {director: [], screenplay: [], writer: []} as { [key: string]: Crew[] });
+
+   const {director, screenplay, writer, ...rest} = groupByJob;
+
   const sections = {
-    Director: crew?.filter((member) => member.job === 'Director'),
-    Screenplay: crew?.filter((member) => member.job === 'Screenplay' || member.job === 'Writer'),
+    Director: director,
+    Screenplay: [...screenplay, ...writer],
     MainRole: cast?.filter((member) => member.order < 4 && member.character),
     SupportRole: cast?.filter((member) => member.order >= 4 && member.character),
-    Unknown: cast?.filter((member) => !member.character)
+    Unknown: cast?.filter((member) => !member.character),
+    ...rest
   };
 
   return (
@@ -37,7 +47,12 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
                       </Typography>
                     </Link>
                     {['MainRole', 'SupportRole', 'Unknown'].includes(job) && (
-                      <Typography fontSize={14}>{(member as Cast)?.character ?? 'Unknown'}</Typography>
+                      <React.Fragment>
+                      <Typography fontSize={13}>{(member as Cast)?.character ?? 'Unknown'}</Typography>
+                      <Typography fontSize={13} color="#818a91" sx={{ opacity: 0.6 }}>
+                        {(member as Cast)?.order < 4 ? 'Main Role' : 'Supporting Role'}
+                      </Typography>
+                      </React.Fragment>
                     )}
                   </Box>
                 </Grid>

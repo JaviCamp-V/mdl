@@ -9,12 +9,16 @@ import Link from 'next/link'
 import React from 'react'
 import LinkTab from '../common/NavTab'
 import { Tab } from '@mui/material'
-import DetailsTabPanel from './tabs/Details'
-import WhereToWatch from './tabs/Details/sections/WhereToWatch'
+import DetailsTabPanel from './Details'
+import WhereToWatch from './Details/WhereToWatch'
 import Credits from './Credits'
 import { formatStringDate } from '@/utils/formatters'
 import Photos from './Photos'
 import EpisodeGuide from './EpisodeGuide'
+import NextEpisode from './Details/NextEpisode'
+import { getTitle, getYear } from '@/utils/tmdbUtils'
+import { get } from 'http'
+import { color } from '@/libs/common'
 
 type GeneralMovieDetailsProps = {
     details: MovieDetails
@@ -54,19 +58,18 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
       overview={details.overview}
       genres={details.genres}
       original_title={type === MediaType.movie ? details.original_title : details.original_name}
+      external_ids={details.external_ids}
     />
   );
-  const color = 'hsl(0deg 0% 100% / 87%)';
+  const title = getTitle({...details, media_type: type} as any);
+  const year = getYear({...details, media_type: type} as any);
   return (
     <React.Fragment>
       <Box sx={{ ...containerStyle }}>
         <Box sx={{ width: '100%', paddingY: 2 }}>
           <Typography fontSize={30} fontWeight={500} color="primary" paddingLeft={2}>
-            {`${type === MediaType.movie ? details.title : details.name} (${formatStringDate(
-              type === MediaType.movie ? details.release_date : details?.first_air_date
-            ).getFullYear()})`}
+            {`${title} (${year})`}
           </Typography>
-
           <Tabs
             value={links.findIndex((link) => link.href === tab)}
             sx={{ width: '100%', display: 'flex' }}
@@ -99,6 +102,16 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
       </Box>
       {!tab && (
         <React.Fragment>
+           {
+            type === MediaType.tv && (
+              <NextEpisode
+                tvdb_id={details?.external_ids?.tvdb_id}
+                number_of_episodes={details.number_of_episodes}
+                containerStyle={{...containerStyle, minHeight: 0}} 
+                next_episode_to_air={details.next_episode_to_air}
+              />
+            )
+           }
           <WhereToWatch
             id={details.id}
             mediaType={type}

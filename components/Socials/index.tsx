@@ -3,6 +3,7 @@ import React from 'react';
 import { Avatar, Box, IconButton } from '@mui/material';
 import ExternalID from '@/types/tmdb/IExternalID';
 import Iconify from '@/components/Icon/Iconify';
+import { color } from '@/libs/common';
 
 const urlMappings = {
   wikidata: 'https://www.wikidata.org/wiki/:id',
@@ -16,23 +17,20 @@ const getLink = (key: string, id: string) => {
   return url.replace(':id', id);
 };
 
-const Socials: React.FC<ExternalID> = ({ wikidata_id, facebook_id, instagram_id, twitter_id }) => {
+const Socials: React.FC<ExternalID> = ({ facebook_id, instagram_id, twitter_id }) => {
   const socials = {
-    wikidata: wikidata_id,
     facebook: facebook_id,
     instagram: instagram_id,
     twitter: twitter_id
   };
-  const color = 'hsl(0deg 0% 100% / 87%)';
-
   return (
-    <Box sx={{ display: 'fex', flexWrap: 'wrap', gap: 1 }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0, justifyContent: 'left' }}>
       {Object.entries(socials)
         .filter(([_, value]) => value)
         .map(([key, value]) => (
-          <IconButton key={key} href={getLink(key, value)} target="_blank">
-            <Avatar sx={{ backgroundColor: '#1B1C1D'}}>
-              <Iconify icon={`mdi:${key}`} sx={{ wight: 50, height: 40, color }} />
+          <IconButton key={key} href={getLink(key, value)} target="_blank" sx={{margin: 0}}>
+            <Avatar sx={{ backgroundColor: '#1B1C1D', margin: 0, width: 35, height: 35}}>
+              <Iconify icon={`mdi:${key}`} sx={{ wight: 20, height: 20, color }} />
             </Avatar>
           </IconButton>
         ))}

@@ -3,6 +3,7 @@ import routes from '@/libs/routes';
 import Genre from '@/types/tmdb/IGenre';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { capitalCase } from 'change-case';
 import Link from 'next/link';
 import React from 'react';
 
@@ -11,16 +12,17 @@ type GenresProps = {
 };
 const Genres: React.FC<GenresProps> = ({ genres }) => {
   return (
-    <Box sx={{ display: 'inline' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Typography color={color} fontWeight={500} paddingRight={1}>
+        Genres:
+      </Typography>
       {genres.map((genre, index, arr) => (
         <React.Fragment key={genre.id}>
           <Link key={genre.id} href={`${routes.search}?genre=${genre.id}`} style={{ textDecoration: 'none' }}>
-            <Typography sx={{ display: 'inline' }} color="primary" textTransform="capitalize">
-              {genre.name}
-            </Typography>
+            <Typography color="primary">{capitalCase(genre.name)}</Typography>
           </Link>
           {index < arr.length - 1 && (
-            <Typography sx={{ display: 'inline', marginRight: 1 }} color={color}>
+            <Typography color={color} marginRight={1}>
               ,
             </Typography>
           )}

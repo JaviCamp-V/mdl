@@ -25,7 +25,7 @@ const CastOverview: React.FC<CreditsProps & {type: MediaType}> =  ({ id, cast, c
             md={4}
             sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingY: 2 }}
           >
-            <Box sx={{ width: '35%', height: { xs: '20vh', sm: '15vh' } }}>
+            <Box sx={{ width: '35%', height: { xs: '25vh', sm: '20vh' } }}>
               <DramaPoster src={person.profile_path} id={person.id} mediaType={MediaType.person} size="w185" />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, width: '60%', height: '100%' }}>
