@@ -1,3 +1,4 @@
+import { color } from '@/libs/common';
 import { getTitles } from '@/server/tmdb2Actions';
 import MediaType from '@/types/tmdb/IMediaType';
 import { Typography } from '@mui/material';
@@ -11,7 +12,7 @@ interface TitleProps {
 const Titles: React.FC<TitleProps> = async ({ id, mediaType, exclude= ['US'] }) => {
   const titles = await getTitles(mediaType, id);
   return (
-    <Typography sx={{ display: 'inline', color: '#fff' }}>
+    <Typography sx={{ display: 'inline', color: color }}>
       {titles
         ?.filter(({ iso_3166_1 })=> !exclude.includes(iso_3166_1))
         ?.map(({ title }) => title)

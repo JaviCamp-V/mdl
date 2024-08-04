@@ -56,27 +56,30 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
           duration: details.runtime ? formatRuntime(details.runtime) : 'N/A'
         })
   };
+    
+  const color = 'hsl(0deg 0% 100% / 87%)';
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {Object.entries(data).map(([key, value]) => (
-        <Box key={key} sx={{ display: 'inline', whiteSpace: 'pre-line'}}>
-          <Typography sx={{ display: 'inline' }} color="#fff"  paddingRight={1}>
+        <Box key={key} sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
+          <Typography sx={{ display: 'inline' }} color={color} paddingRight={1}>
             {sentenceCase(key)}:
           </Typography>
-          <Typography sx={{ display: 'inline' }} color="#fff">
+          <Typography sx={{ display: 'inline' }} color={color}>
             {value}
           </Typography>
         </Box>
       ))}
       {tab && (
         <React.Fragment>
-          <Box sx={{ display: 'inline', whiteSpace: 'pre-line'}}>
+          <Box sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
             <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
               Genres:
             </Typography>
             <Genres genres={details.genres} />
           </Box>
-          <Box sx={{ display: 'inline',whiteSpace: 'pre-line', paddingRight: 2 }}>
+          <Box sx={{ display: 'inline', whiteSpace: 'pre-line', paddingRight: 2 }}>
             <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
               Tags:
             </Typography>

@@ -1,3 +1,4 @@
+import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 import { getTags } from '@/server/tmdb2Actions';
 import MediaType from '@/types/tmdb/IMediaType';
@@ -25,7 +26,7 @@ const Tags:React.FC<TagsProps> = async({id, mediaType}) => {
               </Typography>
             </Link>
             {index < arr.length - 1 && (
-              <Typography sx={{ display: 'inline', marginRight: 1 }} color="#ffF">
+              <Typography sx={{ display: 'inline', marginRight: 1 }} color={color}>
                 ,
               </Typography>
             )}

@@ -56,7 +56,7 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
       original_title={type === MediaType.movie ? details.original_title : details.original_name}
     />
   );
-
+  const color = 'hsl(0deg 0% 100% / 87%)';
   return (
     <React.Fragment>
       <Box sx={{ ...containerStyle }}>
@@ -84,7 +84,7 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
                 selected={link.href === tab}
                 sx={{
                   textDecoration: 'none',
-                  color: '#fff!important',
+                  color: `${color}!important`,
                   textTransform: 'capitalize',
                   fontSize: 16,
                   borderBottom: link.href === tab ? '1px solid #1675b6' : '1px solid #3e4042'

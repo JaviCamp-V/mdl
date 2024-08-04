@@ -1,3 +1,4 @@
+import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 import Genre from '@/types/tmdb/IGenre';
 import Box from '@mui/material/Box';
@@ -19,7 +20,7 @@ const Genres: React.FC<GenresProps> = ({ genres }) => {
             </Typography>
           </Link>
           {index < arr.length - 1 && (
-            <Typography sx={{ display: 'inline', marginRight: 1 }} color="#ffF">
+            <Typography sx={{ display: 'inline', marginRight: 1 }} color={color}>
               ,
             </Typography>
           )}

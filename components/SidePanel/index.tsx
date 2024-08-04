@@ -7,6 +7,8 @@ const SidePanel: React.FC<DetailsSummaryProps> = (props) => {
   const sections = {
     Details: <DetailsSummary {...props} />
   };
+    const color = 'hsl(0deg 0% 100% / 87%)';
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, sm: 4 }, height: "100%" }}>
       {Object.entries(sections).map(([title, component]) => (
@@ -17,7 +19,7 @@ const SidePanel: React.FC<DetailsSummaryProps> = (props) => {
               borderTopLeftRadius: 2,
               borderTopRightRadius: 2,
               padding: 2,
-              color: '#fff'
+              color
             }}
           >
             <Typography fontSize={18} fontWeight={500}>

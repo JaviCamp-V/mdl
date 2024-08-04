@@ -21,10 +21,11 @@ interface DetailsTabPanelProps {
   original_title: string;
 }
 const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, mediaType, overview, genres, original_title }) => {
+  const color = 'hsl(0deg 0% 100% / 87%)';
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ width: '90%', height: {xs: "70vh", sm:'50vh'} }}>
+        <Box sx={{ width: '90%', height: { xs: '70vh', sm: '50vh' } }}>
           <DramaPoster src={poster_path} id={id} mediaType={mediaType} />
         </Box>
         <ButtonGroup variant="contained" sx={{ width: '90%' }} size="large">
@@ -43,7 +44,7 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, medi
           >
             <Iconify
               icon="material-symbols:list"
-              sx={{ color: '#fff', fontSize: 72, width: 30, height: 30, fontWeight: 500 }}
+              sx={{ color, fontSize: 72, width: 30, height: 30, fontWeight: 500 }}
             />
           </IconButton>
         </ButtonGroup>
@@ -51,28 +52,33 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, poster_path, medi
       <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0, width: '90%' }}>
         <MediaOverview id={id} type={mediaType} overview={overview} />
         <Box sx={{ display: 'inline', whiteSpace: 'pre-line', marginTop: 2 }}>
-          <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
+          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
             Native Title:
           </Typography>
-          <Typography sx={{ display: 'inline' }} color="#fff">
+          <Typography sx={{ display: 'inline' }} color={color}>
             {original_title}
           </Typography>
         </Box>
         <Box sx={{ display: 'inline', whiteSpace: 'pre-line', width: '80%' }}>
-          <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
+          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
             Also Known As:
           </Typography>
           <Titles id={id} mediaType={mediaType} />
         </Box>
         <Credits id={id} mediaType={mediaType} view="creator" />
         <Box sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
-          <Typography sx={{ display: 'inline' }} color="#fff" fontWeight={500} paddingRight={1}>
+          <Typography sx={{ display: 'inline' }} color={color} fontWeight={500} paddingRight={1}>
             Genres:
           </Typography>
           <Genres genres={genres} />
         </Box>
-        <Box sx={{ display: 'inline', width: {xs: '100%', sm: '80%'} }}>
-          <Typography sx={{ display: 'inline', whiteSpace: 'pre-line' }} color="#fff" fontWeight={500} paddingRight={1}>
+        <Box sx={{ display: 'inline', width: { xs: '100%', sm: '80%' } }}>
+          <Typography
+            sx={{ display: 'inline', whiteSpace: 'pre-line' }}
+            color={color}
+            fontWeight={500}
+            paddingRight={1}
+          >
             Tags:
           </Typography>
           <Tags id={id} mediaType={mediaType} />
