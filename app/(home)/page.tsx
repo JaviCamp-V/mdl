@@ -1,15 +1,25 @@
+import React from 'react';
+
+import { Metadata, NextPage } from 'next/types';
+import { Box, List, ListItem, Typography } from '@mui/material';
+
+import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
+
 import Carousel from '@/components/Carousel';
 import DramaCard from '@/components/DramaCard';
-import { getAirings, getEndingThisWeek, getPopular, getStartingThisWeek } from '@/server/tmdbActions';
-import { Box, List, ListItem, Typography } from '@mui/material'
-import { Metadata } from 'next/types';
-import React from 'react'
+
+type PageProps = {
+  searchParams: any
+};
+
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Discover, Rate, and Watch the Best Asian Dramas and Movies',
 };
 
-const Home = async() => {
+const Home:NextPage<PageProps> = async () => {
   const current = await getAirings();
   const startingThisWeek = await getStartingThisWeek();
   const endingThisWeek = await getEndingThisWeek();
