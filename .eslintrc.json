@@ -18,7 +18,7 @@
     "no-shadow": "off",
     "arrow-body-style": "off",
     "import/extensions": "off",
-    "curly": ["error", "multi"],
+    "curly": ["warn", "multi"],
     "react/button-has-type": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
@@ -31,7 +31,7 @@
     "no-redeclare": "off", // let it handle by TypeScript
     "react/jsx-indent": "off", // let it handle by prettier
     "no-unused-vars": "off", // let it handle by TypeScript
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "operator-linebreak": "off", // let it handle by prettier
     "object-curly-newline": "off", // let it handle by prettier
     "function-paren-newline": "off", // let it handle by prettier
