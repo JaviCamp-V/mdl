@@ -23,6 +23,8 @@ const NextEpisode:React.FC<NextEpisodeProps> = async ({tvdb_id, next_episode_to_
  const episode_number = next_episode_to_air?.episode_number;
  if (!airTime || !airDate || !timezone) return <Box />;
  const airsOn = createDate(airDate, airTime, timezone);
+ if (airsOn < new Date()) return <Box />;
+ 
   return (
     <Box
       sx={{

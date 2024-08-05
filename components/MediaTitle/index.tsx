@@ -14,7 +14,15 @@ const MediaTitle: React.FC<MediaTitleProps> = ({ mediaType, id, title, fontSize 
   return (
     <Box>
       <Link href={`/${mediaType}/${id}`} passHref style={{ textDecoration: 'none' }}>
-        <Typography color="primary" fontWeight={500}>
+        <Typography
+          color="primary"
+          fontWeight={500}
+          sx={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}
+        >
           {title}
         </Typography>
       </Link>

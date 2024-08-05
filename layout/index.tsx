@@ -10,8 +10,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({children}) => {
   return (
     <React.Fragment>
       <Navbar />
-      <Paper sx={{ backgroundColor: '#18191A', color: "#fff!important", paddingTop: 8}}> {children}</Paper>
-
+      <Paper sx={{ backgroundColor: '#18191A', color: "#fff!important", paddingTop: 8, borderRadius: 0, paddingBottom: 4 }}> {children}</Paper>
       <Footer />
     </React.Fragment>
   );

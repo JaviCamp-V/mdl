@@ -26,4 +26,5 @@ const getOrigin = (role: MediaSearchResult) => {
   return capitalCase(`${nationality} Drama`);
 };
 
+
 export { getTitle, getYear, getOrigin };
