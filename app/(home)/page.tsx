@@ -14,10 +14,11 @@ import MostPopularDramas from '@/components/Discover/MostPopular';
 import dynamicImport from 'next/dynamic';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import { color } from '@/libs/common';
+import Carousel from '@/components/Carousel';
 
-const Carousel = dynamicImport(() => import('@/components/Carousel'), {
-  loading: () => <LoadingSkeleton width="100%" height={"30vh"} />,
-});
+// const Carousel = dynamicImport(() => import('@/components/Carousel'), {
+//   loading: () => <LoadingSkeleton width="100%" height={"30vh"} />,
+// });
 
 type PageProps = {
   searchParams: any
@@ -53,6 +54,8 @@ const Home:NextPage<PageProps> = async () => {
      minHeight: '50vh'
    };
 
+
+
   return (
     <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2, marginTop: 4 }}>
       <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
@@ -65,7 +68,7 @@ const Home:NextPage<PageProps> = async () => {
                   <Typography color={color} marginBottom={2} paddingX={2} fontSize={24} fontWeight={500}>
                     {title}
                   </Typography>
-                  <Box paddingX={2} sx={{ minHeight: '30vh' }}>
+                  <Box marginX={2} sx={{ minHeight: '30vh' }}>
                     <Carousel>
                       {dramas
                         .filter((drama: any) => drama.poster_path)
