@@ -1,5 +1,6 @@
-"use client"
-import { useState, useEffect } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 export interface TimeLeft {
   days: number;
@@ -13,11 +14,25 @@ export interface TimeLeft {
 const useTimer = (targetDate: Date): TimeLeft => {
   const calculateTimeLeft = (): TimeLeft => {
     if (isNaN(targetDate.getTime())) {
-      return { days: 0, hours: 0, mins: 0, sec: 0, isValid: false, hasEnded: false };
+      return {
+        days: 0,
+        hours: 0,
+        mins: 0,
+        sec: 0,
+        isValid: false,
+        hasEnded: false
+      };
     }
 
     const difference = +targetDate - +new Date();
-    let timeLeft: TimeLeft = { days: 0, hours: 0, mins: 0, sec: 0, isValid: true, hasEnded: true };
+    let timeLeft: TimeLeft = {
+      days: 0,
+      hours: 0,
+      mins: 0,
+      sec: 0,
+      isValid: true,
+      hasEnded: true
+    };
 
     if (difference > 0) {
       timeLeft = {

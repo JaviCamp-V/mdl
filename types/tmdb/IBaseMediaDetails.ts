@@ -3,8 +3,8 @@ export default interface BaseMediaItem {
   backdrop_path: string | null;
   id: number;
   original_language: string;
-  origin_country: string[] | null;
-  genre_ids: number[] | null;
+  origin_country: string[];
+  genre_ids: number[];
   overview: string;
   popularity: number;
   poster_path: string | null;

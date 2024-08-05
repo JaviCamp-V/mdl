@@ -1,11 +1,11 @@
+import BaseMediaItem from './IBaseMediaDetails';
+import ExternalID from './IExternalID';
 import Genre from './IGenre';
-import { Language } from './ITranslation';
 import Network from './INetwork';
 import { Creator } from './IPeople';
 import ProductionCountry from './IProductionCountry';
 import { Episode, Season } from './ISeason';
-import BaseMediaItem from './IBaseMediaDetails';
-import ExternalID from './IExternalID';
+import { Language } from './ITranslation';
 
 export default interface TVDetails extends BaseMediaItem {
   created_by: Creator[];

@@ -1,12 +1,13 @@
-import { getProviders } from '@/server/tmdb2Actions';
-import { MediaRequest } from '@/types/tmdb/IGenericRequest';
-import Box from '@mui/material/Box';
+'use server';
+
 import React from 'react';
 import Image from 'next/image';
-
-import Typography from '@mui/material/Typography';
 import Link from 'next/link';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { getProviders } from '@/server/tmdbActions';
+import { MediaRequest } from '@/types/tmdb/IGenericRequest';
 
 interface WhereToWatchProps extends MediaRequest {
   containerStyle?: any;
@@ -28,26 +29,38 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ id, mediaType, contai
     return acc;
   }, [] as any[]);
 
-  if (!uniqueProviders.length) return;
-  
+  if (!uniqueProviders.length) {
+    return <Box />;
+  }
+
   return (
     <Box sx={{ ...containerStyle, minHeight: 0, padding: 2.5 }}>
-      <Typography fontSize={18} fontWeight={500} lineHeight={1} marginBottom={2}>{`Where to Watch ${title}`}</Typography>
-      <Grid container spacing={2} sx={{marginRight: 2 }}>
+      <Typography
+        fontSize={18}
+        fontWeight={500}
+        lineHeight={1}
+        marginBottom={2}
+      >{`Where to Watch ${title}`}</Typography>
+      <Grid container spacing={2} sx={{ marginRight: 2 }}>
         {uniqueProviders
           .sort((a, b) => a.display_priority - b.display_priority)
           .slice(0, 6)
           .map((provider) => (
             <Grid
-              item 
+              item
               xs={12}
               sm={6}
               md={4}
               key={provider.provider_id}
-              sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 1
+              }}
             >
               <Image
-                src={`https://image.tmdb.org/t/p/w500/${provider.logo_path}`}
+                src={`https://image.tmdb.org/t/p/original/${provider.logo_path}`}
                 width={60}
                 height={60}
                 alt={provider.provider_name}

@@ -1,16 +1,18 @@
-import { getTranslations } from '@/server/tmdb2Actions';
+'use server';
+
+import React from 'react';
+import { getTranslations } from '@/server/tmdbActions';
 import MediaType from '@/types/tmdb/IMediaType';
-import React from 'react'
 import TranslateOverview from './translateOverview';
 
 type MediaOverviewProps = {
-    id: number;
-    type: MediaType.movie | MediaType.tv;
-    overview: string;
-}
-const MediaOverview: React.FC<MediaOverviewProps> = async({id, type, overview}) => {
- const translations = await getTranslations(type, id);
- if ( translations.length === 0) {
+  id: number;
+  type: MediaType.movie | MediaType.tv;
+  overview: string;
+};
+const MediaOverview: React.FC<MediaOverviewProps> = async ({ id, type, overview }) => {
+  const translations = await getTranslations(type, id);
+  if (translations.length === 0) {
     translations.push({
       iso_3166_1: 'en',
       iso_639_1: 'en',
@@ -23,9 +25,9 @@ const MediaOverview: React.FC<MediaOverviewProps> = async({id, type, overview}) 
       },
       english_name: 'English'
     });
- }
+  }
 
-  return <TranslateOverview translations={translations.filter(({data})=> data.overview)} />
-}
+  return <TranslateOverview translations={translations.filter(({ data }) => data.overview)} />;
+};
 
-export default MediaOverview
+export default MediaOverview;

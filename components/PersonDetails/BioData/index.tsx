@@ -1,8 +1,7 @@
 import React from 'react';
-
-import Box from '@mui/material/Box';
 import { capitalCase } from 'change-case';
 import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 import PersonDetails from '@/types/tmdb/IPeople';
 import { calculateAge } from '@/utils/dateUtils';
 import { formatShortDate, formatStringDate } from '@/utils/formatters';
@@ -20,7 +19,14 @@ const BioData: React.FC<PersonDetails> = (props) => {
     age: birthDate ? calculateAge(birthDate) : 'Unknown'
   };
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, paddingBottom: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 0,
+        paddingBottom: 2
+      }}
+    >
       {Object.entries(data).map(([key, value]) => (
         <Box sx={{ fontSize: '14px', color }} key={key}>
           <Typography fontWeight="bolder" paddingRight={1} display={'inline'}>

@@ -1,31 +1,40 @@
-import GeneralDetails from '@/components/MeidiaDetails';
-import SidePanel from '@/components/SidePanel';
-import { getDetails } from '@/server/tmdb2Actions';
-import MediaType from '@/types/tmdb/IMediaType';
-import { formatStringDate } from '@/utils/formatters';
+import React from 'react';
+import { Metadata, NextPage } from 'next/types';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Metadata, NextPage } from 'next/types';
-import React from 'react';
+import { getMovieDetails } from '@/server/tmdbActions';
+import GeneralDetails from '@/components/MeidiaDetails';
+import SidePanel from '@/components/SidePanel';
+import NotFound from '@/components/common/NotFound';
+import MediaType from '@/types/tmdb/IMediaType';
+import { formatStringDate } from '@/utils/formatters';
+import { card_background } from '@/libs/common';
 
 type PageProps = {
   params: { id: number };
   searchParams: { [tab: string]: string };
 };
 
+const getReleaseYear = (release_date: string | undefined) => {
+  if (!release_date) return 'TBA';
+  return formatStringDate(release_date).getFullYear();
+};
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { id } = params;
-  const response = await getDetails(MediaType.movie, id);
-  const title = `${response?.title} (${formatStringDate(response?.release_date).getFullYear()})`;
-  return { title: response?.title ? title : 'Movie Details', description: response?.overview ?? '' };
+  const response = await getMovieDetails(id);
+  const title = `${response?.title} (${getReleaseYear(response?.release_date)})`;
+  return {
+    title: response?.title ? title : 'Movie Details',
+    description: response?.overview ?? ''
+  };
 };
 const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchParams: { tab } }) => {
-  const response = await getDetails(MediaType.movie, id);
-  if (!response) return <div>Movie not found</div>;
+  const response = await getMovieDetails(id);
+  if (!response) return <NotFound type={MediaType.movie} />;
 
   const boxStyle = {
     marginTop: 4,
-    backgroundColor: '#242526',
+    backgroundColor: card_background,
     borderRadius: 2,
     overflow: 'hidden',
     minHeight: '50vh'

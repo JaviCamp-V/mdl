@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, ClickAwayListener, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
@@ -10,7 +11,7 @@ const SideBar: React.FC<SideBarProps> = () => {
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <React.Fragment>
         <IconButton onClick={() => setOpen((prev) => !prev)}>
-          <MenuIcon sx={{color: "#fff", fontSize: 28}}/>
+          <MenuIcon sx={{ color: '#fff', fontSize: 28 }} />
         </IconButton>
         <Drawer
           anchor="right"

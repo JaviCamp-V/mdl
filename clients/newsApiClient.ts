@@ -1,6 +1,3 @@
-
-
-
 import axios from 'axios';
 
 const instance = axios.create({
@@ -9,7 +6,7 @@ const instance = axios.create({
 });
 
 const get = async <T>(url: string, params: URLSearchParams) => {
- params.append('apiKey', process.env.NEWS_API_KEY!);
+  params.append('apiKey', process.env.NEWS_API_KEY!);
   return (await instance.get<T>(url, { params })).data;
 };
 

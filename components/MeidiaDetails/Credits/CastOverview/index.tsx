@@ -1,20 +1,22 @@
-import DramaPoster from '@/components/Poster';
-import { MediaRequest } from '@/types/tmdb/IGenericRequest'
-import MediaType from '@/types/tmdb/IMediaType';
-import { Credits as CreditsProps } from '@/types/tmdb/IPeople'
+import React from 'react';
+import Link from 'next/link';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
-import React from 'react'
+import MediaTitle from '@/components/MediaTitle';
+import DramaPoster from '@/components/Poster';
+import Divider from '@/components/common/Divider';
+import { MediaRequest } from '@/types/tmdb/IGenericRequest';
+import MediaType from '@/types/tmdb/IMediaType';
+import { Credits as CreditsProps } from '@/types/tmdb/IPeople';
 
-const CastOverview: React.FC<CreditsProps & {type: MediaType}> =  ({ id, cast, crew,  type}) => {
+const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, crew, type }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
       <Typography paddingX={2} fontSize={18} fontWeight={500} lineHeight={1}>
         Cast & Credits
       </Typography>
-      <Box sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', marginY: 2 }} />
+      <Divider />
       <Grid container spacing={2} paddingX={2} sx={{ minHeight: '35vh' }}>
         {cast?.slice(0, 6).map((person) => (
           <Grid
@@ -28,12 +30,16 @@ const CastOverview: React.FC<CreditsProps & {type: MediaType}> =  ({ id, cast, c
             <Box sx={{ width: '35%', height: { xs: '25vh', sm: '20vh' } }}>
               <DramaPoster src={person.profile_path} id={person.id} mediaType={MediaType.person} size="w185" />
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, width: '60%', height: '100%' }}>
-              <Link href={`/person/${person.id}`} passHref style={{ textDecoration: 'none' }}>
-                <Typography color="primary" fontWeight={500}>
-                  {person.name}
-                </Typography>
-              </Link>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 0,
+                width: '60%',
+                height: '100%'
+              }}
+            >
+              <MediaTitle title={person.name} id={person.id} mediaType={MediaType.person} fontSize={14} />
               <Typography fontSize={12}>{person.character}</Typography>
               <Typography fontSize={12} color="#818a91" sx={{ opacity: 0.6 }}>
                 {person.order < 4 ? 'Main Role' : 'Supporting Role'}
@@ -42,7 +48,7 @@ const CastOverview: React.FC<CreditsProps & {type: MediaType}> =  ({ id, cast, c
           </Grid>
         ))}
       </Grid>
-      <Box sx={{ borderBottom: '1px solid hsla(210, 8%, 51%, .13)', marginY: 1 }} />
+      <Divider />
       <Box paddingX={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Link href={`/${type}/${id}?tab=credits`} passHref style={{ textDecoration: 'none' }}>
           <Typography color="primary">{`View all (${cast?.length + crew?.length || 0})`}</Typography>
@@ -52,4 +58,4 @@ const CastOverview: React.FC<CreditsProps & {type: MediaType}> =  ({ id, cast, c
   );
 };
 
-export default CastOverview
+export default CastOverview;

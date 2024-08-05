@@ -10,4 +10,3 @@ export default interface ExternalID {
   instagram_id: string;
   twitter_id: string;
 }
-

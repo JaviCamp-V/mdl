@@ -1,4 +1,4 @@
-export interface Image  {
+export interface Image {
   aspect_ratio: number;
   file_path: string;
   height: number;
@@ -6,20 +6,19 @@ export interface Image  {
   vote_average: number;
   vote_count: number;
   width: number;
-};
+}
 
 export interface MediaImagesResponse {
   id: number;
   backdrops: Image[];
   logos: Image[];
   posters: Image[];
-};
-
-export interface PersonImagesResponse {
-    id: number;
-    profiles: Image[];
 }
 
+export interface PersonImagesResponse {
+  id: number;
+  profiles: Image[];
+}
 
 type ImagesResponse = MediaImagesResponse | PersonImagesResponse;
 

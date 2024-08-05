@@ -1,8 +1,8 @@
-import { color } from '@/libs/common';
-import { Credits } from '@/types/tmdb/IPeople';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import { Credits } from '@/types/tmdb/IPeople';
+import { color } from '@/libs/common';
 
 const CrewSummary: React.FC<Credits> = ({ crew }) => {
   const directors = crew.filter((crew) => crew.job === 'Director');

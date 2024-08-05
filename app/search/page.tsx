@@ -1,12 +1,11 @@
-import Box from '@mui/material/Box';
-import { capitalCase } from 'change-case';
 import { Metadata, NextPage } from 'next';
+import { capitalCase } from 'change-case';
 import { Typography } from '@mui/material';
-
-import genres from '@/libs/genres';
-import { getKeywordDetails, getSearchResults } from '@/server/tmdb2Actions';
-
+import Box from '@mui/material/Box';
+import { getKeywordDetails, getSearchResults } from '@/server/tmdbActions';
 import SearchResults from '@/components/SearchResults';
+import NotFound from '@/components/common/NotFound';
+import genres from '@/libs/genres';
 
 type PageProps = {
   searchParams: { [key: string]: string };
@@ -29,7 +28,8 @@ export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 
 const SearchPage: NextPage<PageProps> = async ({ searchParams: { genre, keywords, query, page } }) => {
-  const response = await getSearchResults({ with_genres: genre, with_keywords: keywords, query, page });
+  const response = await getSearchResults({ genre, keywords, query, page });
+  if (response.total_results === 0) return <NotFound />;
   const searchItem = await getSearchItem(query, genre, keywords);
   return (
     <Box

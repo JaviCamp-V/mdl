@@ -1,13 +1,11 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 import { Grid, Rating, Typography } from '@mui/material';
-
-import { color } from '@/libs/common';
+import Box from '@mui/material/Box';
+import MediaTitle from '@/components/MediaTitle';
+import DramaPoster from '@/components/Poster';
 import { MediaSearchResult, PersonSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin, getYear } from '@/utils/tmdbUtils';
-
-import DramaPoster from '@/components/Poster';
-import MediaTitle from '@/components/MediaTitle';
+import { color } from '@/libs/common';
 
 interface SearchItemProps {
   details: MediaSearchResult | PersonSearchResult;
@@ -16,7 +14,15 @@ interface SearchItemProps {
 const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
   const { media_type, id } = details;
   return (
-    <Box sx={{ backgroundColor: '#242526', borderRadius: 2, overflow: 'hidden', height: '35vh', padding: 2 }}>
+    <Box
+      sx={{
+        backgroundColor: '#242526',
+        borderRadius: 2,
+        overflow: 'hidden',
+        height: '35vh',
+        padding: 2
+      }}
+    >
       <Grid container spacing={2}>
         <Grid item xs={6} md={3} sx={{ height: '38vh' }}>
           <Box sx={{ width: '100%', height: '100%' }}>
@@ -24,11 +30,21 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
               src={media_type === 'person' ? details.profile_path : details.poster_path}
               id={id}
               mediaType={media_type}
-              size="original"
+              size="w185"
             />
           </Box>
         </Grid>
-        <Grid item xs={6} md={8} sx={{ paddingRight: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Grid
+          item
+          xs={6}
+          md={8}
+          sx={{
+            paddingRight: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2
+          }}
+        >
           <MediaTitle title={media_type === 'movie' ? details.title : details.name} id={id} mediaType={media_type} />
           {media_type === 'person' ? (
             <Box>
@@ -38,9 +54,10 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
             </Box>
           ) : (
             <Box>
-              <Typography color={color} sx={{ opacity: 0.6 }}>{`${getOrigin(details)} - ${getYear(
-                details
-              )}`}</Typography>
+              <Typography
+                color={color}
+                sx={{ opacity: 0.6 }}
+              >{`${getOrigin(details)} - ${getYear(details)}`}</Typography>
               <Rating name="read-only" value={details.vote_average / 2} precision={0.1} readOnly />
             </Box>
           )}

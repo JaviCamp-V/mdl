@@ -1,14 +1,13 @@
 'use client';
+
 import React from 'react';
-import TextField, { TextFieldProps } from './TextField';
-import SearchIcon from '@mui/icons-material/Search';
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import { ClickAwayListener, IconButton } from '@mui/material';
 import { Popover } from 'react-tiny-popover';
-
+import SearchIcon from '@mui/icons-material/Search';
+import { ClickAwayListener, IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import TextField, { TextFieldProps } from './TextField';
 
 type SearchFieldProps = TextFieldProps & {
   fieldColor: string;
@@ -39,7 +38,13 @@ const ResponsiveSearchField: React.FC<TextFieldProps> = (props) => {
               }} // custom styles for the popover content container
               content={
                 <Box
-                  sx={{ width: '100vw', padding: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  sx={{
+                    width: '100vw',
+                    padding: 2,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
                 >
                   <SearchField
                     {...props}
@@ -71,7 +76,7 @@ const ResponsiveSearchField: React.FC<TextFieldProps> = (props) => {
 
 export default ResponsiveSearchField;
 
-export const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor,sx, ...props }) => {
+export const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, ...props }) => {
   return (
     <TextField
       size="small"
@@ -133,4 +138,3 @@ export const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColo
     />
   );
 };
-

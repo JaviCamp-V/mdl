@@ -1,12 +1,13 @@
-import GeneralDetails from '@/components/MeidiaDetails';
-import SidePanel from '@/components/SidePanel';
-import { getDetails } from '@/server/tmdb2Actions';
-import MediaType from '@/types/tmdb/IMediaType';
-import { formatStringDate } from '@/utils/formatters';
+import React from 'react';
+import { Metadata, NextPage } from 'next/types';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Metadata, NextPage } from 'next/types';
-import React from 'react';
+import { getTVDetails } from '@/server/tmdbActions';
+import GeneralDetails from '@/components/MeidiaDetails';
+import SidePanel from '@/components/SidePanel';
+import NotFound from '@/components/common/NotFound';
+import MediaType from '@/types/tmdb/IMediaType';
+import { formatStringDate } from '@/utils/formatters';
 
 type PageProps = {
   params: { id: number };
@@ -15,13 +16,18 @@ type PageProps = {
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { id } = params;
-  const response = await getDetails(MediaType.tv, id);
-    const title = `${response?.name} (${formatStringDate(response?.first_air_date).getFullYear()})`;
-  return { title: response?.name ? title : 'Drama Details', description: response?.overview ?? '' };
+  const response = await getTVDetails(id);
+  const title = `${response?.name} (${formatStringDate(response?.first_air_date).getFullYear()})`;
+  return {
+    title: response?.name ? title : 'Drama Details',
+    description: response?.overview ?? ''
+  };
 };
 const TVDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchParams: { tab } }) => {
-  const response = await getDetails(MediaType.tv, id);
-  if (!response) return <div>TV not found</div>;
+  const response = await getTVDetails(id);
+  if (!response) {
+    return <NotFound type={MediaType.tv} />;
+  }
 
   const boxStyle = {
     marginTop: 4,

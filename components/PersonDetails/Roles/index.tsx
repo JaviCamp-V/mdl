@@ -1,67 +1,56 @@
+'use server';
+
 import React from 'react';
-
-import Link from 'next/link';
+import { camelCase, capitalCase } from 'change-case';
+import { Rating, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { capitalCase } from 'change-case';
-import {
-  Rating,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography
-} from '@mui/material';
-
-import countriesConfig from '@/libs/countriesConfig';
-import { getRoles } from '@/server/tmdb2Actions';
+import { getRoles } from '@/server/tmdbActions';
+import MediaTitle from '@/components/MediaTitle';
 import MediaType from '@/types/tmdb/IMediaType';
 import { MediaSearchResult } from '@/types/tmdb/ISearchResposne';
 import { formatStringDate } from '@/utils/formatters';
+import { getOrigin, getTitle, getYear } from '@/utils/tmdbUtils';
+import { color } from '@/libs/common';
 
 type RolesProps = {
   id: number;
 };
 
-const getTitle = (role: MediaSearchResult) => {
-  return role.media_type === MediaType.movie ? role.title : role.name;
-};
-
-const getYear = (role: MediaSearchResult) => {
-  const date = role.media_type === MediaType.movie ? role.release_date : role.first_air_date;
-  return date ? formatStringDate(date).getFullYear() : 'TBA';
-};
 const getReleaseDate = (role: MediaSearchResult) => {
   const date = role.media_type === MediaType.movie ? role.release_date : role.first_air_date;
   return formatStringDate(date);
 };
 
-const getOrigin = (role: MediaSearchResult) => {
-  const { media_type } = role;
-  if (media_type === MediaType.movie) return capitalCase(media_type);
-  const { origin_country } = role;
-  if (!origin_country.length) return 'Drama';
-  const nationality =
-    countriesConfig.find((country) => country.code === origin_country[0])?.nationality ?? origin_country[0];
-  return capitalCase(`${nationality} Drama`);
+const getRole = (role: MediaSearchResult) => {
+  const type = (role as any)?.order < 5 ? 'Main Role' : 'Support Role';
+  const character = (role as any).character || 'Unknown';
+  return `${character} (${type})`;
 };
 
-// TODO crew roles
+const getType = (role: MediaSearchResult) => {
+  return role.media_type === 'tv' ? 'Drama' : 'Movie';
+};
 const Roles: React.FC<RolesProps> = async ({ id }) => {
   const roles = await getRoles(id);
   if (roles.cast.length === 0 && roles.crew.length === 0) return <div>No roles found</div>;
   const drama = roles.cast.filter((role) => role.media_type === 'tv');
   const movies = roles.cast.filter((role) => role.media_type === 'movie');
-
-
+  const groupByJob = roles.crew?.reduce(
+    (acc, role: any) => {
+      const job = camelCase(role.job);
+      const list = job in acc ? acc[job] : [];
+      return { ...acc, [job]: [...list, role] };
+    },
+    {} as { [key: string]: MediaSearchResult[] }
+  );
   const data = {
     drama,
-    movies
+    movies,
+    ...groupByJob
   };
 
   const cellStyle = {
-    color: 'hsl(0deg 0% 100% / 87%)',
+    color: color,
     border: 'none',
     fontSize: '14px',
     WebkitFontSmoothing: 'antialiased'
@@ -75,61 +64,80 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
       {Object.entries(data)
         .filter(([_, results]) => results?.length)
         .map(([key, results]) => (
-          <Box key={key} sx={{ marginY: 1 }}>
+          <Box key={key} sx={{ marginY: 2 }}>
             <Typography fontSize={'1.25rem'} fontWeight={500}>
               {capitalCase(key)}
             </Typography>
 
-            <Box sx={{ borderBottom: '1px solid hsla(210, 8%, 51%, .13)', marginY: 1 }} />
+            <Box
+              sx={{
+                borderBottom: '1px solid hsla(210, 8%, 51%, .13)',
+                marginY: 1
+              }}
+            />
 
             <TableContainer sx={{ backgroundColor: 'inherit' }}>
-              <Table sx={{ borderLeft: 'none', borderRight: 'none', borderColor: 'hsla(210, 8%, 51%, .13)' }}>
+              <Table
+                sx={{
+                  borderLeft: 'none',
+                  borderRight: 'none',
+                  borderColor: 'hsla(210, 8%, 51%, .13)'
+                }}
+              >
                 <TableHead>
-                  <TableRow sx={{ borderBottom: '3px solid hsla(210, 8%, 51%, .13)!important' }}>
+                  <TableRow
+                    sx={{
+                      borderBottom: '3px solid hsla(210, 8%, 51%, .13)!important'
+                    }}
+                  >
                     <TableCell sx={{ ...cellStyle, fontWeight: 500, ...mobileStyle }}>Year</TableCell>
                     <TableCell sx={{ ...cellStyle, fontWeight: 500 }}>Title</TableCell>
                     {key === 'drama' && (
                       <TableCell sx={{ ...cellStyle, fontWeight: 500, ...mobileStyle }}> # </TableCell>
                     )}
-                    <TableCell sx={{ ...cellStyle, fontWeight: 500, ...mobileStyle }}>Role</TableCell>
-                    <TableCell sx={{ ...cellStyle, fontWeight: 500 }}>Rating</TableCell>
+                    <TableCell sx={{ ...cellStyle, fontWeight: 500, ...mobileStyle }}>
+                      {['drama', 'movies'].includes(key) ? 'Role' : 'Type'}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        ...cellStyle,
+                        fontWeight: 500,
+                        textAlign: 'center'
+                      }}
+                    >
+                      Rating
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {results
                     .sort((a, b) => getReleaseDate(b).getTime() - getReleaseDate(a).getTime())
-                    .map((role) => (
-                      <TableRow key={role.id} sx={{ borderBottom: '1px solid hsla(210, 8%, 51%, .13)' }}>
+                    .map((role, index, arr) => (
+                      <TableRow
+                        key={role.id}
+                        sx={{
+                          borderBottom: index !== arr.length - 1 ? '1px solid hsla(210, 8%, 51%, .13)' : 'none'
+                        }}
+                      >
                         <TableCell sx={{ ...cellStyle, ...mobileStyle }}>{getYear(role)}</TableCell>
                         <TableCell sx={{ ...cellStyle }}>
-                          <Link href={`/${role.media_type}/${role.id}`} style={{ textDecoration: 'none' }}>
-                            <Typography color="primary" fontWeight={500}>
-                              {getTitle(role)}
-                            </Typography>
-                          </Link>
+                          <MediaTitle title={getTitle(role)} id={role.id} mediaType={role.media_type} fontSize={14} />
                           <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                             <Typography sx={{ opacity: 0.6 }}>{`${getOrigin(role)}, ${getYear(role)}${
                               role.media_type === 'tv' ? `, ${role.episode_count} eps` : ''
                             }`}</Typography>
-                            <Typography sx={{ opacity: 0.6 }}>
-                              {' '}
-                              {`${(role as any).character || 'Unknown'} (${
-                                (role as any).order < 5 ? 'Main Role' : 'Support Role'
-                              })`}
-                            </Typography>
+                            {['drama', 'movies'].includes(key) && (
+                              <Typography sx={{ opacity: 0.6 }}>{getRole(role)}</Typography>
+                            )}
                           </Box>
                         </TableCell>
-                        {role.media_type === 'tv' && (
+                        {role.media_type === 'tv' && key == 'drama' && (
                           <TableCell sx={{ ...cellStyle, ...mobileStyle }}>
                             <Typography>{role.episode_count}</Typography>
                           </TableCell>
                         )}
                         <TableCell sx={{ ...cellStyle, ...mobileStyle }}>
-                          <Typography>
-                            {`${(role as any).character || 'Unknown'} (${
-                              (role as any).order < 5 ? 'Main Role' : 'Support Role'
-                            })`}
-                          </Typography>
+                          <Typography>{['drama', 'movies'].includes(key) ? getRole(role) : getType(role)}</Typography>
                         </TableCell>
                         <TableCell
                           sx={{

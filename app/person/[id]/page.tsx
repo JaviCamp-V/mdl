@@ -1,17 +1,15 @@
 import React from 'react';
-
+import { Metadata, NextPage } from 'next/types';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
-import { Metadata, NextPage } from 'next/types';
-
-import { getDetails } from '@/server/tmdb2Actions';
-import MediaType from '@/types/tmdb/IMediaType';
-
-import DramaPoster from '@/components/Poster';
+import { getPersonDetails } from '@/server/tmdbActions';
 import PersonDetails from '@/components/PersonDetails';
 import BioData from '@/components/PersonDetails/BioData';
+import DramaPoster from '@/components/Poster';
 import Socials from '@/components/Socials';
+import NotFound from '@/components/common/NotFound';
+import MediaType from '@/types/tmdb/IMediaType';
 
 type PageProps = {
   params: { id: number };
@@ -19,13 +17,14 @@ type PageProps = {
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { id } = params;
-  const response = await getDetails(MediaType.person, id);
-  return { title: response?.name ?? `Person ${id} Details`};
+  const response = await getPersonDetails(id);
+  return { title: response?.name ?? `Person ${id} Details` };
 };
-const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id }}) => {
-  const response = await getDetails(MediaType.person, id);
-  if (!response) return <div>Person not found</div>;
-
+const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
+  const response = await getPersonDetails(id);
+  if (!response) {
+    return <NotFound type={MediaType.person} />;
+  }
 
   return (
     <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
@@ -58,7 +57,14 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id }}) => {
             <Socials {...response.external_ids} />
           </Box>
 
-          <Box sx={{ boxShadow: '0 1px 1px rgba(0,0,0,.1)', marginTop: 2, display: { xs: 'none', md: 'flex' }, flexDirection: 'column' }}>
+          <Box
+            sx={{
+              boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+              marginTop: 2,
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'column'
+            }}
+          >
             <Box
               sx={{
                 backgroundColor: '#1675b6',

@@ -1,11 +1,12 @@
-"use client";
-import ItemPagination from '@/components/common/ItemPagination';
-import DramaPoster from '@/components/Poster';
-import { MediaImagesResponse } from '@/types/tmdb/IImage'
-import { scrollToElementByID } from '@/utils/scrollToElement';
+'use client';
+
+import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import React from 'react'
+import DramaPoster from '@/components/Poster';
+import ItemPagination from '@/components/common/ItemPagination';
+import { MediaImagesResponse } from '@/types/tmdb/IImage';
+import { scrollToElementByID } from '@/utils/scrollToElement';
 
 const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops, logos }) => {
   const photos = [...posters, ...backdrops, ...logos];
@@ -33,4 +34,4 @@ const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops, l
   );
 };
 
-export default FullPhotoGallery
+export default FullPhotoGallery;

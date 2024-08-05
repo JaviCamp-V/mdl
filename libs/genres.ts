@@ -1,4 +1,4 @@
-import Genre from "@/types/tmdb/IGenre";
+import Genre from '@/types/tmdb/IGenre';
 
 const genres: Genre[] = [
   { id: 28, name: 'Action' },
@@ -30,8 +30,6 @@ const genres: Genre[] = [
   { id: 10768, name: 'War & Politics' }
 ];
 
-
 export const without_genres = [16, 10764, 10767, 99, 10766, 10763];
-
 
 export default genres;

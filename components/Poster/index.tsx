@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import MediaType from '@/types/tmdb/IMediaType';
+import Link from 'next/link';
 import Box from '@mui/material/Box';
+import MediaType from '@/types/tmdb/IMediaType';
 
 interface PosterProps {
   src: string | null;
@@ -12,7 +12,7 @@ interface PosterProps {
   priority?: boolean;
 }
 const DramaPoster: React.FC<PosterProps> = ({ src, id, size = 'w500', mediaType, priority = true }) => {
-   const path = src ? `https://image.tmdb.org/t/p/${size}${src}` : '/static/images/no_poster.jpg'
+  const path = src ? `https://image.tmdb.org/t/p/${size}${src}` : '/static/images/no_poster.jpg';
   return (
     <Link href={`/${mediaType}/${id}`} passHref>
       <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>

@@ -1,30 +1,35 @@
 import React from 'react';
 import { Box, SxProps, Typography } from '@mui/material';
-import Countdown from './Countdown';
 import { lookupShow } from '@/server/tvMazeActions';
+import Iconify from '@/components/Icon/Iconify';
 import { Episode } from '@/types/tmdb/ISeason';
 import { createDate } from '@/utils/dateUtils';
 import { formatTime } from '@/utils/formatters';
-import Iconify from '@/components/Icon/Iconify';
+import Countdown from './Countdown';
 
 interface NextEpisodeProps {
-  tvdb_id: number| null;
+  tvdb_id: number | null;
   number_of_episodes: number;
   next_episode_to_air: Episode | null | undefined;
-  containerStyle?:SxProps;
+  containerStyle?: SxProps;
 }
 
-const NextEpisode:React.FC<NextEpisodeProps> = async ({tvdb_id, next_episode_to_air, number_of_episodes, containerStyle}) => {
- if (!next_episode_to_air || !tvdb_id) return <Box />;
- const response = await lookupShow(tvdb_id);
- const airTime = response?.schedule?.time;
- const timezone = response?.network?.country?.timezone;
- const airDate = next_episode_to_air?.air_date;
- const episode_number = next_episode_to_air?.episode_number;
- if (!airTime || !airDate || !timezone) return <Box />;
- const airsOn = createDate(airDate, airTime, timezone);
- if (airsOn < new Date()) return <Box />;
- 
+const NextEpisode: React.FC<NextEpisodeProps> = async ({
+  tvdb_id,
+  next_episode_to_air,
+  number_of_episodes,
+  containerStyle
+}) => {
+  if (!next_episode_to_air || !tvdb_id) return <Box />;
+  const response = await lookupShow(tvdb_id);
+  const airTime = response?.schedule?.time;
+  const timezone = response?.network?.country?.timezone;
+  const airDate = next_episode_to_air?.air_date;
+  const episode_number = next_episode_to_air?.episode_number;
+  if (!airTime || !airDate || !timezone) return <Box />;
+  const airsOn = createDate(airDate, airTime, timezone);
+  if (airsOn < new Date()) return <Box />;
+
   return (
     <Box
       sx={{
@@ -50,6 +55,6 @@ const NextEpisode:React.FC<NextEpisodeProps> = async ({tvdb_id, next_episode_to_
       <Countdown date={airsOn} />
     </Box>
   );
-}
+};
 
-export default NextEpisode
+export default NextEpisode;

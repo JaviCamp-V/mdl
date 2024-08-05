@@ -1,16 +1,13 @@
-import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
 import React from 'react';
-
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-
-import DramaPoster from '../Poster';
-import MediaTitle from '../MediaTitle';
-
 import MediaType from '@/types/tmdb/IMediaType';
-import { color } from '@/libs/common';
+import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin } from '@/utils/tmdbUtils';
+import { color } from '@/libs/common';
+import MediaTitle from '../MediaTitle';
+import DramaPoster from '../Poster';
 
 interface DramaListProps {
   dramas: TVSearchResult[];
@@ -29,7 +26,9 @@ const DramaList: React.FC<DramaListProps> = ({ dramas, length = 5 }) => {
             marginBottom: 1,
             paddingX: 2,
             paddingY: 1,
-            ...( index !== arr.length -1 && {borderBottom: '1px solid hsla(210, 8%, 51%, .13)'})
+            ...(index !== arr.length - 1 && {
+              borderBottom: '1px solid hsla(210, 8%, 51%, .13)'
+            })
           }}
         >
           <Typography color="#888" fontSize={16} fontWeight={500}>
@@ -38,7 +37,7 @@ const DramaList: React.FC<DramaListProps> = ({ dramas, length = 5 }) => {
           <Box sx={{ width: 70, height: 100 }}>
             <DramaPoster src={result.poster_path} id={result.id} mediaType={MediaType.tv} size="w185" />
           </Box>
-          <Box sx={{width: "60%"}}>
+          <Box sx={{ width: '60%' }}>
             <MediaTitle title={result.name} id={result.id} mediaType={MediaType.tv} fontSize={14} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Rating name="read-only" value={result.vote_average / 2} precision={0.1} readOnly />

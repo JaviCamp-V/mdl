@@ -1,7 +1,8 @@
 'use client';
-import { Box, Button, Collapse, ListItem, ListItemButton, Menu, MenuItem, Typography } from '@mui/material';
-import Link from 'next/link';
+
 import React from 'react';
+import Link from 'next/link';
+import { Box, Button, Collapse, ListItem, ListItemButton, Menu, MenuItem, Typography } from '@mui/material';
 
 interface ExpandableMenuItemProps {
   label: string;

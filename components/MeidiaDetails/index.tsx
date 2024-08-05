@@ -1,40 +1,40 @@
-import MediaType from '@/types/tmdb/IMediaType'
-import MovieDetails from '@/types/tmdb/IMovieDetails'
-import TVDetails from '@/types/tmdb/ITVDetails'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Tabs from '@mui/material/Tabs'
-import Typography from '@mui/material/Typography'
-import Link from 'next/link'
-import React from 'react'
-import LinkTab from '../common/NavTab'
-import { Tab } from '@mui/material'
-import DetailsTabPanel from './Details'
-import WhereToWatch from './Details/WhereToWatch'
-import Credits from './Credits'
-import { formatStringDate } from '@/utils/formatters'
-import Photos from './Photos'
-import EpisodeGuide from './EpisodeGuide'
-import NextEpisode from './Details/NextEpisode'
-import { getTitle, getYear } from '@/utils/tmdbUtils'
-import { get } from 'http'
-import { color } from '@/libs/common'
+import React from 'react';
+import Link from 'next/link';
+import { get } from 'http';
+import { Tab } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import MediaType from '@/types/tmdb/IMediaType';
+import MovieDetails from '@/types/tmdb/IMovieDetails';
+import TVDetails from '@/types/tmdb/ITVDetails';
+import { formatStringDate } from '@/utils/formatters';
+import { getTitle, getYear } from '@/utils/tmdbUtils';
+import { color } from '@/libs/common';
+import LinkTab from '../common/NavTab';
+import Credits from './Credits';
+import DetailsTabPanel from './Details';
+import NextEpisode from './Details/NextEpisode';
+import WhereToWatch from './Details/WhereToWatch';
+import EpisodeGuide from './EpisodeGuide';
+import Photos from './Photos';
 
 type GeneralMovieDetailsProps = {
-    details: MovieDetails
-    containerStyle?: any
-    type: MediaType.movie
-    tab: string
- }
- type GeneralTVDetailsProps = {
-    details: TVDetails
-    containerStyle?: any
-    type: MediaType.tv;
-    tab?: string 
- }
+  details: MovieDetails;
+  containerStyle?: any;
+  type: MediaType.movie;
+  tab: string;
+};
+type GeneralTVDetailsProps = {
+  details: TVDetails;
+  containerStyle?: any;
+  type: MediaType.tv;
+  tab?: string;
+};
 
- type GeneralDetailsProps = GeneralMovieDetailsProps | GeneralTVDetailsProps;
-const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details, type, tab = ''}) => {
+type GeneralDetailsProps = GeneralMovieDetailsProps | GeneralTVDetailsProps;
+const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details, type, tab = '' }) => {
   const links = [
     { label: 'Details', href: '' },
     { label: 'Episode Guide', href: 'episodes' },
@@ -61,8 +61,8 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
       external_ids={details.external_ids}
     />
   );
-  const title = getTitle({...details, media_type: type} as any);
-  const year = getYear({...details, media_type: type} as any);
+  const title = getTitle({ ...details, media_type: type } as any);
+  const year = getYear({ ...details, media_type: type } as any);
   return (
     <React.Fragment>
       <Box sx={{ ...containerStyle }}>
@@ -98,20 +98,27 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
             <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}></Tab>
           </Tabs>
         </Box>
-        <Box sx={{ width: '100%', height: "100%", paddingLeft: 2, paddingBottom: 2 }}>{TabPanel}</Box>
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            paddingLeft: 2,
+            paddingBottom: 2
+          }}
+        >
+          {TabPanel}
+        </Box>
       </Box>
       {!tab && (
         <React.Fragment>
-           {
-            type === MediaType.tv && (
-              <NextEpisode
-                tvdb_id={details?.external_ids?.tvdb_id}
-                number_of_episodes={details.number_of_episodes}
-                containerStyle={{...containerStyle, minHeight: 0}} 
-                next_episode_to_air={details.next_episode_to_air}
-              />
-            )
-           }
+          {type === MediaType.tv && (
+            <NextEpisode
+              tvdb_id={details?.external_ids?.tvdb_id}
+              number_of_episodes={details.number_of_episodes}
+              containerStyle={{ ...containerStyle, minHeight: 0 }}
+              next_episode_to_air={details.next_episode_to_air}
+            />
+          )}
           <WhereToWatch
             id={details.id}
             mediaType={type}
@@ -128,6 +135,6 @@ const GeneralDetails:React.FC<GeneralDetailsProps> = ({ containerStyle, details,
       )}
     </React.Fragment>
   );
-}
+};
 
-export default GeneralDetails
+export default GeneralDetails;

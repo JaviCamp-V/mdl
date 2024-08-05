@@ -1,16 +1,13 @@
 import React from 'react';
-
-import Box from '@mui/material/Box';
 import { Metadata, NextPage } from 'next';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-import { getDiscoverType } from '@/server/tmdb2Actions';
-
-import MediaType from '@/types/tmdb/IMediaType';
-import countriesConfig from '@/libs/countriesConfig';
-import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/utils/tmdbQueries';
-
+import { getDiscoverType } from '@/server/tmdbActions';
 import SearchResults from '@/components/SearchResults';
+import NotFound from '@/components/common/NotFound';
+import MediaType from '@/types/tmdb/IMediaType';
+import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/utils/tmdbQueries';
+import countries from '@/libs/countries';
 
 interface PageProps {
   params: { slug: string };
@@ -32,7 +29,7 @@ export const generateMetadata = async ({ params: { slug }, searchParams }: PageP
   const { title } = getData(slug);
   if (slug !== 'airing') return { title };
   const origin_country = searchParams?.country ?? 'KR';
-  const name = countriesConfig.find((country) => country.code === origin_country)?.fullName ?? origin_country;
+  const name = countries.find((country) => country.code === origin_country)?.fullName ?? origin_country;
   return { title: `${title} in ${name}` };
 };
 const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, searchParams }) => {
@@ -41,9 +38,12 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
   const params = slug === 'airing' ? (data as any).params(country) : data.params;
   const title =
     slug === 'airing'
-      ? `${data.title} in ${countriesConfig.find((c) => c.code === country)?.fullName ?? country}`
+      ? `${data.title} in ${countries.find((c) => c.code === country)?.fullName ?? country}`
       : data.title;
   const response = await getDiscoverType(MediaType.tv, params);
+  if (response.total_results === 0) {
+    return <NotFound />;
+  }
   return (
     <Box
       sx={{

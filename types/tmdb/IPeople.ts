@@ -1,5 +1,5 @@
-import ExternalID from "./IExternalID";
-import { MediaSearchResult } from "./ISearchResposne";
+import ExternalID from './IExternalID';
+import { MediaSearchResult } from './ISearchResposne';
 
 export interface PersonBase {
   adult: boolean;
@@ -53,6 +53,5 @@ export default interface PersonDetails extends PersonBase {
   known_for_department: string;
   place_of_birth: string;
   popularity: number;
-  external_ids: ExternalID
+  external_ids: ExternalID;
 }
-

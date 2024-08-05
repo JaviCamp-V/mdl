@@ -1,18 +1,20 @@
-import { color } from '@/libs/common';
-import { getTitles } from '@/server/tmdb2Actions';
-import MediaType from '@/types/tmdb/IMediaType';
-import { Typography } from '@mui/material';
+'use server';
+
 import React from 'react';
+import { Typography } from '@mui/material';
+import { getTitles } from '@/server/tmdbActions';
+import MediaType from '@/types/tmdb/IMediaType';
+import { color } from '@/libs/common';
 
 interface TitleProps {
   id: number;
   mediaType: MediaType.movie | MediaType.tv;
   exclude?: string[];
 }
-const Titles: React.FC<TitleProps> = async ({ id, mediaType, exclude= ['US'] }) => {
+const Titles: React.FC<TitleProps> = async ({ id, mediaType, exclude = ['US'] }) => {
   const titles = await getTitles(mediaType, id);
   return (
-    <Typography sx={{ color: color}}>
+    <Typography sx={{ color: color }}>
       <Typography component="span" fontWeight={500} paddingRight={1}>
         Also Known As:
       </Typography>

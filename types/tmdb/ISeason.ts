@@ -25,6 +25,6 @@ export interface Season {
   vote_average: number;
 }
 
-export default  interface SeasonDetails extends Season {
+export default interface SeasonDetails extends Season {
   episodes: Episode[];
-} 
+}

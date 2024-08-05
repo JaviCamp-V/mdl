@@ -1,6 +1,5 @@
-import logger from "@/utils/logger";
-import { revalidatePath } from "next/cache"
-
+import { revalidatePath } from 'next/cache';
+import logger from '@/utils/logger';
 
 const refreshPage = async (path: string) => {
   logger.info(`Refreshing page data: ${path}`);
@@ -13,6 +12,5 @@ const refreshPage = async (path: string) => {
     }
   });
 };
-
 
 export { refreshPage };

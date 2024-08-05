@@ -3,12 +3,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import 'react-multi-carousel/lib/styles.css';
-
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '@/theme/index';
 import MainLayout from '@/layout';
+import theme from '@/theme';
 
 export const metadata: Metadata = {
   title: { default: 'MyDramaList', template: `%s - MyDramaList` },

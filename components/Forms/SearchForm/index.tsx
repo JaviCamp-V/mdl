@@ -1,12 +1,12 @@
 'use client';
-import React from 'react';
 
-import * as yup from 'yup';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
-import routes from '@/libs/routes';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import SearchField from '@/components/RHFElements/SearchField';
+import routes from '@/libs/routes';
 
 interface SearchFormProps {}
 
@@ -25,7 +25,7 @@ const SearchForm: React.FC<SearchFormProps> = () => {
     shouldFocusError: true,
     criteriaMode: 'all'
   });
-  
+
   const onSubmit: SubmitHandler<FormType> = (formData) => {
     router.push(`${routes.search}?query=${formData.search}`);
     methods.reset();

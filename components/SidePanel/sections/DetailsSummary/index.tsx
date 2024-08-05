@@ -1,14 +1,17 @@
+'use server';
+
+import React from 'react';
+import { sentenceCase } from 'change-case';
+import { Box, Typography } from '@mui/material';
+import { getTVContentRating } from '@/server/tmdbActions';
+import { lookupShow } from '@/server/tvMazeActions';
 import Genres from '@/components/MeidiaDetails/Details/sections/Genres';
 import Tags from '@/components/MeidiaDetails/Details/sections/Tags';
-import { getTVContentRating } from '@/server/tmdb2Actions';
-import { lookupShow } from '@/server/tvMazeActions';
 import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import { formatRuntime, formatShortDate, formatStringDate } from '@/utils/formatters';
-import { Box, Typography } from '@mui/material';
-import { sentenceCase } from 'change-case';
-import React from 'react';
+import { color } from '@/libs/common';
 
 type MovieDetailsSummaryProps = {
   details: MovieDetails;
@@ -56,8 +59,6 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
           duration: details.runtime ? formatRuntime(details.runtime) : 'N/A'
         })
   };
-
-  const color = 'hsl(0deg 0% 100% / 87%)';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>

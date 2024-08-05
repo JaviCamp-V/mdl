@@ -21,7 +21,7 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, ...props }) => {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <MuiTextField {...field} {...props} error={ Boolean(!hideError && !!error)} helperText={getHelperText(error)} />
+        <MuiTextField {...field} {...props} error={Boolean(!hideError && !!error)} helperText={getHelperText(error)} />
       )}
     />
   );

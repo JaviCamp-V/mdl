@@ -1,6 +1,6 @@
-import BaseMediaItem from "./IBaseMediaDetails";
-import MediaType from "./IMediaType";
-import { PersonBase } from "./IPeople";
+import BaseMediaItem from './IBaseMediaDetails';
+import MediaType from './IMediaType';
+import { PersonBase } from './IPeople';
 
 export interface MovieSearchResult extends BaseMediaItem {
   media_type: MediaType.movie;
@@ -27,14 +27,18 @@ export interface PersonSearchResult extends PersonBase {
   media_type: MediaType.person;
   popularity: number;
   known_for_department: string;
-  known_for: MediaSearchResult [];
+  known_for: MediaSearchResult[];
   biography: string;
   place_of_birth: string;
 }
-
-export default interface SearchResponse {
-    page: number;
-    results: MediaSearchResult[] & PersonSearchResult[];
-    total_results: number;
-    total_pages: number;
+interface BaseSearchResponse<T> {
+  page: number;
+  results: T[];
+  total_results: number;
+  total_pages: number;
 }
+
+export interface TVSearchResponse extends BaseSearchResponse<TVSearchResult> {}
+export interface MovieSearchResponse extends BaseSearchResponse<MovieSearchResult> {}
+export interface PersonSearchResponse extends BaseSearchResponse<PersonSearchResult> {}
+export default interface SearchResponse extends BaseSearchResponse<MediaSearchResult | PersonSearchResult> {}

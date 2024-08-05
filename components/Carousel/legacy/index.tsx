@@ -1,11 +1,13 @@
-"use client";
+'use client';
+
 import React from 'react';
 import dynamic from 'next/dynamic';
+import 'react-multi-carousel/lib/styles.css';
 import LoadingSkeleton from '../../common/LoadingSkeleton';
-//import MultiCarousel from 'react-multi-carousel';
+
 const MultiCarousel = dynamic(() => import('react-multi-carousel'), {
-   loading: () => <LoadingSkeleton  width="100%" height={"30vh"} />,
- });
+  loading: () => <LoadingSkeleton width="100%" height={'30vh'} />
+});
 
 const responsive = {
   desktop: {

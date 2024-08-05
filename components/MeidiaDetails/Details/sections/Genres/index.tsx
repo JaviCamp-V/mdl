@@ -1,11 +1,11 @@
-import { color } from '@/libs/common';
-import routes from '@/libs/routes';
-import Genre from '@/types/tmdb/IGenre';
+import React from 'react';
+import Link from 'next/link';
+import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { capitalCase } from 'change-case';
-import Link from 'next/link';
-import React from 'react';
+import Genre from '@/types/tmdb/IGenre';
+import { color } from '@/libs/common';
+import routes from '@/libs/routes';
 
 type GenresProps = {
   genres: Genre[];

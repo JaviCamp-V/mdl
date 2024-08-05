@@ -1,5 +1,4 @@
 import { Icon, IconifyIcon } from '@iconify/react';
-
 import Box, { BoxProps } from '@mui/material/Box';
 
 interface Props extends BoxProps {

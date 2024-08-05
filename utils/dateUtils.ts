@@ -1,4 +1,4 @@
-import { fromZonedTime } from "date-fns-tz";
+import { fromZonedTime } from 'date-fns-tz';
 
 const daysBetween = (from: Date, to: Date): number => {
   const fromDate = new Date(from.getTime());
@@ -46,13 +46,12 @@ const plusMonths = (date: Date, months: number): Date => {
 };
 
 const createDate = (date: string, time: string, timezone: string): Date => {
-    const dateTimeString = `${date}T${time}:00`;
-    const zonedDate = fromZonedTime(dateTimeString, timezone);
-    return zonedDate;
+  const dateTimeString = `${date}T${time}:00`;
+  const zonedDate = fromZonedTime(dateTimeString, timezone);
+  return zonedDate;
 };
 
 const calculateAge = (birthdate: Date): number => {
   return Math.floor((new Date().valueOf() - birthdate.getTime()) / 3.15576e10);
-
-}
+};
 export { daysBetween, minusDays, plusDays, minusYears, plusYears, minusMonths, plusMonths, createDate, calculateAge };

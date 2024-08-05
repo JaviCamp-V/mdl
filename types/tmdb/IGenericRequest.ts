@@ -1,11 +1,11 @@
-import MediaType from "./IMediaType"
+import MediaType from './IMediaType';
 
 export interface MediaRequest {
-    id: number;
-    mediaType: MediaType.tv | MediaType.movie;
+  id: number;
+  mediaType: MediaType.tv | MediaType.movie;
 }
 
 export default interface GenericRequest {
-    id: number;
-    mediaType: MediaType
+  id: number;
+  mediaType: MediaType;
 }

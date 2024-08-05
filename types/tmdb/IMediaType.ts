@@ -1,7 +1,7 @@
 enum MediaType {
   'tv' = 'tv',
   'movie' = 'movie',
-  'person' = 'person',
+  'person' = 'person'
 }
 
 export default MediaType;

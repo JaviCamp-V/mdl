@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
-import Box  from '@mui/material/Box';
-import Typography  from '@mui/material/Typography';
 
+import React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import useTimer from '@/hooks/useTimer';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
@@ -35,9 +35,7 @@ const Countdown: React.FC<CountdownProps> = ({ date }) => {
           <Typography sx={{ fontSize: 30, fontWeight: 700, color: '#fff' }} suppressHydrationWarning>
             {formatDigitsWithPadding(value, 2)}
           </Typography>
-          <Typography sx={{ fontSize: 16, fontWeight: 400, color: '#a1aac1' }}>
-            {key}
-          </Typography>
+          <Typography sx={{ fontSize: 16, fontWeight: 400, color: '#a1aac1' }}>{key}</Typography>
         </Box>
       ))}
     </Box>

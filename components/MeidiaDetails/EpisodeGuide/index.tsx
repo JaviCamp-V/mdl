@@ -1,13 +1,11 @@
-import Iconify from '@/components/Icon/Iconify';
-import DramaPoster from '@/components/Poster';
-import { getTVSeason } from '@/server/tmdb2Actions';
-import { MediaRequest } from '@/types/tmdb/IGenericRequest';
-import { formatShortDate, formatStringDate } from '@/utils/formatters';
+import React from 'react';
+import Link from 'next/link';
 import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Link from 'next/link';
-import React from 'react';
+import { getSeasonDetails } from '@/server/tmdbActions';
+import DramaPoster from '@/components/Poster';
+import { formatShortDate, formatStringDate } from '@/utils/formatters';
 
 interface EpisodeGuideProps {
   id: number;
@@ -16,9 +14,11 @@ interface EpisodeGuideProps {
 }
 
 const hasAired = (date: string) => formatStringDate(date).getTime() < new Date().getTime();
-const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name , season_number }) => {
-  const season = await getTVSeason(id, season_number);
-  if (!season) return <Box p={2}>Episodes Not Found</Box>;
+const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_number }) => {
+  const season = await getSeasonDetails(id, season_number);
+  if (!season) {
+    return <Box p={2}>Episodes Not Found</Box>;
+  }
   return (
     <Box padding={2}>
       <Grid container spacing={2} sx={{ width: '100%', marginRight: 2 }}>
@@ -32,7 +32,11 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name , season_num
             sx={{
               ...(hasAired(episode.air_date)
                 ? { opacity: 1 }
-                : { opacity: 0.6, pointerEvents: 'none', cursor: 'not-allowed' })
+                : {
+                    opacity: 0.6,
+                    pointerEvents: 'none',
+                    cursor: 'not-allowed'
+                  })
             }}
           >
             <Box sx={{ width: '100%', height: '40vh' }}>
@@ -48,7 +52,7 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name , season_num
                 <Typography color="primary" fontWeight={500}>{`${name}: ${episode.name}`}</Typography>
               </Link>
               <Rating name="read-only" value={episode.vote_average / 2} precision={0.1} readOnly />
-              <Typography>{`${episode.vote_average}/10 from TMDB users`}</Typography>
+              <Typography>{`${episode.vote_average}/10 from ${episode.vote_count} users`}</Typography>
               <Typography>{formatShortDate(formatStringDate(episode.air_date))}</Typography>
             </Box>
           </Grid>

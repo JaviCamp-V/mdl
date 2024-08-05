@@ -39,7 +39,7 @@ export const getTopAiring = (origin_country: string) =>
     sort_by: 'popularity.desc',
     with_origin_country: origin_country,
     'air_date.gte': formatDate(plusDays(new Date(), 1)),
-    'first_air_date.lte': formatDate(new Date()),
+    'first_air_date.lte': formatDate(new Date())
   });
 
 export const getTop100 = (origin_country: string) =>
@@ -47,5 +47,5 @@ export const getTop100 = (origin_country: string) =>
     sort_by: 'vote_average.desc',
     language: 'en-US',
     'vote_count.gte': '200',
-    'with_origin_country': origin_country
+    with_origin_country: origin_country
   });

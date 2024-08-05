@@ -1,8 +1,7 @@
+import React from 'react';
+import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
-import React from 'react'
-
 
 interface MediaTitleProps {
   title: string;

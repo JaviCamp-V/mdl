@@ -1,4 +1,5 @@
 'use server';
+
 import tvMazeClient from '@/clients/tvMazeClient';
 import TVShowDetails from '@/types/tvMaze/ITVShowsDetails';
 import logger from '@/utils/logger';
@@ -14,7 +15,7 @@ const lookupShow = async (
     logger.info(`Looking up show with id: ${id}`);
     const params = new URLSearchParams({ [lookup]: id.toString() });
     return tvMazeClient.get<TVShowDetails>(endpoints.lookup, params);
-  } catch (e:any) {
+  } catch (e: any) {
     logger.error(`Error looking up show with id: ${id} - ${e?.message}`);
     return null;
   }

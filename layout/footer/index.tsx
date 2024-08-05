@@ -1,26 +1,33 @@
-"use client"
-import Box from '@mui/material/Box'
-import Link from 'next/link';
-import React from 'react'
+'use client';
+
+import React from 'react';
 import Image from 'next/image';
-import { Button, IconButton, Typography } from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import RssFeedIcon from '@mui/icons-material/RssFeed';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import Link from 'next/link';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import { Button, IconButton, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 
 //ToDo: Server component friendly icons
 interface FooterProps {}
-const Footer:React.FC<FooterProps> = () => {
+const Footer: React.FC<FooterProps> = () => {
   const socials = [
     { icon: <TwitterIcon />, href: 'https://twitter.com/My_Drama_List' },
-    { icon: <InstagramIcon />, href: 'https://www.instagram.com/mydramalist_official/' },
+    {
+      icon: <InstagramIcon />,
+      href: 'https://www.instagram.com/mydramalist_official/'
+    },
     { icon: <RssFeedIcon />, href: 'https://mydramalist.com/rss' },
     { icon: <YouTubeIcon />, href: 'https://www.youtube.com/user/MyDramaList' },
-    { icon: <FacebookOutlinedIcon />, href: 'https://www.facebook.com/MyDramaListOfficial' }
+    {
+      icon: <FacebookOutlinedIcon />,
+      href: 'https://www.facebook.com/MyDramaListOfficial'
+    }
   ];
   const about = [
     { label: 'FAQ', href: '#' },
@@ -34,7 +41,7 @@ const Footer:React.FC<FooterProps> = () => {
   const workWithUs = [
     { label: 'Advertise', href: '#' },
     { label: 'Jobs', href: '#' },
-    {label: 'API', href: '#'}
+    { label: 'API', href: '#' }
   ];
 
   const recommendations = [
@@ -43,7 +50,7 @@ const Footer:React.FC<FooterProps> = () => {
     { label: 'Top 100 Korean Dramas', href: '#' },
     { label: 'Top 100 Japanese Dramas', href: '#' },
     { label: 'Top 100 Chinese Dramas', href: '#' }
-  ]
+  ];
   const iconContainerStyle = {
     borderRadius: '50%',
     backgroundColor: '#313347',
@@ -70,11 +77,24 @@ const Footer:React.FC<FooterProps> = () => {
         </Link>
         <Typography>&copy; {`${new Date().getFullYear().toString()} MyDramaList, LLC`}</Typography>
         <Box
-          sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, justifyContent: 'flex-start', alignItems: 'center' }}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 0.5,
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
         >
           {socials.map((social, index) => (
             <Link key={index} href={social.href} target="_blank">
-              <Box sx={{ borderRadius: '50%', backgroundColor: '#313347', padding: 0.5, color: '#fff' }}>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: '#313347',
+                  padding: 0.5,
+                  color: '#fff'
+                }}
+              >
                 {social.icon}
               </Box>
             </Link>
@@ -102,7 +122,13 @@ const Footer:React.FC<FooterProps> = () => {
           <Image src="/static/images/appstore_logo.webp" width={30} height={30} alt="app store" />
           <Box>
             <Typography
-              sx={{ opacity: 0.6, fontSize: 14, color: '#fff', whiteSpace: 'nowrap', textDecoration: 'none!important' }}
+              sx={{
+                opacity: 0.6,
+                fontSize: 14,
+                color: '#fff',
+                whiteSpace: 'nowrap',
+                textDecoration: 'none!important'
+              }}
             >
               Download the App
             </Typography>
@@ -142,7 +168,13 @@ const Footer:React.FC<FooterProps> = () => {
           <Image src="/static/images/googleplay_logo.webp" width={30} height={30} alt="app store" />
           <Box>
             <Typography
-              sx={{ opacity: 0.6, fontSize: 14, color: '#fff', whiteSpace: 'nowrap', textDecoration: 'none!important' }}
+              sx={{
+                opacity: 0.6,
+                fontSize: 14,
+                color: '#fff',
+                whiteSpace: 'nowrap',
+                textDecoration: 'none!important'
+              }}
             >
               Download the App
             </Typography>
@@ -209,6 +241,6 @@ const Footer:React.FC<FooterProps> = () => {
       </Box>
     </Box>
   );
-}
+};
 
-export default Footer
+export default Footer;

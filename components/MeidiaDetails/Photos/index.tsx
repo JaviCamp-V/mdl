@@ -1,9 +1,11 @@
-import { getImages } from '@/server/tmdb2Actions';
-import { MediaRequest } from '@/types/tmdb/IGenericRequest';
+'use server';
+
 import React from 'react';
-import PhotosOverview from './PhotosOverview';
 import { Box } from '@mui/material';
+import { getImages } from '@/server/tmdbActions';
+import { MediaRequest } from '@/types/tmdb/IGenericRequest';
 import FullPhotoGallery from './FullPhotoGallery';
+import PhotosOverview from './PhotosOverview';
 
 interface PhotosProps extends MediaRequest {
   view: 'overview' | 'all';
@@ -11,9 +13,12 @@ interface PhotosProps extends MediaRequest {
 const Photos: React.FC<PhotosProps> = async ({ id, mediaType, view }) => {
   const photos = await getImages(mediaType, id);
 
-  if (!photos) return <Box sx={{ padding: 2, textAlign: 'center' }}>No photos found</Box>;
-
-  if (view === 'overview') return <PhotosOverview {...photos} mediaType={mediaType} />;
+  if (!photos) {
+    return <Box sx={{ padding: 2, textAlign: 'center' }}>No photos found</Box>;
+  }
+  if (view === 'overview') {
+    return <PhotosOverview {...photos} mediaType={mediaType} />;
+  }
   return <FullPhotoGallery {...photos} />;
 };
 

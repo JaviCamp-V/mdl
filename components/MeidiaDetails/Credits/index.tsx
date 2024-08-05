@@ -1,21 +1,27 @@
-import { getCredits } from '@/server/tmdb2Actions';
-import { MediaRequest } from '@/types/tmdb/IGenericRequest'
-import React from 'react'
+'use server';
+
+import React from 'react';
+import { getCredits } from '@/server/tmdbActions';
+import { MediaRequest } from '@/types/tmdb/IGenericRequest';
 import CastOverview from './CastOverview';
-import FullCredits from './FullCredits';
 import CrewSummary from './CrewSummary';
+import FullCredits from './FullCredits';
 
 interface CreditsProps extends MediaRequest {
-   view: 'overview' | 'creator' | 'all'
+  view: 'overview' | 'creator' | 'all';
 }
-const Credits:React.FC<CreditsProps> = async ({id, mediaType, view}) => {
+const Credits: React.FC<CreditsProps> = async ({ id, mediaType, view }) => {
   const credits = await getCredits(mediaType, id);
-  
-  if (view === "overview") return <CastOverview {...credits} type={mediaType} />
 
-  if (view === "creator") return <CrewSummary {...credits} />
+  if (view === 'overview') {
+    return <CastOverview {...credits} type={mediaType} />;
+  }
 
-  return <FullCredits {...credits} />
-}
+  if (view === 'creator') {
+    return <CrewSummary {...credits} />;
+  }
 
-export default Credits
+  return <FullCredits {...credits} />;
+};
+
+export default Credits;

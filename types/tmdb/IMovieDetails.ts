@@ -1,9 +1,9 @@
-import Genre from "./IGenre";
-import BaseMediaItem from "./IBaseMediaDetails";
-import Network from "./INetwork";
-import ProductionCountry from "./IProductionCountry";
-import { Language } from "./ITranslation";
-import ExternalID from "./IExternalID";
+import BaseMediaItem from './IBaseMediaDetails';
+import ExternalID from './IExternalID';
+import Genre from './IGenre';
+import Network from './INetwork';
+import ProductionCountry from './IProductionCountry';
+import { Language } from './ITranslation';
 
 export default interface MovieDetails extends BaseMediaItem {
   belongs_to_collection: any;

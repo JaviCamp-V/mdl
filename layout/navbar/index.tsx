@@ -1,17 +1,14 @@
 import React from 'react';
-
-import Link from 'next/link';
 import Image from 'next/image';
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
+import Link from 'next/link';
 import { Typography } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container/Container';
-
-import SideBar from '../sidebar';
-
-import SearchForm from '@/components/Forms/SearchForm';
+import Toolbar from '@mui/material/Toolbar';
 import ExpandableMenuItem from '@/components/ExpandableMenuItem';
+import SearchForm from '@/components/Forms/SearchForm';
+import SideBar from '../sidebar';
 
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
@@ -30,7 +27,14 @@ const Navbar: React.FC<NavbarProps> = () => {
               marginX: 2
             }}
           >
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', alignItems: 'center' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'left',
+                alignItems: 'center'
+              }}
+            >
               <Box sx={{ marginRight: 4, display: { xs: 'none', md: 'flex' } }}>
                 <Link href="/" passHref>
                   <Image

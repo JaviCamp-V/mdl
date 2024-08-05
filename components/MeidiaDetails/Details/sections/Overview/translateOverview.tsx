@@ -1,15 +1,16 @@
 'use client';
-import { color } from '@/libs/common';
-import { Translation } from '@/types/tmdb/ITranslation';
+
+import React from 'react';
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React from 'react';
+import { Translation } from '@/types/tmdb/ITranslation';
+import { color } from '@/libs/common';
 
 interface TranslateOverviewProps {
   translations: Translation[];
 }
 
-const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => {
+const TranslateOverview: React.FC<TranslateOverviewProps> = ({ translations }) => {
   const [currentTranslation, setCurrentTranslation] = React.useState<Translation>(
     translations.find((translation) => translation?.iso_639_1 === 'en') || translations[0]
   );
@@ -32,10 +33,10 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({translations}) => 
           flexDirection: 'row',
           flexWrap: 'wrap',
           gap: 1,
-          marginTop: 1,
+          marginTop: 1
         }}
       >
-        {translations.map((translation) => (
+        {translations.slice(0, 6).map((translation) => (
           <Button
             key={translation.iso_639_1}
             variant="outlined"

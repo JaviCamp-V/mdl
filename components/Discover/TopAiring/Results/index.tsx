@@ -1,19 +1,20 @@
 'use client';
-import { Box, Rating, Tabs, Typography } from '@mui/material';
+
+import React from 'react';
 import Link from 'next/link';
-import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import React from 'react';
-import { color } from '@/libs/common';
-import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
+import { Box, Rating, Tabs, Typography } from '@mui/material';
+import Tab from '@mui/material/Tab';
 import DramaCard from '@/components/DramaCard';
+import DramaList from '@/components/DramaList';
+import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import MediaType from '@/types/tmdb/IMediaType';
-import MediaTitle from '@/components/MediaTitle';
+import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin } from '@/utils/tmdbUtils';
-import DramaList from '@/components/DramaList';
+import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 
 export interface AiringData {
@@ -35,7 +36,13 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
   return (
     <Box>
       <Box
-        sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 2, alignItems: 'center', marginBottom: 1 }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          paddingX: 2,
+          alignItems: 'center',
+          marginBottom: 1
+        }}
       >
         <Typography color={color} fontSize={18} fontWeight={500}>
           Top Airing
@@ -53,7 +60,10 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
             variant="scrollable"
             scrollButtons="auto"
             TabIndicatorProps={{ sx: { display: 'none' } }}
-            sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', borderBottom: '1px solid hsla(210, 8%, 51%, .13)' }}
+            sx={{
+              borderTop: '1px solid hsla(210, 8%, 51%, .13)',
+              borderBottom: '1px solid hsla(210, 8%, 51%, .13)'
+            }}
           >
             {data.map((country) => (
               <Tab
