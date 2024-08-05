@@ -197,19 +197,25 @@ const getKeywordDetails = async (id: number): Promise<Tags> => {
   }
 };
 
+const defaultParams = {
+  include_adult: 'false',
+  include_video: 'false',
+  without_genres: without_genres.join('|'),
+  sort_by: 'vote_average.desc',
+  with_origin_country: countriesConfig.map((country) => country.code).join('|')
+};
 const getDiscoverType = async (
   type: MediaType.tv | MediaType.movie,
   params: URLSearchParams
 ): Promise<SearchResponse> => {
   try {
-    // Default params for asian only dramas and movie and tv shows
-    params.set('include_adult', 'false');
-    params.set('include_video', 'false');
-    params.set('without_genres', without_genres.join('|'));
-    params.set('sort_by', 'vote_average.desc');
-    params.set('with_origin_country', countriesConfig.map((country) => country.code).join('|'));
+    
+    logger.info(`Fetching discover for ${type} with params ${params.toString()}`);
+    Object.entries(defaultParams).forEach(([key, value]) => {
+      if (params.has(key)) return;
+      params.set(key, value);
+    });
 
-    logger.info(`Fetching discover for ${type}`);
     const endpoint = `${endpoints.discover}`.replace(':mediaType', type);
     const response = await tmdbClient.get<SearchResponse>(endpoint, params);
     response.results = response.results.map((result) => ({ ...result, media_type: type })) as any;
