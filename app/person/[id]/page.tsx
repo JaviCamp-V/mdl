@@ -22,10 +22,8 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
   const response = await getPersonDetails(id);
-  if (!response) {
-    return <NotFound type={MediaType.person} />;
-  }
-
+  if (!response) return <NotFound type={MediaType.person} />;
+  
   return (
     <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
       <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>

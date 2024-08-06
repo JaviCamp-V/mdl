@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import 'react-multi-carousel/lib/styles.css';
 import LoadingSkeleton from '../../common/LoadingSkeleton';
 
+
 const MultiCarousel = dynamic(() => import('react-multi-carousel'), {
   loading: () => <LoadingSkeleton width="100%" height={'30vh'} />
 });
@@ -35,9 +36,9 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
     <MultiCarousel
       swipeable={false}
       draggable={false}
-      ssr={true} // means to render carousel on server-side.
+      ssr
       responsive={responsive}
-      infinite={true}
+      infinite
       customTransition="all .5"
       partialVisible={false}
       containerClass="carousel-container"

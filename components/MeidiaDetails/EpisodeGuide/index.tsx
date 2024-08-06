@@ -12,13 +12,11 @@ interface EpisodeGuideProps {
   season_number: number;
   name: string;
 }
-
 const hasAired = (date: string) => formatStringDate(date).getTime() < new Date().getTime();
 const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_number }) => {
   const season = await getSeasonDetails(id, season_number);
-  if (!season) {
-    return <Box p={2}>Episodes Not Found</Box>;
-  }
+  if (!season) return <Box p={2}>Episodes Not Found</Box>;
+
   return (
     <Box padding={2}>
       <Grid container spacing={2} sx={{ width: '100%', marginRight: 2 }}>

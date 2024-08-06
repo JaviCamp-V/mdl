@@ -29,9 +29,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ id, mediaType, contai
     return acc;
   }, [] as any[]);
 
-  if (!uniqueProviders.length) {
-    return <Box />;
-  }
+  if (!uniqueProviders.length) return <Box />;
 
   return (
     <Box sx={{ ...containerStyle, minHeight: 0, padding: 2.5 }}>

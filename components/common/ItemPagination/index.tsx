@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
+
 interface ItemPaginationProps {
   totalItems: number;
   itemsPerPage: number;
@@ -29,7 +30,7 @@ const ItemPagination: React.FC<ItemPaginationProps> = ({ totalItems, itemsPerPag
       hideNextButton={currentPage === numberOfPages}
       onChange={(e, page) => onPageChange(page)}
       renderItem={(item) => {
-        if (item.type === 'start-ellipsis' || item.type === 'end-ellipsis') return <React.Fragment />;
+        if (item.type === 'start-ellipsis' || item.type === 'end-ellipsis') return <Box />;
         return (
           <PaginationItem
             {...item}
@@ -61,29 +62,3 @@ const ItemPagination: React.FC<ItemPaginationProps> = ({ totalItems, itemsPerPag
 };
 
 export default ItemPagination;
-
-/***
- *   const components = {
-    previous: (
-      <Box>
-        <Iconify icon="ri:arrow-left-fill" sx={{ fontSize: 28, color: '#fff' }} />
-      </Box>
-    ),
-    next: (
-      <Box>
-        <Iconify icon="ri:arrow-right-fill" sx={{ fontSize: 28, color: '#fff' }} />
-      </Box>
-    ),
-    first: (
-      <Box>
-        <Iconify icon="ri:arrow-left-double-fill" sx={{ fontSize: 28, color: '#fff' }} />
-      </Box>
-    ),
-    last: (
-      <Box>
-        <Iconify icon="ri:arrow-left-double-fill" sx={{ fontSize: 28, color: '#fff' }} />
-      </Box>
-    )
-  };
-
- */

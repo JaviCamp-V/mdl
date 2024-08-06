@@ -131,7 +131,7 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
                             )}
                           </Box>
                         </TableCell>
-                        {role.media_type === 'tv' && key == 'drama' && (
+                        {role.media_type === 'tv' && key === 'drama' && (
                           <TableCell sx={{ ...cellStyle, ...mobileStyle }}>
                             <Typography>{role.episode_count}</Typography>
                           </TableCell>

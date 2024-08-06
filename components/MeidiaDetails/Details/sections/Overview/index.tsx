@@ -5,6 +5,7 @@ import { getTranslations } from '@/server/tmdbActions';
 import MediaType from '@/types/tmdb/IMediaType';
 import TranslateOverview from './translateOverview';
 
+
 type MediaOverviewProps = {
   id: number;
   type: MediaType.movie | MediaType.tv;

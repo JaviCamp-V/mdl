@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Box, Button, Collapse, ListItem, ListItemButton, Menu, MenuItem, Typography } from '@mui/material';
 
+
 interface ExpandableMenuItemProps {
   label: string;
   items: { label: string; href: string }[];
@@ -12,9 +13,7 @@ const ExpandableMenuItem: React.FC<ExpandableMenuItemProps> = ({ label, items })
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event: any) => {
-    if (anchorEl !== event.currentTarget) {
-      setAnchorEl(event.currentTarget);
-    }
+    if (anchorEl !== event.currentTarget) setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {

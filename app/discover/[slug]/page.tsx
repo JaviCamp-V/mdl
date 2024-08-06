@@ -41,9 +41,8 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
       ? `${data.title} in ${countries.find((c) => c.code === country)?.fullName ?? country}`
       : data.title;
   const response = await getDiscoverType(MediaType.tv, params);
-  if (response.total_results === 0) {
-    return <NotFound />;
-  }
+  if (response.total_results === 0)  return <NotFound />;
+  
   return (
     <Box
       sx={{

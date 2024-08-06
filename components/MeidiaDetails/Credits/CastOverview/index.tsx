@@ -51,7 +51,7 @@ const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, 
       <Divider />
       <Box paddingX={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Link href={`/${type}/${id}?tab=credits`} passHref style={{ textDecoration: 'none' }}>
-          <Typography color="primary">{`View all (${cast?.length + crew?.length || 0})`}</Typography>
+          <Typography color="primary">{`View all (${Number(cast?.length || 0) + Number(crew?.length || 0)})`}</Typography>
         </Link>
       </Box>
     </Box>

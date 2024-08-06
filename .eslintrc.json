@@ -40,6 +40,12 @@
     "nonblock-statement-body-position": "off",
     "react/jsx-one-expression-per-line": "off",
     "camelcase": "off", // Disable camelcase rule
-    "react/jsx-curly-brace-presence": "off" // Disable unnecessary curly braces warning
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/jsx-fragments": "off",
+    "object-shorthand": "off", // Disable property shorthand rule
+    "react/destructuring-assignment": "off", // Disable destructuring props assignment rule,
+    "consistent-return": "off",
+    "jsx-a11y/anchor-is-valid": "off"
   }
 }

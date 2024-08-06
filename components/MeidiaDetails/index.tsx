@@ -83,7 +83,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
               <LinkTab
                 key={link.label}
                 label={link.label}
-                href={`/${type}/${details.id}?tab=${link.href}`}
+                href={`/${type}/${details.id}${link.href ? `?tab=${link.href}` : ''}`}
                 selected={link.href === tab}
                 sx={{
                   textDecoration: 'none',
@@ -94,8 +94,8 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
                 }}
               />
             ))}
-            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}></Tab>
-            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}></Tab>
+            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}/>
+            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}/>
           </Tabs>
         </Box>
         <Box

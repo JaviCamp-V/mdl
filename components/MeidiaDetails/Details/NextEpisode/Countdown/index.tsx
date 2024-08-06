@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import useTimer from '@/hooks/useTimer';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
+
 type CountdownProps = {
   date: Date;
 };
 
-//TODO: add a refresh logic
-//TODO: update the styles
+// TODO: add a refresh logic
+// TODO: update the styles
 const Countdown: React.FC<CountdownProps> = ({ date }) => {
   const { hasEnded, isValid, ...timer } = useTimer(date);
   if (hasEnded) {
