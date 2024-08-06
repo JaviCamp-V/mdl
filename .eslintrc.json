@@ -23,21 +23,23 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
     "import/prefer-default-export": "warn",
-    "semi": 0, // let it handle by prettier
+    "semi": 0,
     "react/function-component-definition": "off",
-    "indent": "off", // let it handle by prettier
-    "max-len": "off", // let it handle by prettier
-    "comma-dangle": "off", // let it handle by prettier
-    "no-redeclare": "off", // let it handle by TypeScript
-    "react/jsx-indent": "off", // let it handle by prettier
-    "no-unused-vars": "off", // let it handle by TypeScript
+    "indent": "off",
+    "max-len": "off",
+    "comma-dangle": "off",
+    "no-redeclare": "off",
+    "react/jsx-indent": "off",
+    "no-unused-vars": "off",
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
-    "operator-linebreak": "off", // let it handle by prettier
-    "object-curly-newline": "off", // let it handle by prettier
-    "function-paren-newline": "off", // let it handle by prettier
-    "implicit-arrow-linebreak": "off", // let it handle by prettier
-    "react/require-default-props": "off", // let it handle by TypeScript
-    "nonblock-statement-body-position": "off", // let it handle by prettier
-    "react/jsx-one-expression-per-line": "off" // let it handle by prettier
+    "operator-linebreak": "off",
+    "object-curly-newline": "off",
+    "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "react/require-default-props": "off",
+    "nonblock-statement-body-position": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "camelcase": "off", // Disable camelcase rule
+    "react/jsx-curly-brace-presence": "off" // Disable unnecessary curly braces warning
   }
 }
