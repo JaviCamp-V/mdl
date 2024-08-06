@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import Box from '@mui/material/Box';
 
+
 interface CarouselProps {
   children: React.ReactNode[];
 }
@@ -16,8 +17,8 @@ const config = {
   className: 'center',
   centerMode: true,
   speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 4,
+  slidesToShow: 3,
+  slidesToScroll: 3,
   centerPadding: '60px',
   initialSlide: 0,
   responsive: [
@@ -25,8 +26,7 @@ const config = {
       breakpoint: 1024,
       settings: {
         slidesToShow: 3,
-        slidesToScroll: 3,
-        infinite: true
+        slidesToScroll: 3
       }
     },
     {
