@@ -15,16 +15,15 @@ interface DramaUpdatesProps {
 const DramaUpdates: React.FC<DramaUpdatesProps> = ({ containerStyle }) => {
   const updatesQueries = { trending, startingThisWeek, endingThisWeek };
   return (
-    <Box sx={{ ...containerStyle, paddingTop: 2, paddingBottom: 4 }}>
+    <Box sx={{ ...containerStyle, paddingTop: 2, paddingBottom: 4}}>
       {Object.entries(updatesQueries).map(([title, params], index, arr) => (
         <Box paddingY={0} key={title}>
           <Typography
             sx={{
               paddingX: 2,
-              color: color,
               marginBottom: 2,
-              fontSize: 24,
-              fontWeight: 500
+              fontSize: 18,
+              fontWeight: 700
             }}
           >
             {capitalCase(title)}

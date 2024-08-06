@@ -1,4 +1,7 @@
+'use server';
+
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import logger from '@/utils/logger';
 
 const refreshPage = async (path: string) => {
@@ -13,4 +16,9 @@ const refreshPage = async (path: string) => {
   });
 };
 
-export { refreshPage };
+const setTheme = async (theme: 'light' | 'dark') => {
+  cookies().set('theme', theme);
+  return { success: true };
+};
+
+export { refreshPage, setTheme };

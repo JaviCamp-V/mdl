@@ -44,11 +44,11 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
           marginBottom: 1
         }}
       >
-        <Typography color={color} fontSize={18} fontWeight={500}>
+        <Typography  fontSize={18} fontWeight={700}>
           Top Airing
         </Typography>
         <Link href={`${routes.discoverAiring}?country=${value}`} style={{ textDecoration: 'none' }}>
-          <Typography color={color} fontSize={14}>
+          <Typography fontSize={14} color="text.primary">
             View All
           </Typography>
         </Link>
@@ -70,7 +70,7 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
                 key={country.code}
                 label={country.name}
                 value={country.code}
-                sx={{ color, textTransform: 'capitalize' }}
+                sx={{textTransform: 'capitalize' }}
               />
             ))}
           </TabList>

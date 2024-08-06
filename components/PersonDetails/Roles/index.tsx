@@ -65,7 +65,7 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
         .filter(([_, results]) => results?.length)
         .map(([key, results]) => (
           <Box key={key} sx={{ marginY: 2 }}>
-            <Typography fontSize={'1.25rem'} fontWeight={500}>
+            <Typography fontSize={'1.25rem'} fontWeight={700}>
               {capitalCase(key)}
             </Typography>
 

@@ -29,14 +29,14 @@ const TVDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchParams
 
   const boxStyle = {
     marginTop: 4,
-    backgroundColor: '#242526',
+    backgroundColor: 'background.paper',
     borderRadius: 2,
     overflow: 'hidden',
     minHeight: '50vh'
   };
 
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
+    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2, backgroundColor: 'background.default' }}>
       <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
         <Grid item xs={12} md={8.5}>
           <GeneralDetails details={response} type={MediaType.tv} tab={tab} containerStyle={boxStyle} />

@@ -16,7 +16,7 @@ const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> =
           justifyContent: 'space-between'
         }}
       >
-        <Typography fontSize={18} fontWeight={500} lineHeight={1}>
+        <Typography fontSize={18} fontWeight={700} lineHeight={1}>
           Photos
         </Typography>
         <Link href={`/${mediaType}/${id}?tab=photos`} style={{ textDecoration: 'none' }} passHref>

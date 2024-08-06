@@ -55,12 +55,11 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
       }}
     >
       <Box sx={{ width: { xs: '100%', md: '60%' } }}>
-        <Typography marginBottom={2}>
-          {`${response.total_results} results found for `}
-          <Typography component={'span'} fontWeight={500}>
-            {title}
-          </Typography>
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
+          <Typography fontWeight={700}>{title}</Typography>
+          <Typography>{`${response.total_results} results`}</Typography>
+        </Box>
+
         <SearchResults {...response} />
       </Box>
     </Box>

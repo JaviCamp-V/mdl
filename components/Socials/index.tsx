@@ -30,13 +30,13 @@ const Socials: React.FC<ExternalID> = ({ facebook_id, instagram_id, twitter_id }
           <IconButton key={key} href={getLink(key, value)} target="_blank" sx={{ margin: 0 }}>
             <Avatar
               sx={{
-                backgroundColor: '#1B1C1D',
+                backgroundColor: 'background.default',
                 margin: 0,
                 width: 35,
                 height: 35
               }}
             >
-              <Iconify icon={`mdi:${key}`} sx={{ wight: 20, height: 20, color }} />
+              <Iconify icon={`mdi:${key}`} sx={{ wight: 20, height: 20, color: "text.primary" }} />
             </Avatar>
           </IconButton>
         ))}

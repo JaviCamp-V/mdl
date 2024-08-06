@@ -47,7 +47,7 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_numb
             </Box>
             <Box>
               <Link href={`/episode/${season_number}/${id}`} style={{ textDecoration: 'none' }}>
-                <Typography color="primary" fontWeight={500}>{`${name}: ${episode.name}`}</Typography>
+                <Typography color="primary" fontWeight={700}>{`${name}: ${episode.name}`}</Typography>
               </Link>
               <Rating name="read-only" value={episode.vote_average / 2} precision={0.1} readOnly />
               <Typography>{`${episode.vote_average}/10 from ${episode.vote_count} users`}</Typography>

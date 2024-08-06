@@ -67,7 +67,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
     <React.Fragment>
       <Box sx={{ ...containerStyle }}>
         <Box sx={{ width: '100%', paddingY: 2 }}>
-          <Typography fontSize={30} fontWeight={500} color="primary" paddingLeft={2}>
+          <Typography fontSize={24} fontWeight={700} color="primary" paddingLeft={2}>
             {`${title} (${year})`}
           </Typography>
           <Tabs
@@ -87,9 +87,10 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
                 selected={link.href === tab}
                 sx={{
                   textDecoration: 'none',
-                  color: `${color}!important`,
+                  color:  'text.primary',
                   textTransform: 'capitalize',
-                  fontSize: 16,
+                  fontSize: 15,
+                  fontWeight: link.href === tab ? 700 : 400,
                   borderBottom: link.href === tab ? '1px solid #1675b6' : '1px solid #3e4042'
                 }}
               />

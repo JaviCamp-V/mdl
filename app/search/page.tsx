@@ -45,7 +45,7 @@ const SearchPage: NextPage<PageProps> = async ({ searchParams: { genre, keywords
       <Box sx={{ width: { xs: '100%', md: '60%' } }}>
         <Typography marginBottom={2}>
           {`${response.total_results} results found for `}
-          <Typography component={'span'} fontWeight={500}>
+          <Typography component={'span'} fontWeight={700}>
             {capitalCase(searchItem ?? 'N/A')}
           </Typography>
         </Typography>

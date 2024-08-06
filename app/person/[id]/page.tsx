@@ -44,7 +44,7 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
               gap: 2
             }}
           >
-            <Typography fontSize={'1.25rem'} fontWeight={500} lineHeight={1} color="primary">
+            <Typography fontSize={'1.25rem'} fontWeight={700} lineHeight={1} color="primary">
               {response.name}
             </Typography>
 
@@ -73,7 +73,7 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
                 color: '#fff'
               }}
             >
-              <Typography fontSize={16} fontWeight={500}>
+              <Typography fontSize={16} fontWeight={700}>
                 Details
               </Typography>
             </Box>

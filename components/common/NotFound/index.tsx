@@ -32,17 +32,17 @@ const NotFound: React.FC<NotFoundProps> = ({ type }) => {
           padding: 2
         }}
       >
-        <Typography fontSize={16} color={color} paddingBottom={2}>
+        <Typography fontSize={16}  paddingBottom={2}>
           {`There were no result matching the ${type ?? 'query'}.`}
         </Typography>
-        <Typography fontSize={16} fontWeight={500} color="primary.main">
+        <Typography fontSize={16} fontWeight={700} color="primary.main">
           {`${!type ? 'Search' : ''} Suggestions: `}
         </Typography>
         <Box component={'ul'} sx={{ marginTop: 1 }}>
-          <Typography component={'li'} fontSize={16} color={color}>
+          <Typography component={'li'} fontSize={16} >
             {type ? 'Make sure yare using the correct URL ' : 'Make sure all words are spelled correctly'}
           </Typography>
-          <Typography component={'li'} fontSize={16} color={color}>
+          <Typography component={'li'} fontSize={16} >
             {type ? 'Return to home page or try searching for what you trying to access' : 'Try more general keywords'}
           </Typography>
         </Box>

@@ -12,6 +12,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { Button, IconButton, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import ThemeButtons from '@/components/ThemeButtons';
 
 //ToDo: Server component friendly icons
 interface FooterProps {}
@@ -194,7 +195,7 @@ const Footer: React.FC<FooterProps> = () => {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-        <Typography fontWeight={500} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
+        <Typography fontWeight={700} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
           About
         </Typography>
 
@@ -206,20 +207,13 @@ const Footer: React.FC<FooterProps> = () => {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-        <Typography fontWeight={500} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
+        <Typography fontWeight={700} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
           Dark Mode
         </Typography>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-          <IconButton sx={iconContainerStyle}>
-            <DarkModeIcon sx={{ color: '#fff' }} />
-          </IconButton>
-          <IconButton sx={iconContainerStyle}>
-            <LightModeIcon sx={{ color: '#fff' }} />
-          </IconButton>
-        </Box>
+        <ThemeButtons />
 
-        <Typography fontWeight={500} marginBottom={1} marginTop={2} textTransform="uppercase" fontSize={16}>
+        <Typography fontWeight={700} marginBottom={1} marginTop={2} textTransform="uppercase" fontSize={16}>
           Work With Us
         </Typography>
         {workWithUs.map((item) => (
@@ -230,7 +224,7 @@ const Footer: React.FC<FooterProps> = () => {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-        <Typography fontWeight={500} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
+        <Typography fontWeight={700} marginBottom={1} textTransform="uppercase" fontSize={16} whiteSpace="nowrap">
           Recommendations
         </Typography>
         {recommendations.map((item) => (

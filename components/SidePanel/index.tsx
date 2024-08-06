@@ -29,13 +29,13 @@ const SidePanel: React.FC<DetailsSummaryProps> = (props) => {
               color
             }}
           >
-            <Typography fontSize={18} fontWeight={500}>
+            <Typography fontSize={18} fontWeight={700}>
               {title}
             </Typography>
           </Box>
           <Box
             sx={{
-              backgroundColor: '#1B1C1D',
+              backgroundColor: 'background.paper',
               borderBottomLeftRadius: 2,
               borderBottomRightRadius: 2,
               padding: 2

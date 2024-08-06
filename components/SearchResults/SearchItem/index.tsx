@@ -16,15 +16,18 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
   return (
     <Box
       sx={{
-        backgroundColor: '#242526',
+        backgroundColor: 'background.paper',
+        boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+        border: '1px solid rgba(0,0,0,.14)',
         borderRadius: 2,
         overflow: 'hidden',
-        height: '35vh',
-        padding: 2
+        padding: 2,
+        display: 'flex',
+        flexDirection: "row",
+        gap: 2
       }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={6} md={3} sx={{ height: '38vh' }}>
+        <Box sx={{ width: "30%", height: '38vh' }}>
           <Box sx={{ width: '100%', height: '100%' }}>
             <DramaPoster
               src={media_type === 'person' ? details.profile_path : details.poster_path}
@@ -33,38 +36,35 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
               size="w185"
             />
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          md={8}
+        </Box>
+        <Box
           sx={{
+            width: '75%',
             paddingRight: 4,
             display: 'flex',
             flexDirection: 'column',
             gap: 2
           }}
         >
-          <MediaTitle title={media_type === 'movie' ? details.title : details.name} id={id} mediaType={media_type} />
+          <MediaTitle title={media_type === 'movie' ? details.title : details.name} id={id} mediaType={media_type} fontSize={'1rem'}/>
           {media_type === 'person' ? (
             <Box>
-              <Typography color={color} sx={{ opacity: 0.6 }}>
+              <Typography  sx={{ opacity: 0.6 }} fontSize={14}>
                 {details.place_of_birth}
               </Typography>
             </Box>
           ) : (
             <Box>
-              <Typography
-                color={color}
-                sx={{ opacity: 0.6 }}
-              >{`${getOrigin(details)} - ${getYear(details)}`}</Typography>
+              <Typography sx={{ opacity: 0.6 }} fontSize={14}>{`${getOrigin(details)} - ${getYear(details)}`}</Typography>
               <Rating name="read-only" value={details.vote_average / 2} precision={0.1} readOnly />
             </Box>
           )}
           <Typography
-            color={color}
+            
             sx={{
               overflow: 'hidden',
+              fontSize: 14,
+              lineHeight: 1.5,
               textOverflow: 'ellipsis',
               display: '-webkit-box', // Required for multiline truncation
               WebkitBoxOrient: 'vertical', // Required for multiline truncation
@@ -74,8 +74,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
           >
             {media_type === 'person' ? details.biography : details.overview}
           </Typography>
-        </Grid>
-      </Grid>
+        </Box>
     </Box>
   );
 };

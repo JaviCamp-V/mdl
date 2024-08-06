@@ -14,8 +14,8 @@ interface TitleProps {
 const Titles: React.FC<TitleProps> = async ({ id, mediaType, exclude = ['US'] }) => {
   const titles = await getTitles(mediaType, id);
   return (
-    <Typography sx={{ color: color }}>
-      <Typography component="span" fontWeight={500} paddingRight={1}>
+    <Typography>
+      <Typography component="span" fontWeight={700} paddingRight={1}>
         Also Known As:
       </Typography>
       {titles

@@ -13,9 +13,10 @@ import { Credits as CreditsProps } from '@/types/tmdb/IPeople';
 const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, crew, type }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
-      <Typography paddingX={2} fontSize={18} fontWeight={500} lineHeight={1}>
+        <Typography paddingX={2} fontSize={18} fontWeight={700} lineHeight={1}>
         Cast & Credits
       </Typography>
+      
       <Divider />
       <Grid container spacing={2} paddingX={2} sx={{ minHeight: '35vh' }}>
         {cast?.slice(0, 6).map((person) => (
@@ -27,7 +28,7 @@ const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, 
             md={4}
             sx={{ display: 'flex', flexDirection: 'row', gap: 2, paddingY: 2 }}
           >
-            <Box sx={{ width: '35%', height: { xs: '25vh', sm: '20vh' } }}>
+            <Box sx={{ width: '35%', height: { xs: '25vh', sm: '15vh' } }}>
               <DramaPoster src={person.profile_path} id={person.id} mediaType={MediaType.person} size="w185" />
             </Box>
             <Box

@@ -23,7 +23,7 @@ const PersonDetails: React.FC<PersonDetailsType> = (props) => {
     >
       <Box sx={{ width: '100%', paddingY: 2 }}>
         <Box sx={{}}>
-          <Typography fontSize={18} fontWeight={500} paddingLeft={2} color={color}>
+          <Typography fontSize={18} fontWeight={700} paddingLeft={2} >
             Details
           </Typography>
           <Box
@@ -71,7 +71,7 @@ const PersonDetails: React.FC<PersonDetailsType> = (props) => {
                   gap: 1
                 }}
               >
-                <Typography fontSize={'1.25rem'} fontWeight={500} lineHeight={1} color="primary">
+                <Typography fontSize={'1.25rem'} fontWeight={700} lineHeight={1} color="primary">
                   {props.name}
                 </Typography>
                 <BioData {...props} />

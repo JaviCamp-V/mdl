@@ -64,10 +64,10 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {Object.entries(data).map(([key, value]) => (
         <Box key={key} sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
-          <Typography sx={{ display: 'inline' }} color={color} paddingRight={1}>
+          <Typography sx={{ display: 'inline' }}  paddingRight={1}>
             {sentenceCase(key)}:
           </Typography>
-          <Typography sx={{ display: 'inline' }} color={color}>
+          <Typography sx={{ display: 'inline' }} >
             {value}
           </Typography>
         </Box>
