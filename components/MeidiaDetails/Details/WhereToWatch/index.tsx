@@ -23,9 +23,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ id, mediaType, contai
     return [...flatrate, ...buy, ...rent];
   });
   const uniqueProviders = providers.reduce((acc, provider) => {
-    if (!acc.find((p) => p.provider_id === provider.provider_id)) {
-      acc.push(provider);
-    }
+    if (!acc.find((p) => p.provider_id === provider.provider_id)) acc.push(provider);
     return acc;
   }, [] as any[]);
 

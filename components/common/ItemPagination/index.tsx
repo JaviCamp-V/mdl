@@ -5,7 +5,6 @@ import { Box } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
-
 interface ItemPaginationProps {
   totalItems: number;
   itemsPerPage: number;

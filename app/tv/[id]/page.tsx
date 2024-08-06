@@ -25,7 +25,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 const TVDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchParams: { tab } }) => {
   const response = await getTVDetails(id);
-  if (!response)  return <NotFound type={MediaType.tv} />;
+  if (!response) return <NotFound type={MediaType.tv} />;
 
   const boxStyle = {
     marginTop: 4,

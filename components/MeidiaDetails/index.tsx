@@ -94,8 +94,8 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
                 }}
               />
             ))}
-            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}/>
-            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }}/>
+            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }} />
+            <Tab disabled sx={{ flexGrow: 1, borderBottom: '1px solid #3e4042' }} />
           </Tabs>
         </Box>
         <Box

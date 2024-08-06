@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import useTimer from '@/hooks/useTimer';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
-
 type CountdownProps = {
   date: Date;
 };

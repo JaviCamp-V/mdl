@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import 'react-multi-carousel/lib/styles.css';
 import LoadingSkeleton from '../../common/LoadingSkeleton';
 
-
 const MultiCarousel = dynamic(() => import('react-multi-carousel'), {
   loading: () => <LoadingSkeleton width="100%" height={'30vh'} />
 });

@@ -14,8 +14,8 @@ const Credits: React.FC<CreditsProps> = async ({ id, mediaType, view }) => {
   const credits = await getCredits(mediaType, id);
 
   if (view === 'overview') return <CastOverview {...credits} type={mediaType} />;
-  
-  if (view === 'creator')  return <CrewSummary {...credits} />;
+
+  if (view === 'creator') return <CrewSummary {...credits} />;
 
   return <FullCredits {...credits} />;
 };
