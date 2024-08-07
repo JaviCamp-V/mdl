@@ -6,6 +6,7 @@ import { Rating, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import Box from '@mui/material/Box';
 import { getRoles } from '@/server/tmdbActions';
 import MediaTitle from '@/components/MediaTitle';
+import Ratings from '@/components/common/Ratings';
 import MediaType from '@/types/tmdb/IMediaType';
 import { MediaSearchResult } from '@/types/tmdb/ISearchResposne';
 import { formatStringDate } from '@/utils/formatters';
@@ -50,9 +51,9 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
   };
 
   const cellStyle = {
-    color: color,
+    color: 'color.text',
     border: 'none',
-    fontSize: '14px',
+    fontSize: '14px!important',
     WebkitFontSmoothing: 'antialiased'
   };
 
@@ -65,7 +66,7 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
         .filter(([_, results]) => results?.length)
         .map(([key, results]) => (
           <Box key={key} sx={{ marginY: 2 }}>
-            <Typography fontSize={'1.25rem'} fontWeight={500}>
+            <Typography fontSize={'1.25rem'} fontWeight={700}>
               {capitalCase(key)}
             </Typography>
 
@@ -123,21 +124,25 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
                         <TableCell sx={{ ...cellStyle }}>
                           <MediaTitle title={getTitle(role)} id={role.id} mediaType={role.media_type} fontSize={14} />
                           <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                            <Typography sx={{ opacity: 0.6 }}>{`${getOrigin(role)}, ${getYear(role)}${
+                            <Typography fontSize={13} sx={{ opacity: 0.6 }}>{`${getOrigin(role)}, ${getYear(role)}${
                               role.media_type === 'tv' ? `, ${role.episode_count} eps` : ''
                             }`}</Typography>
                             {['drama', 'movies'].includes(key) && (
-                              <Typography sx={{ opacity: 0.6 }}>{getRole(role)}</Typography>
+                              <Typography sx={{ opacity: 0.6 }} fontSize={13}>
+                                {getRole(role)}
+                              </Typography>
                             )}
                           </Box>
                         </TableCell>
                         {role.media_type === 'tv' && key === 'drama' && (
                           <TableCell sx={{ ...cellStyle, ...mobileStyle }}>
-                            <Typography>{role.episode_count}</Typography>
+                            <Typography fontSize={14}>{role.episode_count}</Typography>
                           </TableCell>
                         )}
                         <TableCell sx={{ ...cellStyle, ...mobileStyle }}>
-                          <Typography>{['drama', 'movies'].includes(key) ? getRole(role) : getType(role)}</Typography>
+                          <Typography fontSize={14}>
+                            {['drama', 'movies'].includes(key) ? getRole(role) : getType(role)}
+                          </Typography>
                         </TableCell>
                         <TableCell
                           sx={{
@@ -145,7 +150,7 @@ const Roles: React.FC<RolesProps> = async ({ id }) => {
                             textAlign: 'center'
                           }}
                         >
-                          <Rating name="read-only" value={role.vote_average / 2} precision={0.1} readOnly />
+                          <Ratings rating={role.vote_average} />
                           <Typography fontSize={13}> {role.vote_average.toFixed(1)}</Typography>
                         </TableCell>
                       </TableRow>

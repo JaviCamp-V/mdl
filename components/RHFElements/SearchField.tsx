@@ -93,6 +93,8 @@ const SearchField: React.FC<TextFieldProps> = (props) => {
               padding={8} // space between the target and popover content
               containerStyle={{
                 backgroundColor: '#242526',
+                boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+                border: '1px solid rgba(0, 0, 0, .14)',
                 width: '100vw',
                 height: '12vh',
                 display: 'flex',

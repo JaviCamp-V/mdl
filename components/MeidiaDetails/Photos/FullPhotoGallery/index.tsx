@@ -4,12 +4,13 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import DramaPoster from '@/components/Poster';
+import Divider from '@/components/common/Divider';
 import ItemPagination from '@/components/common/ItemPagination';
 import { MediaImagesResponse } from '@/types/tmdb/IImage';
 import { scrollToElementByID } from '@/utils/scrollToElement';
 
-const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops, logos }) => {
-  const photos = [...posters, ...backdrops, ...logos];
+const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops }) => {
+  const photos = [...posters, ...backdrops];
   const [page, setPage] = React.useState(1);
   const showing = photos.slice((page - 1) * 28, page * 28);
 
@@ -28,8 +29,12 @@ const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops, l
           </Grid>
         ))}
       </Grid>
-      <Box sx={{ borderBottom: '1px solid hsla(210, 8%, 51%, .13)', marginY: 1 }} />
-      <ItemPagination totalItems={photos.length} itemsPerPage={28} currentPage={page} onPageChange={onPageChange} />
+      {photos.length > 28 && (
+        <React.Fragment>
+          <Divider />
+          <ItemPagination totalItems={photos.length} itemsPerPage={28} currentPage={page} onPageChange={onPageChange} />
+        </React.Fragment>
+      )}
     </Box>
   );
 };

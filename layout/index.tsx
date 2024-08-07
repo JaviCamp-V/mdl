@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import Footer from './footer';
 import Navbar from './navbar';
 
@@ -12,14 +12,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Navbar />
       <Paper
         sx={{
-          backgroundColor: '#18191A',
-          color: '#fff!important',
+          backgroundColor: 'background.default',
+          color: 'text.primary',
           paddingTop: 8,
           borderRadius: 0,
           paddingBottom: 4
         }}
       >
-        {' '}
         {children}
       </Paper>
       <Footer />

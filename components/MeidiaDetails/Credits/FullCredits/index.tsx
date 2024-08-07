@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { camelCase, capitalCase } from 'change-case';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -35,7 +34,7 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
         .filter(([_, arr]) => arr.length)
         .map(([job, members]) => (
           <Box key={job}>
-            <Typography sx={{ fontSize: '1.25rem', fontWeight: 500 }}>{capitalCase(job)}</Typography>
+            <Typography sx={{ fontSize: '1.25rem', fontWeight: 700 }}>{capitalCase(job)}</Typography>
             <Box
               sx={{
                 borderTop: '1px solid hsla(210, 8%, 51%, .13)',

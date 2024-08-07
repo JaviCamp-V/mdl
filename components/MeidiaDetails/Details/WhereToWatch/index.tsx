@@ -33,7 +33,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ id, mediaType, contai
     <Box sx={{ ...containerStyle, minHeight: 0, padding: 2.5 }}>
       <Typography
         fontSize={18}
-        fontWeight={500}
+        fontWeight={700}
         lineHeight={1}
         marginBottom={2}
       >{`Where to Watch ${title}`}</Typography>
@@ -65,7 +65,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ id, mediaType, contai
               />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Link href="#" passHref style={{ textDecoration: 'none' }}>
-                  <Typography fontSize={16} color="primary" fontWeight={500}>
+                  <Typography fontSize={16} color="primary" fontWeight={700}>
                     {provider.provider_name}
                   </Typography>
                 </Link>

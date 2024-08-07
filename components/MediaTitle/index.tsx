@@ -7,15 +7,17 @@ interface MediaTitleProps {
   title: string;
   id: number;
   mediaType: string;
-  fontSize?: number;
+  fontSize?: number | string;
+  fontWeight?: number;
 }
-const MediaTitle: React.FC<MediaTitleProps> = ({ mediaType, id, title, fontSize = '1rem' }) => {
+const MediaTitle: React.FC<MediaTitleProps> = ({ mediaType, id, title, fontSize, fontWeight = 700 }) => {
   return (
     <Box>
       <Link href={`/${mediaType}/${id}`} passHref style={{ textDecoration: 'none' }}>
         <Typography
           color="primary"
-          fontWeight={500}
+          fontSize={fontSize}
+          fontWeight={fontWeight}
           sx={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',

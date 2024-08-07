@@ -5,16 +5,10 @@ import Link from 'next/link';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { Box, Rating, Tabs, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
-import DramaCard from '@/components/DramaCard';
 import DramaList from '@/components/DramaList';
-import MediaTitle from '@/components/MediaTitle';
-import DramaPoster from '@/components/Poster';
-import MediaType from '@/types/tmdb/IMediaType';
 import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
-import { getOrigin } from '@/utils/tmdbUtils';
-import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 
 export interface AiringData {
@@ -44,11 +38,11 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
           marginBottom: 1
         }}
       >
-        <Typography color={color} fontSize={18} fontWeight={500}>
+        <Typography fontSize={18} fontWeight={700}>
           Top Airing
         </Typography>
         <Link href={`${routes.discoverAiring}?country=${value}`} style={{ textDecoration: 'none' }}>
-          <Typography color={color} fontSize={14}>
+          <Typography fontSize={14} color="text.primary">
             View All
           </Typography>
         </Link>
@@ -66,12 +60,7 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
             }}
           >
             {data.map((country) => (
-              <Tab
-                key={country.code}
-                label={country.name}
-                value={country.code}
-                sx={{ color, textTransform: 'capitalize' }}
-              />
+              <Tab key={country.code} label={country.name} value={country.code} sx={{ textTransform: 'capitalize' }} />
             ))}
           </TabList>
         </Box>

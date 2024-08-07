@@ -8,12 +8,13 @@ import Container from '@mui/material/Container/Container';
 import Toolbar from '@mui/material/Toolbar';
 import ExpandableMenuItem from '@/components/ExpandableMenuItem';
 import SearchForm from '@/components/Forms/SearchForm';
+import model from '../model';
 import SideBar from '../sidebar';
 
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
   return (
-    <AppBar sx={{ backgroundColor: { xs: '#00568C', md: '#00568C' }, zIndex: 10000 }}>
+    <AppBar sx={{ backgroundColor: '#00568C', zIndex: 10000 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -23,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              height: 80,
+              height: 60,
               marginX: 2
             }}
           >
@@ -37,50 +38,48 @@ const Navbar: React.FC<NavbarProps> = () => {
             >
               <Box sx={{ marginRight: 4, display: { xs: 'none', md: 'flex' } }}>
                 <Link href="/" passHref>
-                  <Image
-                    src="/static/images/mdl-logo.webp"
-                    width={200}
-                    height={60}
-                    alt="Desktop logo"
-                    priority={true}
-                  />
+                  <Image src={model.logo} width={200} height={30} alt="Desktop logo" priority={true} />
                 </Link>
               </Box>
               <Box sx={{ marginRight: 4, display: { xs: 'flex', md: 'none' } }}>
-                <Link href="/" passHref>
-                  <Image src="/static/images/images.png" width={60} height={60} alt="Mobile logo" priority={true} />
+                <Link href="/" style={{ textDecoration: 'none' }} passHref>
+                  <Typography fontSize={22} fontWeight={700} sx={{ color: 'white', lineHeight: 0.8 }}>
+                    {model.aberration}
+                  </Typography>
                 </Link>
               </Box>
               <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
-                <ExpandableMenuItem
-                  label="Home"
-                  items={[
-                    { label: 'Feeds', href: '#' },
-                    { label: 'Articles', href: '#' },
-                    { label: 'Feeds', href: '#' }
-                  ]}
-                />
-                <ExpandableMenuItem
-                  label="Explore"
-                  items={[
-                    { label: 'Top 100', href: '#' },
-                    { label: 'Recommendation', href: '#' },
-                    { label: 'Latest', href: '#' }
-                  ]}
-                />
-                <ExpandableMenuItem
-                  label="Community"
-                  items={[
-                    { label: 'Forums', href: '#' },
-                    { label: 'Discussions', href: '#' },
-                    { label: 'Reviews', href: '#' }
-                  ]}
-                />
-                <Link href="/#" passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                  <Typography fontSize={16} fontWeight={400} textTransform="uppercase" sx={{ color: 'white' }}>
-                    calendar
-                  </Typography>
-                </Link>
+                {Object.entries(model.navbarLinks).map(([label, links]) => (
+                  <React.Fragment key={label}>
+                    {(() => {
+                      switch (true) {
+                        case links.length > 1:
+                          return <ExpandableMenuItem label={label} items={links} />;
+
+                        case links.length === 1:
+                          return (
+                            <Link
+                              href={links[0].href}
+                              passHref
+                              style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                            >
+                              <Typography
+                                fontSize={13}
+                                fontWeight={500}
+                                textTransform="uppercase"
+                                sx={{ color: 'white' }}
+                              >
+                                {label}
+                              </Typography>
+                            </Link>
+                          );
+
+                        default:
+                          return <Box />;
+                      }
+                    })()}
+                  </React.Fragment>
+                ))}
               </Box>
             </Box>
             <Box
@@ -101,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                   borderRadius: 1,
                   cursor: 'pointer',
                   pointerEvents: 'auto',
-                  padding: 1,
+                  padding: 1.2,
                   width: 12,
                   height: 12,
                   display: 'flex',
@@ -109,17 +108,17 @@ const Navbar: React.FC<NavbarProps> = () => {
                   alignItems: 'center'
                 }}
               >
-                <Typography fontSize={16} fontWeight={400} textTransform="uppercase" sx={{ color: 'white' }}>
+                <Typography fontSize={11} fontWeight={400} textTransform="lowercase" sx={{ color: 'white' }}>
                   EN
                 </Typography>
               </Box>
               <Link href="/login" passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                <Typography fontSize={16} sx={{ color: 'white' }}>
+                <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }}>
                   Sign Up
                 </Typography>
               </Link>
               <Link href="/login" passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                <Typography fontSize={16} sx={{ color: 'white' }} whiteSpace="nowrap">
+                <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }} whiteSpace="nowrap">
                   Login
                 </Typography>
               </Link>

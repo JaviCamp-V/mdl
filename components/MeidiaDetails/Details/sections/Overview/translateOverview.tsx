@@ -20,9 +20,8 @@ const TranslateOverview: React.FC<TranslateOverviewProps> = ({ translations }) =
         <Typography
           fontSize={14}
           whiteSpace="pre-line"
-          fontFamily="lato,Helvetica,Arial,sans-serif"
           lineHeight={1.5}
-          sx={{ WebkitFontSmoothing: 'antialiased' }}
+          sx={{ WebkitFontSmoothing: 'antialiased', whiteSpace: 'pre-line' }}
         >
           {currentTranslation?.data?.overview}
         </Typography>

@@ -5,7 +5,13 @@ import DramaPoster from '@/components/Poster';
 import { MediaImagesResponse } from '@/types/tmdb/IImage';
 import MediaType from '@/types/tmdb/IMediaType';
 
-const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> = ({ id, mediaType, posters }) => {
+const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> = ({
+  id,
+  mediaType,
+  posters,
+  backdrops
+}) => {
+  const photos = [...posters, ...backdrops];
   return (
     <Box sx={{ padding: 2 }}>
       <Box
@@ -16,17 +22,17 @@ const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> =
           justifyContent: 'space-between'
         }}
       >
-        <Typography fontSize={18} fontWeight={500} lineHeight={1}>
+        <Typography fontSize={18} fontWeight={700} lineHeight={1}>
           Photos
         </Typography>
         <Link href={`/${mediaType}/${id}?tab=photos`} style={{ textDecoration: 'none' }} passHref>
           <Typography fontSize={16} color="#1675b6" textAlign={'center'}>
-            {`View all (${posters.length})`}
+            {`View all (${photos.length})`}
           </Typography>
         </Link>
       </Box>
-      <Grid container spacing={2} sx={{ marginTop: 2 }}>
-        {posters.slice(0, 6).map((poster) => (
+      <Grid container spacing={2} sx={{ marginTop: 0 }}>
+        {photos.slice(0, 6).map((poster) => (
           <Grid item key={poster.file_path} xs={4} md={2}>
             <Box
               sx={{

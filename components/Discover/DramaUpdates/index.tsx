@@ -6,7 +6,6 @@ import Divider from '@/components/common/Divider';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import MediaType from '@/types/tmdb/IMediaType';
 import { endingThisWeek, startingThisWeek, trending } from '@/utils/tmdbQueries';
-import { color } from '@/libs/common';
 import DiscoverCarousel from './Results';
 
 interface DramaUpdatesProps {
@@ -21,10 +20,9 @@ const DramaUpdates: React.FC<DramaUpdatesProps> = ({ containerStyle }) => {
           <Typography
             sx={{
               paddingX: 2,
-              color: color,
               marginBottom: 2,
-              fontSize: 24,
-              fontWeight: 500
+              fontSize: 18,
+              fontWeight: 700
             }}
           >
             {capitalCase(title)}

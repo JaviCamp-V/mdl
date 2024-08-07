@@ -28,11 +28,11 @@ const MostPopularDramas: React.FC<MostPopularDramasProps> = async ({ containerSt
           paddingX: 2
         }}
       >
-        <Typography color={color} fontSize={18} fontWeight={500}>
+        <Typography fontSize={18} fontWeight={700}>
           Most Popular
         </Typography>
         <Link href={routes.discoverPopular} style={{ textDecoration: 'none' }}>
-          <Typography color={color} fontSize={14}>
+          <Typography fontSize={14} color="text.primary">
             more
           </Typography>
         </Link>

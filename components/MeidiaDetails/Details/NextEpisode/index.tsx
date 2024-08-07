@@ -47,7 +47,7 @@ const NextEpisode: React.FC<NextEpisodeProps> = async ({
           <Typography color="#a1aac1" fontSize={16}>
             {`Episode ${episode_number} of ${number_of_episodes} airing on`}
           </Typography>
-          <Typography fontSize={16} fontWeight={500}>
+          <Typography fontSize={16} fontWeight={700}>
             {formatTime(airsOn)}
           </Typography>
         </Box>

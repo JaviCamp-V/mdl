@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { getDiscoverType } from '@/server/tmdbActions';
-import Carousel from '@/components/Carousel';
+import Carousel from '@/components/Carousel/swiper/index';
 import DramaCard from '@/components/DramaCard';
 import MediaType from '@/types/tmdb/IMediaType';
 

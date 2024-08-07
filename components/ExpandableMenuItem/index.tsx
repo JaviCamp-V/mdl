@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { Box, Button, Collapse, ListItem, ListItemButton, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Menu, MenuItem, Typography } from '@mui/material';
 
 interface ExpandableMenuItemProps {
   label: string;
@@ -27,7 +26,7 @@ const ExpandableMenuItem: React.FC<ExpandableMenuItemProps> = ({ label, items })
         onMouseOver={handleClick}
         sx={anchorEl ? { borderBottom: '2px solid white' } : {}}
       >
-        <Typography fontSize={16} fontWeight={400} textTransform="uppercase" sx={{ color: 'white' }}>
+        <Typography fontSize={13} fontWeight={500} textTransform="uppercase" sx={{ color: 'white' }}>
           {label}
         </Typography>
       </Box>
@@ -44,16 +43,17 @@ const ExpandableMenuItem: React.FC<ExpandableMenuItemProps> = ({ label, items })
             elevation: 0,
             sx: {
               overflow: 'visible',
-              mt: 1.5,
-              backgroundColor: '#242526',
-              boxShadow: '0 4px 8px rgba(255, 255, 255, 0.1);',
+              mt: 2,
+              backgroundColor: 'background.paper',
+              boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+              border: '1px solid rgba(0, 0, 0, .14)',
               minWidth: '10vw'
             }
           }
         }}
       >
         {items.map((item) => (
-          <MenuItem key={item.label} href={item.href} sx={{ color: '#fff' }}>
+          <MenuItem key={item.label} href={item.href} sx={{ color: '#fff', fontSize: 13 }}>
             {item.label}
           </MenuItem>
         ))}

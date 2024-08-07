@@ -1,11 +1,10 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import DramaUpdates from '@/components/Discover/DramaUpdates';
 import MostPopularDramas from '@/components/Discover/MostPopular';
 import TopAiringDramas from '@/components/Discover/TopAiring';
 import TopUpcomingDramas from '@/components/Discover/TopUpcoming';
-import { card_background } from '@/libs/common';
 
 type PageProps = {
   searchParams: any;
@@ -20,24 +19,44 @@ export const metadata: Metadata = {
 
 const Home: NextPage<PageProps> = () => {
   const boxStyle = {
-    backgroundColor: card_background,
+    backgroundColor: 'background.paper',
     borderRadius: 2,
     overflow: 'hidden',
-    minHeight: '50vh'
+    minHeight: '50vh',
+    boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+    border: '1px solid rgba(0, 0, 0, .14)'
   };
 
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2, marginTop: 4 }}>
-      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
-        <Grid item xs={12} md={8.5}>
+    <Box
+      sx={{
+        padding: { xs: 0, md: 4 },
+        marginX: { xs: 2, lg: 8 },
+        marginTop: 4,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'center',
+          gap: 4
+        }}
+      >
+        <Box sx={{ width: { xs: '100%', md: '65%', lg: '70%' } }}>
           <DramaUpdates containerStyle={boxStyle} />
-        </Grid>
-        <Grid item xs={12} md={3.5} sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: { xs: '100%', md: '35%', lg: '30%' } }}>
           <TopAiringDramas containerStyle={boxStyle} />
           <TopUpcomingDramas containerStyle={boxStyle} />
           <MostPopularDramas containerStyle={boxStyle} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -26,7 +26,13 @@ const MediaOverview: React.FC<MediaOverviewProps> = async ({ id, type, overview 
       english_name: 'English'
     });
 
-  return <TranslateOverview translations={translations.filter(({ data }) => data.overview)} />;
+  return (
+    <TranslateOverview
+      translations={translations
+        .filter(({ data }) => data.overview)
+        .sort((a, b) => a.iso_639_1.localeCompare(b.iso_639_1))}
+    />
+  );
 };
 
 export default MediaOverview;

@@ -25,15 +25,15 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
   if (!response) return <NotFound type={MediaType.person} />;
 
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
-      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
+    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 } }}>
+      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 0 } }}>
         <Grid item xs={12} md={8.5}>
           <PersonDetails {...response} />
         </Grid>
         <Grid item xs={12} md={3.5} sx={{ marginTop: 4, marginBottom: 4 }}>
           <Box
             sx={{
-              backgroundColor: '#242526',
+              backgroundColor: 'background.paper',
               borderRadius: 2,
               overflow: 'hidden',
               display: { xs: 'none', md: 'flex' },
@@ -44,7 +44,7 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
               gap: 2
             }}
           >
-            <Typography fontSize={'1.25rem'} fontWeight={500} lineHeight={1} color="primary">
+            <Typography fontSize={'1.25rem'} fontWeight={700} lineHeight={1} color="primary">
               {response.name}
             </Typography>
 
@@ -73,13 +73,13 @@ const PersonDetailsPage: NextPage<PageProps> = async ({ params: { id } }) => {
                 color: '#fff'
               }}
             >
-              <Typography fontSize={16} fontWeight={500}>
+              <Typography fontSize={16} fontWeight={700}>
                 Details
               </Typography>
             </Box>
             <Box
               sx={{
-                backgroundColor: '#1B1C1D',
+                backgroundColor: 'background.paper',
                 borderBottomLeftRadius: 2,
                 borderBottomRightRadius: 2,
                 padding: 2

@@ -13,21 +13,21 @@ type GenresProps = {
 const Genres: React.FC<GenresProps> = ({ genres }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-      <Typography color={color} fontWeight={500} paddingRight={1}>
+      <Typography fontWeight={700} paddingRight={1} fontSize={14}>
         Genres:
       </Typography>
-      {genres.map((genre, index, arr) => (
-        <React.Fragment key={genre.id}>
-          <Link key={genre.id} href={`${routes.search}?genre=${genre.id}`} style={{ textDecoration: 'none' }}>
-            <Typography color="primary">{capitalCase(genre.name)}</Typography>
-          </Link>
-          {index < arr.length - 1 && (
-            <Typography color={color} marginRight={1}>
-              ,
-            </Typography>
-          )}
-        </React.Fragment>
-      ))}
+      {genres.length
+        ? genres.map((genre, index, arr) => (
+            <React.Fragment key={genre.id}>
+              <Link key={genre.id} href={`${routes.search}?genre=${genre.id}`} style={{ textDecoration: 'none' }}>
+                <Typography fontSize={14} color="primary">
+                  {capitalCase(genre.name)}
+                </Typography>
+              </Link>
+              {index < arr.length - 1 && <Typography sx={{ marginRight: 0.2 }}>,</Typography>}
+            </React.Fragment>
+          ))
+        : 'N/A'}
     </Box>
   );
 };
