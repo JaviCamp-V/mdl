@@ -6,8 +6,8 @@ import Divider from '@/components/common/Divider';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import MediaType from '@/types/tmdb/IMediaType';
 import { endingThisWeek, startingThisWeek, trending } from '@/utils/tmdbQueries';
-import { color } from '@/libs/common';
 import DiscoverCarousel from './Results';
+
 
 interface DramaUpdatesProps {
   containerStyle?: React.CSSProperties;

@@ -4,7 +4,6 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import { getTitles } from '@/server/tmdbActions';
 import MediaType from '@/types/tmdb/IMediaType';
-import { color } from '@/libs/common';
 
 interface TitleProps {
   id: number;
@@ -14,8 +13,8 @@ interface TitleProps {
 const Titles: React.FC<TitleProps> = async ({ id, mediaType, exclude = ['US'] }) => {
   const titles = await getTitles(mediaType, id);
   return (
-    <Typography>
-      <Typography component="span" fontWeight={700} paddingRight={1}>
+    <Typography fontSize={14}>
+      <Typography component="span" fontWeight={700} paddingRight={1} fontSize={14}>
         Also Known As:
       </Typography>
       {titles

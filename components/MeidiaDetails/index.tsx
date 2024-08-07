@@ -1,17 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
-import { get } from 'http';
 import { Tab } from '@mui/material';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
-import { formatStringDate } from '@/utils/formatters';
 import { getTitle, getYear } from '@/utils/tmdbUtils';
-import { color } from '@/libs/common';
 import LinkTab from '../common/NavTab';
 import Credits from './Credits';
 import DetailsTabPanel from './Details';
@@ -59,10 +54,16 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
       genres={details.genres}
       original_title={type === MediaType.movie ? details.original_title : details.original_name}
       external_ids={details.external_ids}
+      vote_average={details.vote_average}
+      vote_count={details.vote_count}
     />
   );
   const title = getTitle({ ...details, media_type: type } as any);
   const year = getYear({ ...details, media_type: type } as any);
+  const getLink = (link: string) => {
+    const baseUri = `/${type}/${details.id}`;
+    return link ? `${baseUri}?tab=${link}` : baseUri;
+  };
   return (
     <React.Fragment>
       <Box sx={{ ...containerStyle }}>
@@ -83,11 +84,11 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
               <LinkTab
                 key={link.label}
                 label={link.label}
-                href={`/${type}/${details.id}${link.href ? `?tab=${link.href}` : ''}`}
+                href={getLink(link.href)}
                 selected={link.href === tab}
                 sx={{
                   textDecoration: 'none',
-                  color:  'text.primary',
+                  color: 'text.primary',
                   textTransform: 'capitalize',
                   fontSize: 15,
                   fontWeight: link.href === tab ? 700 : 400,

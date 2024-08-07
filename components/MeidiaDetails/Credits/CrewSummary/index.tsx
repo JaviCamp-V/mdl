@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import MediaTitle from '@/components/MediaTitle';
 import { Credits } from '@/types/tmdb/IPeople';
 
+
 const CrewSummary: React.FC<Credits> = ({ crew }) => {
   const director = crew.filter((crew) => crew.job === 'Director');
   const writer = crew.filter((crew) => crew.job === 'Screenplay' || crew.job === 'Writer');
@@ -13,7 +14,7 @@ const CrewSummary: React.FC<Credits> = ({ crew }) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {Object.entries(showing).map(([key, persons]) => (
         <Box key={key} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          <Typography fontWeight={700} paddingRight={1}>
+          <Typography fontWeight={700} paddingRight={1} fontSize={14}>
             {`${capitalCase(key)}:`}
           </Typography>
           {persons.length

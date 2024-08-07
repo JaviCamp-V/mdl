@@ -1,11 +1,11 @@
 import React from 'react';
-import { Grid, Rating, Typography } from '@mui/material';
+import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import { MediaSearchResult, PersonSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin, getYear } from '@/utils/tmdbUtils';
-import { color } from '@/libs/common';
+
 
 interface SearchItemProps {
   details: MediaSearchResult | PersonSearchResult;

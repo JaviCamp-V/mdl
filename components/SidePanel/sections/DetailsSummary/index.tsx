@@ -11,7 +11,6 @@ import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import { formatRuntime, formatShortDate, formatStringDate } from '@/utils/formatters';
-import { color } from '@/libs/common';
 
 type MovieDetailsSummaryProps = {
   details: MovieDetails;
@@ -63,13 +62,11 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {Object.entries(data).map(([key, value]) => (
-        <Box key={key} sx={{ display: 'inline', whiteSpace: 'pre-line' }}>
-          <Typography sx={{ display: 'inline' }}  paddingRight={1}>
+        <Box key={key} sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Typography fontSize={14} paddingRight={1} fontWeight={'bolder'}>
             {sentenceCase(key)}:
           </Typography>
-          <Typography sx={{ display: 'inline' }} >
-            {value}
-          </Typography>
+          <Typography fontSize={14}>{value}</Typography>
         </Box>
       ))}
       {tab && (

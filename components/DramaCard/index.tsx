@@ -2,10 +2,10 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/tmdb/IMediaType';
-import { color } from '@/libs/common';
 import countries from '@/libs/countries';
 import MediaTitle from '../MediaTitle';
 import DramaPoster from '../Poster';
+
 
 type DramaCardProps = {
   title: string;
