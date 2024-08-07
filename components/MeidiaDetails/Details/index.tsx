@@ -38,7 +38,7 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({
   vote_count
 }) => {
   return (
-    <Grid container spacing={3} sx={{ marginRight: 2, width: '90%' }}>
+    <Grid container spacing={3} sx={{ marginRight: 2, width: '100%' }}>
       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
         <Box sx={{ width: '100%', height: { xs: '70vh', sm: '50vh' } }}>
           <DramaPoster src={poster_path} id={id} mediaType={mediaType} />

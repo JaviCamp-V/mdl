@@ -28,7 +28,7 @@ const Score: React.FC<ScoreProps> = ({ vote_average, vote_count, number_of_revie
           }}
         >
           <Typography fontSize={32} color="hsl(0deg 0% 100% / 87%)">
-            {vote_average.toFixed(1) ?? 'N/A'}
+            {vote_average ? vote_average.toFixed(1) : 'N/A'}
           </Typography>
         </Box>
         <Box>

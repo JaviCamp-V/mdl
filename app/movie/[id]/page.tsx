@@ -8,7 +8,6 @@ import SidePanel from '@/components/SidePanel';
 import NotFound from '@/components/common/NotFound';
 import MediaType from '@/types/tmdb/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
-import { card_background } from '@/libs/common';
 
 type PageProps = {
   params: { id: number };
@@ -34,15 +33,15 @@ const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchPar
 
   const boxStyle = {
     marginTop: 4,
-    backgroundColor: card_background,
+    backgroundColor: 'background.paper',
     borderRadius: 2,
     overflow: 'hidden',
     minHeight: '50vh'
   };
 
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: 2 }}>
-      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 4 } }}>
+    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 }, backgroundColor: 'background.default' }}>
+      <Grid container spacing={3} sx={{ padding: { xs: 0, md: 0 } }}>
         <Grid item xs={12} md={8.5}>
           <GeneralDetails details={response} type={MediaType.movie} tab={tab} containerStyle={boxStyle} />
         </Grid>

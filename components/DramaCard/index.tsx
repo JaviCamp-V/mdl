@@ -16,7 +16,7 @@ const DramaCard: React.FC<DramaCardProps> = ({ title, country, src, id }) => {
   const origin = countries.find((c) => c.code === country)?.nationality;
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-      <Box sx={{ width: '100%', height: { xs: '45vh', sm: '40vh', md: '25vh', lg: '30vh' } }}>
+      <Box sx={{ width: '100%', height: { xs: '45vh', sm: '40vh' } }}>
         <DramaPoster src={src} id={id} mediaType={MediaType.tv} />
       </Box>
       <Box sx={{ width: '100%', paddingTop: 1 }}>

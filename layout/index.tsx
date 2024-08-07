@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import Footer from './footer';
 import Navbar from './navbar';
 

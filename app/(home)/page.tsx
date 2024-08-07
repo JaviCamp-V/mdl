@@ -1,11 +1,10 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import DramaUpdates from '@/components/Discover/DramaUpdates';
 import MostPopularDramas from '@/components/Discover/MostPopular';
 import TopAiringDramas from '@/components/Discover/TopAiring';
 import TopUpcomingDramas from '@/components/Discover/TopUpcoming';
-import { card_background } from '@/libs/common';
 
 type PageProps = {
   searchParams: any;
@@ -32,7 +31,7 @@ const Home: NextPage<PageProps> = () => {
     <Box
       sx={{
         padding: { xs: 0, md: 4 },
-        marginX: 2,
+        marginX: { xs: 2, lg: 8 },
         marginTop: 4,
         display: 'flex',
         justifyContent: 'center',
@@ -42,7 +41,7 @@ const Home: NextPage<PageProps> = () => {
     >
       <Box
         sx={{
-          width: { xs: '100%', md: '100%', lg: '80%' },
+          width: '100%',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: 'center',

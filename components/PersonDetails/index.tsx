@@ -5,17 +5,17 @@ import MediaType from '@/types/tmdb/IMediaType';
 import PersonDetailsType from '@/types/tmdb/IPeople';
 import DramaPoster from '../Poster';
 import Socials from '../Socials';
+import Divider from '../common/Divider';
 import BioData from './BioData';
 import Roles from './Roles';
 
 const PersonDetails: React.FC<PersonDetailsType> = (props) => {
   const { biography, id } = props;
-  const color = 'hsl(0deg 0% 100% / 87%)';
   return (
     <Box
       sx={{
         marginTop: 4,
-        backgroundColor: '#242526',
+        backgroundColor: 'background.paper',
         borderRadius: 2,
         overflow: 'hidden',
         minHeight: '50vh'
@@ -26,13 +26,7 @@ const PersonDetails: React.FC<PersonDetailsType> = (props) => {
           <Typography fontSize={18} fontWeight={700} paddingLeft={2}>
             Details
           </Typography>
-          <Box
-            sx={{
-              borderBottom: '1px solid hsla(210, 8%, 51%, .13)',
-              marginY: 1
-            }}
-          />
-
+          <Divider marginY={1} />
           <Grid container spacing={2} sx={{ padding: 2 }}>
             <Grid
               item
@@ -76,7 +70,7 @@ const PersonDetails: React.FC<PersonDetailsType> = (props) => {
                 </Typography>
                 <BioData {...props} />
               </Box>
-              <Typography color={'hsl(0deg 0% 100% / 87%)'}>{biography || 'No biography added'}</Typography>
+              <Typography fontSize={14}>{biography || 'No biography added'}</Typography>
             </Grid>
           </Grid>
         </Box>

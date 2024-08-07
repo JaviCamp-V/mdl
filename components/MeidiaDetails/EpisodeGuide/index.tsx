@@ -1,10 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { Rating, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { getSeasonDetails } from '@/server/tmdbActions';
 import DramaPoster from '@/components/Poster';
+import Ratings from '@/components/common/Ratings';
 import { formatShortDate, formatStringDate } from '@/utils/formatters';
 
 interface EpisodeGuideProps {
@@ -47,11 +48,11 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_numb
             </Box>
             <Box>
               <Link href={`/episode/${season_number}/${id}`} style={{ textDecoration: 'none' }}>
-                <Typography color="primary" fontWeight={700}>{`${name}: ${episode.name}`}</Typography>
+                <Typography color="primary" fontWeight={700} fontSize={14}>{`${name}: ${episode.name}`}</Typography>
               </Link>
-              <Rating name="read-only" value={episode.vote_average / 2} precision={0.1} readOnly />
-              <Typography>{`${episode.vote_average}/10 from ${episode.vote_count} users`}</Typography>
-              <Typography>{formatShortDate(formatStringDate(episode.air_date))}</Typography>
+              <Ratings rating={episode.vote_average} />
+              <Typography fontSize={14}>{`${episode.vote_average}/10 from ${episode.vote_count} users`}</Typography>
+              <Typography fontSize={14}>{formatShortDate(formatStringDate(episode.air_date))}</Typography>
             </Box>
           </Grid>
         ))}

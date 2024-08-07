@@ -2,7 +2,6 @@ import React from 'react';
 import { Avatar, Box, IconButton } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 import ExternalID from '@/types/tmdb/IExternalID';
-import { color } from '@/libs/common';
 
 const urlMappings = {
   wikidata: 'https://www.wikidata.org/wiki/:id',

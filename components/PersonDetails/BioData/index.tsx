@@ -7,8 +7,6 @@ import { calculateAge } from '@/utils/dateUtils';
 import { formatShortDate, formatStringDate } from '@/utils/formatters';
 
 const BioData: React.FC<PersonDetails> = (props) => {
-  const color = 'hsl(0deg 0% 100% / 87%)';
-
   const birthDate = props.birthday ? formatStringDate(props.birthday) : null;
   const data = {
     name: props.name,
@@ -28,11 +26,13 @@ const BioData: React.FC<PersonDetails> = (props) => {
       }}
     >
       {Object.entries(data).map(([key, value]) => (
-        <Box sx={{ fontSize: '14px', color }} key={key}>
-          <Typography fontWeight="bolder" paddingRight={1} display={'inline'}>
+        <Box sx={{}} key={key}>
+          <Typography fontWeight="bolder" paddingRight={1} display={'inline'} fontSize={14}>
             {capitalCase(key)}:
           </Typography>
-          <Typography display={'inline'}>{value}</Typography>
+          <Typography display={'inline'} fontSize={14}>
+            {value}
+          </Typography>
         </Box>
       ))}
     </Box>

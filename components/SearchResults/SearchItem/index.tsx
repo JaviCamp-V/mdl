@@ -3,6 +3,7 @@ import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
+import Ratings from '@/components/common/Ratings';
 import { MediaSearchResult, PersonSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin, getYear } from '@/utils/tmdbUtils';
 
@@ -60,7 +61,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
         ) : (
           <Box>
             <Typography sx={{ opacity: 0.6 }} fontSize={14}>{`${getOrigin(details)} - ${getYear(details)}`}</Typography>
-            <Rating name="read-only" value={details.vote_average / 2} precision={0.1} readOnly />
+            <Ratings rating={details.vote_average} />
           </Box>
         )}
         <Typography
