@@ -18,7 +18,7 @@ const light = createTheme({
       contrastText: 'hsl(0,0%,100%)'
     },
     secondary: {
-      main: '#176093'
+      main: '#2A2B3C'
     },
     background: {
       default: 'hsl(225,10%,92.16%)',

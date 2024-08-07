@@ -1,6 +1,5 @@
-import { cookies } from 'next/headers';
+import dynamic from 'next/dynamic';
 import { Metadata } from 'next/types';
-import MuiThemeProvider from '@/wrapper/MuiThemeProvider';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -8,10 +7,10 @@ import '@fontsource/roboto/700.css';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import CssBaseline from '@mui/material/CssBaseline';
-import GlobalStyles from '@mui/material/GlobalStyles';
 import MainLayout from '@/layout';
-import theme from '@/theme';
-import globalStyles from '@/theme/globalStyles';
+
+// TODO: Find another theme solution/ there is a lag when looading the page
+const MuiThemeProvider = dynamic(() => import('@/wrapper/MuiThemeProvider'), { ssr: false });
 
 export const metadata: Metadata = {
   title: { default: 'MyDramaList', template: `%s - MyDramaList` },

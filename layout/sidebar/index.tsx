@@ -15,16 +15,15 @@ const SideBar: React.FC<SideBarProps> = () => {
         </IconButton>
         <Drawer
           anchor="right"
-          variant="persistent"
+          variant="temporary"
           open={open}
           sx={{
             width: 240,
-            display: open ? 'block' : 'none',
             flexShrink: 0,
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: 240,
-              backgroundColor: '#242526'
+              backgroundColor: 'background.paper'
             }
           }}
         >
