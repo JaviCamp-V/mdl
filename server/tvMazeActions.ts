@@ -4,7 +4,6 @@ import tvMazeClient from '@/clients/tvMazeClient';
 import TVShowDetails from '@/types/tvMaze/ITVShowsDetails';
 import logger from '@/utils/logger';
 
-
 const endpoints = {
   lookup: '/lookup/shows'
 };

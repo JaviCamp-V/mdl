@@ -8,14 +8,13 @@ import MediaType from '@/types/tmdb/IMediaType';
 import { endingThisWeek, startingThisWeek, trending } from '@/utils/tmdbQueries';
 import DiscoverCarousel from './Results';
 
-
 interface DramaUpdatesProps {
   containerStyle?: React.CSSProperties;
 }
 const DramaUpdates: React.FC<DramaUpdatesProps> = ({ containerStyle }) => {
   const updatesQueries = { trending, startingThisWeek, endingThisWeek };
   return (
-    <Box sx={{ ...containerStyle, paddingTop: 2, paddingBottom: 4}}>
+    <Box sx={{ ...containerStyle, paddingTop: 2, paddingBottom: 4 }}>
       {Object.entries(updatesQueries).map(([title, params], index, arr) => (
         <Box paddingY={0} key={title}>
           <Typography

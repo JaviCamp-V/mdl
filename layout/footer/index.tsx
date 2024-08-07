@@ -81,12 +81,12 @@ const Footer: React.FC<FooterProps> = () => {
             }}
           >
             <Link href={link} target="_blank">
-            <Image
-              src={store === 'ios' ? '/static/images/appstore_logo.webp' : '/static/images/googleplay_logo.webp'}
-              width={30}
-              height={30}
-              alt={store}
-            />
+              <Image
+                src={store === 'ios' ? '/static/images/appstore_logo.webp' : '/static/images/googleplay_logo.webp'}
+                width={30}
+                height={30}
+                alt={store}
+              />
             </Link>
             <Box>
               <Typography
@@ -120,7 +120,7 @@ const Footer: React.FC<FooterProps> = () => {
       {model.footerLinks.map((section, index) => (
         <Box key={`footer-column-${index + 2}`} sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
           {Object.entries(section).map(([section, links]) => (
-            <Box key={section} sx={{marginBottom: 2}}>
+            <Box key={section} sx={{ marginBottom: 2 }}>
               <Typography fontWeight={700} marginBottom={1} textTransform="uppercase" fontSize={14} whiteSpace="nowrap">
                 {section}
               </Typography>

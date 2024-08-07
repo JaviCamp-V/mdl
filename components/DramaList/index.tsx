@@ -8,7 +8,6 @@ import MediaTitle from '../MediaTitle';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';
 
-
 interface DramaListProps {
   dramas: TVSearchResult[];
   length?: number;

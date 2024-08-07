@@ -11,7 +11,6 @@ import DramaList from '@/components/DramaList';
 import { TVSearchResult } from '@/types/tmdb/ISearchResposne';
 import routes from '@/libs/routes';
 
-
 export interface AiringData {
   code: string;
   dramas: TVSearchResult[];
@@ -39,7 +38,7 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
           marginBottom: 1
         }}
       >
-        <Typography  fontSize={18} fontWeight={700}>
+        <Typography fontSize={18} fontWeight={700}>
           Top Airing
         </Typography>
         <Link href={`${routes.discoverAiring}?country=${value}`} style={{ textDecoration: 'none' }}>
@@ -61,12 +60,7 @@ const TopAiringResults: React.FC<TopAiringResultsProps> = ({ data }) => {
             }}
           >
             {data.map((country) => (
-              <Tab
-                key={country.code}
-                label={country.name}
-                value={country.code}
-                sx={{textTransform: 'capitalize' }}
-              />
+              <Tab key={country.code} label={country.name} value={country.code} sx={{ textTransform: 'capitalize' }} />
             ))}
           </TabList>
         </Box>

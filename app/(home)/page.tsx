@@ -7,7 +7,6 @@ import TopAiringDramas from '@/components/Discover/TopAiring';
 import TopUpcomingDramas from '@/components/Discover/TopUpcoming';
 import { card_background } from '@/libs/common';
 
-
 type PageProps = {
   searchParams: any;
 };

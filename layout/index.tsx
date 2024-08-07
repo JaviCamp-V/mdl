@@ -12,8 +12,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Navbar />
       <Paper
         sx={{
-          backgroundColor: "background.default",
-          color: "text.primary",    
+          backgroundColor: 'background.default',
+          color: 'text.primary',
           paddingTop: 8,
           borderRadius: 0,
           paddingBottom: 4

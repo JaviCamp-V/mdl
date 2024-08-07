@@ -23,7 +23,7 @@ const PersonDetails: React.FC<PersonDetailsType> = (props) => {
     >
       <Box sx={{ width: '100%', paddingY: 2 }}>
         <Box sx={{}}>
-          <Typography fontSize={18} fontWeight={700} paddingLeft={2} >
+          <Typography fontSize={18} fontWeight={700} paddingLeft={2}>
             Details
           </Typography>
           <Box

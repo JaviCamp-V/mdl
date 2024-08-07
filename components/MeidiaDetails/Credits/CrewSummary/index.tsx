@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import MediaTitle from '@/components/MediaTitle';
 import { Credits } from '@/types/tmdb/IPeople';
 
-
 const CrewSummary: React.FC<Credits> = ({ crew }) => {
   const director = crew.filter((crew) => crew.job === 'Director');
   const writer = crew.filter((crew) => crew.job === 'Screenplay' || crew.job === 'Writer');

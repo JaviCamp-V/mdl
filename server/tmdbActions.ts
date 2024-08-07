@@ -104,8 +104,10 @@ const getTranslations = async (type: MediaType.tv | MediaType.movie, id: number)
     logger.info(`Fetching translations for ${type} with id ${id}`);
     const endpoint = `${type}/${endpoints.details}/${endpoints.translations}`.replace(':id', id.toString());
     const response = await tmdbClient.get<TranslationResponse>(endpoint);
-    const languages =  ['en', 'ja', 'ko', 'ru'];
-    return response.translations.filter((translation) => languages.includes(translation.iso_639_1)) .reduce((acc, translation) => {
+    const languages = ['en', 'ja', 'ko', 'ru'];
+    return response.translations
+      .filter((translation) => languages.includes(translation.iso_639_1))
+      .reduce((acc, translation) => {
         return acc.some((t) => t.iso_639_1 === translation.iso_639_1 || t.english_name === translation.english_name)
           ? acc
           : [...acc, translation];

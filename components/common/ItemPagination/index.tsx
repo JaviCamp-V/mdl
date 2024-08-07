@@ -12,7 +12,6 @@ interface ItemPaginationProps {
   onPageChange: (page: number) => void;
 }
 const ItemPagination: React.FC<ItemPaginationProps> = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
-  
   const numberOfPages = Math.ceil(totalItems / itemsPerPage);
   return (
     <Pagination

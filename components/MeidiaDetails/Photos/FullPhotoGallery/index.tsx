@@ -9,7 +9,6 @@ import ItemPagination from '@/components/common/ItemPagination';
 import { MediaImagesResponse } from '@/types/tmdb/IImage';
 import { scrollToElementByID } from '@/utils/scrollToElement';
 
-
 const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops }) => {
   const photos = [...posters, ...backdrops];
   const [page, setPage] = React.useState(1);

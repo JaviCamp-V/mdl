@@ -28,11 +28,11 @@ const TopUpcomingDramas: React.FC<TopUpComingDramasProps> = async ({ containerSt
           paddingX: 2
         }}
       >
-        <Typography  fontSize={18} fontWeight={700}>
+        <Typography fontSize={18} fontWeight={700}>
           Top Upcoming
         </Typography>
         <Link href={routes.discoverUpcoming} style={{ textDecoration: 'none' }}>
-          <Typography  fontSize={14} color="text.primary">
+          <Typography fontSize={14} color="text.primary">
             more
           </Typography>
         </Link>

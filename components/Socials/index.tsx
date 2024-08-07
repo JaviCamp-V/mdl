@@ -36,7 +36,7 @@ const Socials: React.FC<ExternalID> = ({ facebook_id, instagram_id, twitter_id }
                 height: 35
               }}
             >
-              <Iconify icon={`mdi:${key}`} sx={{ wight: 20, height: 20, color: "text.primary" }} />
+              <Iconify icon={`mdi:${key}`} sx={{ wight: 20, height: 20, color: 'text.primary' }} />
             </Avatar>
           </IconButton>
         ))}
