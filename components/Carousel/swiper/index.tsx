@@ -36,7 +36,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
         }
       }}
     >
-      <Swiper spaceBetween={15} slidesPerView={getSlidesPerView()} navigation={true} modules={[Navigation, A11y]}>
+      <Swiper spaceBetween={15} slidesPerView={getSlidesPerView()} navigation modules={[Navigation, A11y]}>
         {children.map((child, index) => (
           <SwiperSlide key={`swiper-${index + 1}`}>{child}</SwiperSlide>
         ))}
