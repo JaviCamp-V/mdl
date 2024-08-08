@@ -29,10 +29,10 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
       sx={{
         position: 'relative',
         '& .swiper-button-next, & .swiper-button-prev': {
-          display: 'none'
+          display: 'none!important'
         },
         '&:hover .swiper-button-next, &:hover .swiper-button-prev': {
-          display: 'block'
+          display: 'block!important'
         }
       }}
     >
