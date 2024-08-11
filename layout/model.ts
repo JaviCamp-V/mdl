@@ -18,6 +18,9 @@ const model = {
     ios: 'https://apps.apple.com/us/app/mydramalist/id1451321116',
     android: 'https://play.google.com/store/apps/details?id=com.mydramalist'
   },
+  signIn: routes.login,
+  signUp: routes.register,
+  profile: routes.home,
   navbarLinks: {
     //one row
     Home: [
