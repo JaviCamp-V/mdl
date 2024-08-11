@@ -31,10 +31,12 @@ const SearchInput: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, 
           '&:-webkit-autofill': {
             WebkitBoxShadow: `0 0 0 1000px ${fieldColor} inset`, // Prevent autofill from changing background
             WebkitTextFillColor: '#fff' // Adjust text color if needed
-          }
+          },
+          fontSize: 14
         },
         '& .MuiInputBase-input': {
-          paddingRight: 2 // Add padding before the endAdornment
+          paddingRight: 2 ,// Add padding before the endAdornment,
+        fontSize: '14px!important', // Change font size of the input text
         },
 
         '& .MuiOutlinedInput-root': {

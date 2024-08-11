@@ -17,7 +17,8 @@ const RHFElements = {
   select: SelectField,
   autocomplete: AutoCompleteField,
   ratings: RatingsField,
-  number: TextField
+  number: TextField,
+  date: TextField
 };
 
 export type RHFElementsType = keyof typeof RHFElements;

@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { Provider } from 'next-auth/providers/index';
 import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
+import getRequest from './getRequest';
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -89,9 +90,15 @@ const nextAuthOptions: NextAuthOptions = {
 };
 
 const getSession = async (): Promise<Session | null> => {
-  // const req = getRequest();
+  // const req = await getRequest();
   const session = await getServerSession(nextAuthOptions);
   return session;
 };
 
-export { nextAuthOptions, getSession };
+const getServerActionSession = async (): Promise<Session | null> => {
+  const req = await getRequest();
+  const session = await getServerSession({ req } as any);
+  return session as Session | null;
+};
+
+export { nextAuthOptions, getSession, getServerActionSession };

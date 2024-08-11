@@ -1,27 +1,26 @@
 'use server';
 
+import { getSession } from 'next-auth/react';
 import tmdbClient from '@/clients/TMDBClient';
 import { MediaImagesResponse, PersonImagesResponse } from '@/types/tmdb/IImage';
 import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import PersonDetails, { Credits, PersonRoles } from '@/types/tmdb/IPeople';
 import RatingResponse, { Rating } from '@/types/tmdb/IRating';
-import SearchResponse, {
-  MediaSearchResult,
-  MovieSearchResponse,
-  PersonSearchResponse,
-  PersonSearchResult,
-  TVSearchResponse
-} from '@/types/tmdb/ISearchResposne';
+import SearchResponse, { MediaSearchResult, MovieSearchResponse, PersonSearchResponse, PersonSearchResult, TVSearchResponse } from '@/types/tmdb/ISearchResposne';
 import SeasonDetails from '@/types/tmdb/ISeason';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import TagsResponse, { Tags } from '@/types/tmdb/ITags';
 import TitleResponse, { Title } from '@/types/tmdb/ITitle';
 import TranslationResponse, { Translation } from '@/types/tmdb/ITranslation';
 import WatchProviderResponse from '@/types/tmdb/IWatchProvider';
+import { getServerActionSession } from '@/utils/authUtils';
 import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
+import { getWatchlist } from './watchlistActions';
+
+
 
 const endpoints = {
   search_person: 'search/person',
@@ -385,9 +384,11 @@ const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
 
     const endpoint = `${endpoints.discover}`.replace(':mediaType', type);
     const response = await tmdbClient.get<DiscoverTypeMap[T]>(endpoint, params);
+    const watchlist = await getWatchlist();
     response.results = response.results.map((result) => ({
       ...result,
-      media_type: type
+      media_type: type,
+      recordId: watchlist.find((item) => item.mediaId === result.id)?.id ?? null
     })) as any;
     return response;
   } catch (error: any) {

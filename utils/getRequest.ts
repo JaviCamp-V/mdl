@@ -1,6 +1,8 @@
+'use server';
+
 import { cookies, headers } from 'next/headers';
 
-const getRequest = () => {
+const getRequest = async () => {
   const cookieData = cookies().getAll();
   const headersData = headers();
 

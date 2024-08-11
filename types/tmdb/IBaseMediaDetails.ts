@@ -10,4 +10,5 @@ export default interface BaseMediaItem {
   poster_path: string | null;
   vote_average: number;
   vote_count: number;
+  recordId: number | null;
 }

@@ -19,7 +19,7 @@ interface NavbarProps {
 }
 const Navbar: React.FC<NavbarProps> = ({ session }) => {
   return (
-    <AppBar sx={{ backgroundColor: '#00568C', zIndex: 10000 }}>
+    <AppBar sx={{ backgroundColor: '#00568C', zIndex: 100 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box

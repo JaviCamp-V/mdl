@@ -1,32 +1,41 @@
+'use client';
+
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, FormLabel, InputLabel, MenuItem, Select } from '@mui/material';
 import { Field } from '@/types/common/IForm';
+import TextField from './TextField';
 
 interface SelectFieldProps extends Field {
   options: { value: any; label: string; disabled: boolean }[];
 }
 const SelectField: React.FC<SelectFieldProps> = ({ name, options, errorMessages, ...rest }) => {
-  const { control } = useFormContext();
   const isRequired = !!errorMessages?.required;
   return (
-    <Controller
+    <TextField
+      {...rest}
       name={name}
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <FormControl fullWidth>
-          {rest.label && <InputLabel>{rest.label}</InputLabel>}
-          <Select {...field} {...rest}>
-            {!isRequired && <MenuItem value="">{rest.label}</MenuItem>}
-            {options.map((option) => (
-              <MenuItem key={option.value} value={option.value} disabled={option.disabled}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      select
+      sx={
+        {
+          // zIndex: 30000
+        }
+      }
+    >
+      {!isRequired && (
+        <MenuItem value="" color="disabled" sx={{ fontSize: '14px!important' }}>{`Select ${rest.label}`}</MenuItem>
       )}
-    />
+      {options.map((option) => (
+        <MenuItem
+          key={option.value}
+          value={option.value}
+          disabled={option.disabled}
+          sx={{ fontSize: '14px!important' }}
+        >
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 };
 

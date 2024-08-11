@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic';
 import { Metadata } from 'next/types';
 import NextAuthSessionProvider from '@/wrapper/NextAuthSessionProvider';
+import NonStickSnackbarProvider from '@/wrapper/NonStickSnackbarProvider';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
+import { Snackbar } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import MainLayout from '@/layout';
 import { getSession } from '@/utils/authUtils';
@@ -33,7 +35,9 @@ const RootLayout: React.FC<Props> = async ({ children }) => {
           <NextThemeProvider attribute="class" defaultTheme="system" enableSystem={false}>
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <MuiThemeProvider>
-                <MainLayout session={session}>{children}</MainLayout>
+                <NonStickSnackbarProvider>
+                  <MainLayout session={session}>{children}</MainLayout>
+                </NonStickSnackbarProvider>
               </MuiThemeProvider>
             </AppRouterCacheProvider>
           </NextThemeProvider>

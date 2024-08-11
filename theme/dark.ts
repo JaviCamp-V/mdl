@@ -24,6 +24,10 @@ const dark = createTheme({
     text: {
       primary: 'hsl(0deg 0% 100% / 87%)',
       secondary: 'hsl(0deg 0% 100% / 60%)'
+    },
+    info: {
+      main: '#3a3b3c', // New info color
+      contrastText: 'hsl(0deg 0% 100% / 87%)' // Text color when the button is using info color
     }
   }
 });

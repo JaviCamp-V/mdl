@@ -1,4 +1,14 @@
-type RHFElementsType = 'text' | 'password' | 'email' | 'number' | 'select' | 'checkbox' | 'ratings';
+type RHFElementsType =
+  | 'text'
+  | 'password'
+  | 'email'
+  | 'number'
+  | 'select'
+  | 'checkbox'
+  | 'ratings'
+  | 'date'
+  | 'search'
+  | 'autocomplete';
 export interface Field {
   name: string;
   label?: string | React.ReactNode;
