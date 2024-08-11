@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Session } from 'next-auth';
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,9 +11,13 @@ import ExpandableMenuItem from '@/components/ExpandableMenuItem';
 import SearchForm from '@/components/Forms/SearchForm';
 import model from '../model';
 import SideBar from '../sidebar';
+import NotificationsAlert from './sections/notifications';
+import ProfileDropdown from './sections/profile_dropdown';
 
-interface NavbarProps {}
-const Navbar: React.FC<NavbarProps> = () => {
+interface NavbarProps {
+  session?: Session | null;
+}
+const Navbar: React.FC<NavbarProps> = ({ session }) => {
   return (
     <AppBar sx={{ backgroundColor: '#00568C', zIndex: 10000 }}>
       <Container maxWidth="xl">
@@ -25,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               alignItems: 'center',
               width: '100%',
               height: 60,
-              marginX: 2
+              marginX: { xs: 2, md: 4 }
             }}
           >
             <Box
@@ -112,16 +117,39 @@ const Navbar: React.FC<NavbarProps> = () => {
                   EN
                 </Typography>
               </Box>
-              <Link href="/login" passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }}>
-                  Sign Up
-                </Typography>
-              </Link>
-              <Link href="/login" passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }} whiteSpace="nowrap">
-                  Login
-                </Typography>
-              </Link>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'left',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                {session && session.user ? (
+                  <React.Fragment>
+                    <NotificationsAlert />
+                    <ProfileDropdown username={session.user?.username ?? 'U'} />
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Link
+                      href={model.signUp}
+                      passHref
+                      style={{ textDecoration: 'none', whiteSpace: 'nowrap', marginRight: 1 }}
+                    >
+                      <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }}>
+                        Sign Up
+                      </Typography>
+                    </Link>
+                    <Link href={model.signIn} passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                      <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }} whiteSpace="nowrap">
+                        Login
+                      </Typography>
+                    </Link>
+                  </React.Fragment>
+                )}
+              </Box>
 
               <Box sx={{ display: { xs: 'flex', md: 'none' } }} whiteSpace="nowrap">
                 <SideBar />
