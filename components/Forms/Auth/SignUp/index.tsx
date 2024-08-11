@@ -12,6 +12,7 @@ import { formatErrorsAsObject } from '@/utils/handleError';
 import routes from '@/libs/routes';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
+
 interface AuthFormProps {}
 
 const SignUpForm: React.FC<AuthFormProps> = () => {
@@ -47,7 +48,6 @@ const SignUpForm: React.FC<AuthFormProps> = () => {
         }
         setError(isObject ? parsed.message : parsed);
       } else {
-        console.log(response);
         const matches: RegExpMatchArray = searchParams.get('callbackUrl')?.match(/callbackUrl=([^&]*)/) ?? [
           `callbackUrl=${window.location.origin}`,
           window.location.origin

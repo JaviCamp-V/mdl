@@ -33,7 +33,6 @@ const login = async (request: Omit<CreateUserRequest, 'email'>): Promise<AuthRes
     return await mdlApiClient.post<Omit<CreateUserRequest, 'email'>, AuthResponse>(endpoints.login, request);
   } catch (error: any) {
     logger.error('Error logging in user: ', error);
-    console.log(error);
     return error.response.data ?? error;
   }
 };
@@ -54,7 +53,6 @@ const refreshAuthToken = async (): Promise<AuthResponse | ErrorResponse> => {
     return await mdlApiClient.refreshAuthToken<AuthResponse>(endpoints.refreshToken);
   } catch (error: any) {
     logger.error('Error refreshing token: ', error);
-    console.log(error);
     return error.response.data ?? error;
   }
 };

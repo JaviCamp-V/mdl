@@ -1,5 +1,4 @@
-import { RHFElementsType } from '@/components/RHFElements';
-
+type RHFElementsType = 'text' | 'password' | 'email' | 'number' | 'select' | 'checkbox' | 'ratings';
 export interface Field {
   name: string;
   label?: string | React.ReactNode;

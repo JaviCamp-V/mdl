@@ -6,15 +6,13 @@ import Box from '@mui/material/Box';
 import SignInForm from '@/components/Forms/Auth/SignIn';
 import routes from '@/libs/routes';
 
-interface SignInPageProps {
-  searchParams: { [key: string]: string };
-}
+
+interface SignInPageProps {}
 
 export const metadata: Metadata = {
   title: 'Sign In'
 };
-const SignInPage: NextPage<SignInPageProps> = ({ searchParams: { error } }) => {
-  console.log(error);
+const SignInPage: NextPage<SignInPageProps> = () => {
   return (
     <Box
       sx={{

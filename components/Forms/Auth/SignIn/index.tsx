@@ -10,6 +10,7 @@ import RHFElementsSelector from '@/components/RHFElements';
 import ValidationError from '@/types/common/ValidationError';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
+
 interface AuthFormProps {}
 
 const SignInForm: React.FC<AuthFormProps> = () => {
@@ -44,7 +45,6 @@ const SignInForm: React.FC<AuthFormProps> = () => {
         }
         setError(isObject ? parsed.message : parsed);
       } else {
-        console.log(response);
         const matches: RegExpMatchArray = searchParams.get('callbackUrl')?.match(/callbackUrl=([^&]*)/) ?? [
           `callbackUrl=${window.location.origin}`,
           window.location.origin

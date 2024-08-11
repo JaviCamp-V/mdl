@@ -5,6 +5,7 @@ import { Provider } from 'next-auth/providers/index';
 import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
 
+
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
@@ -32,7 +33,6 @@ const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account }: { token: JWT; user: User; account: Account | null }) {
       if (user) {
-        console.log('jwt', user);
         token.accessToken = account?.access_token!;
         token.refreshToken = account?.refresh_token!;
         token.user = user;

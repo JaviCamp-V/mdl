@@ -5,9 +5,8 @@ import Box from '@mui/material/Box';
 import SignUpForm from '@/components/Forms/Auth/SignUp';
 import routes from '@/libs/routes';
 
-interface SignUpPageProps {
-  searchParams: { [key: string]: string };
-}
+
+interface SignUpPageProps {}
 
 export const metadata: Metadata = {
   title: 'Sign Up'
