@@ -34,7 +34,7 @@ const SearchForm: React.FC<SearchFormProps> = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <SearchField name="search" placeholder="Find Asian Dramas, Movies, Actors and more..." fullWidth />
+        <SearchField name="search" placeholder="Find Asian Dramas, Movies, Actors and more..." type="text" fullWidth />
       </form>
     </FormProvider>
   );
