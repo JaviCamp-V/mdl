@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { Account, NextAuthOptions, Session, User, getServerSession } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -52,6 +53,7 @@ const nextAuthOptions: NextAuthOptions = {
       token.refreshToken = refreshToken;
       token.expiry = Date.now() + Number(rest?.expiresIn);
       token.user = rest as any;
+      revalidatePath('/', 'layout');
 
       return token;
     },
@@ -69,6 +71,8 @@ const nextAuthOptions: NextAuthOptions = {
       account!.expiry = user.expiry;
       delete (user as any)?.accessToken;
       delete (user as any)?.refreshToken;
+
+      revalidatePath('/', 'layout');
 
       return true;
     }
