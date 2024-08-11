@@ -22,7 +22,7 @@ const signUp = async (request: CreateUserRequest): Promise<AuthResponse | ErrorR
     logger.info('Signing up user with email: ', request.email);
     return await mdlApiClient.post<CreateUserRequest, AuthResponse>(endpoints.register, request);
   } catch (error: any) {
-    logger.error('Error signing up user: ', error?.message);
+    logger.error('Error refreshing token: ', error?.message, error?.response?.data?.message);
     return error.response.data ?? error;
   }
 };
@@ -32,7 +32,7 @@ const login = async (request: Omit<CreateUserRequest, 'email'>): Promise<AuthRes
     logger.info('Logging in user with username: ', request.username);
     return await mdlApiClient.post<Omit<CreateUserRequest, 'email'>, AuthResponse>(endpoints.login, request);
   } catch (error: any) {
-    logger.error('Error logging in user: ', error);
+    logger.error('Error refreshing token: ', error?.message, error?.response?.data?.message);
     return error.response.data ?? error;
   }
 };
@@ -42,7 +42,7 @@ const logout = async (): Promise<GenericResponse> => {
     logger.info('Logging out user');
     return await mdlApiClient.del<GenericResponse>(endpoints.logout);
   } catch (error: any) {
-    logger.error('Error logging out user: ', error);
+    logger.error('Error refreshing token: ', error?.message, error?.response?.data?.message);
     return error.response.data ?? error;
   }
 };
@@ -52,7 +52,7 @@ const refreshAuthToken = async (): Promise<AuthResponse | ErrorResponse> => {
     logger.info('Refreshing token');
     return await mdlApiClient.refreshAuthToken<AuthResponse>(endpoints.refreshToken);
   } catch (error: any) {
-    logger.error('Error refreshing token: ', error);
+    logger.error('Error refreshing token: ', error?.message, error?.response?.data?.message);
     return error.response.data ?? error;
   }
 };
