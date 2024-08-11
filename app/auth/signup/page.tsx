@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import SignUpForm from '@/components/Forms/Auth/SignUp';
 import routes from '@/libs/routes';
 
-
 interface SignUpPageProps {}
 
 export const metadata: Metadata = {
@@ -38,11 +37,11 @@ const SignUpPage: NextPage<SignUpPageProps> = () => {
 
       <Box sx={{ flex: 1, paddingX: { xs: 4, md: 6 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography fontSize={'1.25rem'} fontWeight={700}>
-          Already have an account?
+          {'Already have an account?'}
         </Typography>
         <Typography fontSize={14} fontWeight={'bolder'}>
-          Login in your account MyDramaList and gain access to a world of Asian dramas and movies. It's quick, easy, and
-          completely free!
+          {`Login in your account MyDramaList and gain access to a world of Asian dramas and movies. It's quick, easy, and
+          completely free!`}
         </Typography>
 
         <Box>

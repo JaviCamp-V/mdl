@@ -5,7 +5,6 @@ import { Provider } from 'next-auth/providers/index';
 import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
 
-
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
