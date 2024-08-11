@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import SignInForm from '@/components/Forms/Auth/SignIn';
 import routes from '@/libs/routes';
 
-
 interface SignInPageProps {}
 
 export const metadata: Metadata = {
@@ -39,10 +38,10 @@ const SignInPage: NextPage<SignInPageProps> = () => {
 
       <Box sx={{ flex: 1, paddingX: { xs: 4, md: 6 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography fontSize={'1.25rem'} fontWeight={700}>
-          Don't have an account?
+          {"Don't have an account?"}
         </Typography>
         <Typography fontSize={14} fontWeight={'bolder'}>
-          Sign up for MyDramaList and gain access to a world of Asian dramas and movies. It's quick, easy, and
+          Sign up for MyDramaList and gain access to a world of Asian dramas and movies. It&apos;s quick, easy, and
           completely free!
         </Typography>
         <Typography fontSize={14}>By creating an account, you can enjoy the following features:</Typography>
@@ -59,7 +58,7 @@ const SignInPage: NextPage<SignInPageProps> = () => {
         </Box>
 
         <Typography fontSize={14}>
-          Don't miss out - sign up now and start enjoying all the benefits of MyDramaList.
+          Don&apos;t miss out - sign up now and start enjoying all the benefits of MyDramaList.
         </Typography>
 
         <Box>

@@ -12,7 +12,6 @@ import { formatErrorsAsObject } from '@/utils/handleError';
 import routes from '@/libs/routes';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
-
 interface AuthFormProps {}
 
 const SignUpForm: React.FC<AuthFormProps> = () => {

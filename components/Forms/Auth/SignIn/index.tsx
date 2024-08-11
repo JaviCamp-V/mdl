@@ -10,7 +10,6 @@ import RHFElementsSelector from '@/components/RHFElements';
 import ValidationError from '@/types/common/ValidationError';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
-
 interface AuthFormProps {}
 
 const SignInForm: React.FC<AuthFormProps> = () => {
