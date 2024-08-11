@@ -1,6 +1,5 @@
 import routes from '@/libs/routes';
 
-
 const model = {
   //Fist column  brand info
   logo: '/static/images/logo_w.webp',

@@ -7,7 +7,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
-
 const ThemeButtons = () => {
   const { theme, setTheme } = useTheme();
   const options = [

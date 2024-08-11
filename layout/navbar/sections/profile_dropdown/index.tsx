@@ -12,7 +12,6 @@ import { logout } from '@/server/authActions';
 import Iconify from '@/components/Icon/Iconify';
 import { userRoutes } from '@/libs/routes';
 
-
 interface ProfileDropdownProps {
   username: string;
   avatar?: string | null;
