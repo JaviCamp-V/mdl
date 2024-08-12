@@ -2,6 +2,7 @@ import { number } from 'yup';
 import { Field } from '@/types/common/IForm';
 import AutoCompleteField from './AutoCompleteField';
 import CheckBoxField from './CheckBoxField';
+import DatePickerField from './DatePickerField';
 import PasswordField from './PasswordField';
 import RatingsField from './RatingsField';
 import SearchField from './SearchField';
@@ -18,7 +19,7 @@ const RHFElements = {
   autocomplete: AutoCompleteField,
   ratings: RatingsField,
   number: TextField,
-  date: TextField
+  date: DatePickerField
 };
 
 export type RHFElementsType = keyof typeof RHFElements;

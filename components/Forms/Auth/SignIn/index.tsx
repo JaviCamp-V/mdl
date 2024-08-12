@@ -10,6 +10,7 @@ import RHFElementsSelector from '@/components/RHFElements';
 import ValidationError from '@/types/common/ValidationError';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
+
 interface AuthFormProps {}
 
 const SignInForm: React.FC<AuthFormProps> = () => {
@@ -50,7 +51,7 @@ const SignInForm: React.FC<AuthFormProps> = () => {
         ];
         const callbackUrl = decodeURIComponent(matches[1].replace(/\+/g, ' '));
         const callbackParsedUrl = new URL(callbackUrl);
-        router.push(callbackParsedUrl.hostname === window.location.hostname ? callbackUrl : window.location.origin);
+        router.replace(callbackParsedUrl.hostname === window.location.hostname ? callbackUrl : window.location.origin);
       }
     } catch (error) {
       setError('An error occurred while signing in');

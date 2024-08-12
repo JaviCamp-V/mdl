@@ -30,6 +30,7 @@ import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/tmdb/IMediaType';
 import UpdateWatchlistRequest from '@/types/watchlist/IUpdateWatchlistRequest';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
+import { formatDate, formatStringDate } from '@/utils/formatters';
 import WatchRecordHistoryList from './history';
 
 interface WatchlistRecordProps {
@@ -72,8 +73,8 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
       priority: record.priority ?? defaultValues.priority,
       rewatchValue: record.rewatchValue ?? defaultValues.rewatchValue,
       rewatchCount: record.rewatchCount ?? defaultValues.rewatchCount,
-      startDate: record.startDate ?? defaultValues.startDate,
-      endDate: record.endDate ?? defaultValues.endDate
+      startDate: record.startDate ? formatStringDate(record.startDate) : defaultValues.startDate,
+      endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
     };
   }, [record]);
   console.log(newDefaultValues);
@@ -87,10 +88,13 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
     console.log(formData);
+    const { startDate, endDate } = formData;
     const request: UpdateWatchlistRequest = {
       ...formData,
       mediaType: mediaType.toUpperCase() as MediaType,
-      mediaId: id
+      mediaId: id,
+      startDate: startDate ? formatDate(startDate) : null,
+      endDate: endDate ? formatDate(endDate) : null
     };
     const response = await updateWatchlistRecord(request);
     if (response && 'errors' in response) {

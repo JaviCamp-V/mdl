@@ -7,12 +7,14 @@ import GenericResponse from '@/types/common/GenericResponse';
 import GeneralWatchlistRecord from '@/types/watchlist/IGeneralWatchlistRecord';
 import UpdateWatchlistRequest from '@/types/watchlist/IUpdateWatchlistRequest';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
+import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 
 const baseUrl = 'user/watchlist';
 const endpoints = {
-  byId: '/:id',
-  byMedia: '/{mediaType}/{mediaId}'
+  byId: '/record/:id',
+  byUsername: '/{username}',
+  byMedia: '/record/{mediaType}/{mediaId}'
 };
 
 const updateWatchlistRecord = async (request: UpdateWatchlistRequest): Promise<GenericResponse | ErrorResponse> => {
@@ -22,9 +24,10 @@ const updateWatchlistRecord = async (request: UpdateWatchlistRequest): Promise<G
     revalidatePath('/', 'layout');
     return response;
   } catch (error: any) {
-    console.log(error);
-    logger.error(`Error updating watchlist record: ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error updating watchlist record: ${error?.message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
@@ -38,6 +41,17 @@ const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
   }
 };
 
+const getWatchlistForUser = async (username: string): Promise<GeneralWatchlistRecord[]> => {
+  try {
+    logger.info(`Fetching watchlist for user with  ${username}`);
+    const endpoint = baseUrl + endpoints.byUsername.replace('{username}', username);
+    return await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoint);
+  } catch (error: any) {
+    logger.error(`Error fetching watchlist for user: ${error?.message}, ${error?.response?.data?.message}`);
+    return [];
+  }
+};
+
 const getWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | ErrorResponse> => {
   try {
     logger.info('Fetching watchlist record with id: ', id);
@@ -46,8 +60,10 @@ const getWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | 
     return await mdlApiClient.get<WatchlistRecord>(endpoint);
   } catch (error: any) {
     console.log(error);
-    logger.error(`Error fetching watchlist record: ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error fetching watchlist record: ${error?.message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
@@ -61,8 +77,10 @@ const getWatchlistRecordByMedia = async (
       baseUrl + endpoints.byMedia.replace('{mediaType}', mediaType).replace('{mediaId}', mediaId.toString());
     return await mdlApiClient.get<WatchlistRecord>(endpoint);
   } catch (error: any) {
-    logger.error(`Error fetching watchlist record: ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error fetching watchlist record: ${error?.message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 const deleteWatchlistRecord = async (id: number): Promise<GenericResponse | ErrorResponse> => {
@@ -73,8 +91,10 @@ const deleteWatchlistRecord = async (id: number): Promise<GenericResponse | Erro
     revalidatePath('/', 'layout');
     return response;
   } catch (error: any) {
-    logger.error(`Error deleting watchlist record: ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+      const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error deleting watchlist record: ${error?.message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 

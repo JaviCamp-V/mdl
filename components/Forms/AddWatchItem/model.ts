@@ -6,6 +6,7 @@ import RewatchValue from '@/types/watchlist/RewatchValue';
 import WatchStatus from '@/types/watchlist/WatchStatus';
 import getDefaultValues from '@/utils/getDefaultValues';
 
+
 const generalModel: FieldModel = {
   watchStatus: {
     name: 'watchStatus',
@@ -129,11 +130,11 @@ const advancedModelSchema = yup.object().shape({
   rewatchCount: yup.number().transform((x) => (!x ? undefined : x)),
   // .typeError(advancedModel.rewatchCount.errorMessages?.invalid!),
   startDate: yup
-    .string()
+    .date()
     .transform((x) => (!x ? undefined : x))
     .typeError(advancedModel.startDate.errorMessages?.invalid!),
   endDate: yup
-    .string()
+    .date()
     .transform((x) => (!x ? undefined : x))
     .typeError(advancedModel.endDate.errorMessages?.invalid!)
 });

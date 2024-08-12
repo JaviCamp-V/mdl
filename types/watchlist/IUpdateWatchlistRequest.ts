@@ -8,12 +8,12 @@ export default interface UpdateWatchlistRequest {
   mediaId: number;
   mediaType: MediaType;
   watchStatus: WatchStatus;
-  rating?: number;
-  episodeWatched?: number;
-  notes?: string;
-  priority?: PriorityLevel;
-  rewatchValue?: RewatchValue;
+  rating?: number | null;
+  episodeWatched?: number | null;
+  notes?: string | null;
+  priority?: PriorityLevel | null;
+  rewatchValue?: RewatchValue | null;
   rewatchCount?: number;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | null;
+  endDate?: string | null;
 }

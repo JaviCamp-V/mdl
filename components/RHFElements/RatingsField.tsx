@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import StarIcon from '@mui/icons-material/Star';
 import { Box, FormControl, FormLabel, Typography } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { Field } from '@/types/common/IForm';
@@ -14,14 +15,14 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
 
   return (
     <FormControl fullWidth>
-      <FormLabel sx={{ marginBottom: 0.5, fontSize: '14px' }}>{label}</FormLabel>
+      <FormLabel sx={{ marginBottom: 0.5, fontSize: '14px', color: 'info.contrastText' }}>{label}</FormLabel>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', gap: 2 }}>
         <Box sx={{ width: '25%' }}>
           <TextField
             name={name}
             type="number"
             size="small"
-            inputProps={{ inputMode: 'numeric', min: 0, max: 5, step: 0.5 }}
+            inputProps={{ inputMode: 'numeric', min: 0, max: total, step: 0.5 }}
             fullWidth={false}
           />
         </Box>
@@ -33,19 +34,28 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
               <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
                 <Rating
                   size={'large'}
-                  value={field.value}
+                  value={Number(field.value) / 2}
                   name={name}
                   precision={0.5}
-                  max={5}
                   onChangeActive={(_, newHover) => {
+                    console.log('newHover: ', newHover);
                     setHover(newHover);
+                  }}
+                  onChange={(_, newValue) => {
+                    console.log('newValue: ', newValue);
+                    field.onChange(newValue ? newValue * 2 : 0);
+                  }}
+                  sx={{
+                    '& .MuiRating-iconEmpty': {
+                      color: 'inherit'
+                    }
                   }}
                 />
                 <Typography fontSize={'14px'}>
                   <Typography component={'span'} fontWeight={'bolder'}>
                     {hover !== -1 ? hover : field.value}
                   </Typography>
-                  {` / ${(total ?? 10) / 2}`}
+                  {` / ${total}`}
                 </Typography>
               </Box>
             )}

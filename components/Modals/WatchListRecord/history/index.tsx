@@ -4,7 +4,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import Box from '@mui/material/Box';
 import Ratings from '@/components/common/Ratings';
 import WatchlistHistory from '@/types/watchlist/IWatchlistHistory';
-import { formatShortDate, formatStringDate } from '@/utils/formatters';
+import { formatDateToDistance, formatShortDate, formatStringDate } from '@/utils/formatters';
 
 interface WatchRecordHistoryListProps {
   history: WatchlistHistory[];
@@ -12,9 +12,13 @@ interface WatchRecordHistoryListProps {
 const WatchRecordHistoryList: React.FC<WatchRecordHistoryListProps> = ({ history }) => {
   const columns = [
     { field: 'watchStatus', headerName: 'Watch Status', format: (value: any) => capitalCase(value) },
-    { field: 'episodeWatched', headerName: 'Episodes Seen', format: (value: any) => value },
+    { field: 'episodeWatched', headerName: 'Watched', format: (value: any) => `${value} eps` },
     { field: 'rating', headerName: 'Rating', format: (value: any) => value },
-    { field: 'timestamp', headerName: 'Timestamp', format: (value: any) => formatShortDate(formatStringDate(value)) }
+    {
+      field: 'timestamp',
+      headerName: 'Timestamp',
+      format: (value: any) => formatDateToDistance(value)
+    }
   ];
   return (
     <Box sx={{ width: '100%' }}>

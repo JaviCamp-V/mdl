@@ -4,6 +4,7 @@ import { Box, FormControl, FormLabel } from '@mui/material';
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 import { Field } from '@/types/common/IForm';
 
+
 export type TextFieldProps = MuiTextFieldProps &
   Field & {
     name: string;
@@ -26,7 +27,7 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...pr
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth>
-          {label && <FormLabel sx={{ paddingBottom: 0.5, fontSize: '14px' }}>{label}</FormLabel>}
+          {/* {label && <FormLabel sx={{ paddingBottom: 0.5, fontSize: '14px' }}>{label}</FormLabel>} */}
           <MuiTextField
             sx={{
               '& .MuiInputBase-root': {
@@ -41,7 +42,21 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...pr
                   WebkitTextFillColor: 'info.contrastText' // Adjust text color if needed
                 }
               },
-
+              '& .MuiInputLabel-root': {
+                fontSize: '14px', // Change font size of the label text,
+                color: 'info.contrastText'
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none'
+              },
+              '&.Mui-focused': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none'
+                }
+              },
+              '& .MuiSelect-icon': {
+                color: 'info.contrastText' // Change the icon color
+              },
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
                   borderColor: 'background.paper' // Default border color
@@ -59,6 +74,7 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...pr
               ...sx,
               fontSize: '14px'
             }}
+            label={label}
             {...field}
             {...props}
             error={Boolean(!hideError && !!error)}

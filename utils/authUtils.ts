@@ -46,7 +46,7 @@ const nextAuthOptions: NextAuthOptions = {
 
       const response = await refreshAuthToken();
       if ('errors' in response) {
-        return token; // figure out what to do here
+        return token;
       }
 
       const { accessToken, refreshToken, ...rest } = response;
@@ -73,7 +73,6 @@ const nextAuthOptions: NextAuthOptions = {
       delete (user as any)?.accessToken;
       delete (user as any)?.refreshToken;
 
-      revalidatePath('/', 'layout');
 
       return true;
     }
