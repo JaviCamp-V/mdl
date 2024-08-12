@@ -6,7 +6,6 @@ import MostPopularDramas from '@/components/Discover/MostPopular';
 import TopAiringDramas from '@/components/Discover/TopAiring';
 import TopUpcomingDramas from '@/components/Discover/TopUpcoming';
 
-
 type PageProps = {
   searchParams: any;
 };

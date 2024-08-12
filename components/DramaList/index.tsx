@@ -40,11 +40,7 @@ const DramaList: React.FC<DramaListProps> = ({ dramas, length = 5 }) => {
           <Box sx={{ width: '60%' }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, alignItems: 'flex-end', flexWrap: 'wrap' }}>
               <MediaTitle title={result.name} id={result.id} mediaType={MediaType.tv} fontSize={'14px'} />
-              <EditWatchlistButton
-                type={MediaType.tv}
-                id={result.id}
-                recordId={result.recordId}
-              />
+              <EditWatchlistButton type={MediaType.tv} id={result.id} recordId={result.recordId} />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Ratings rating={result.vote_average / 2} />

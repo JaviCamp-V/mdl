@@ -9,7 +9,6 @@ import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import logger from '@/utils/logger';
 
-
 const endpoints = {
   login: 'auth/login',
   logout: 'auth/logout',

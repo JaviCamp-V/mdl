@@ -4,7 +4,6 @@ import { Box, FormControl, FormLabel } from '@mui/material';
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 import { Field } from '@/types/common/IForm';
 
-
 export type TextFieldProps = MuiTextFieldProps &
   Field & {
     name: string;

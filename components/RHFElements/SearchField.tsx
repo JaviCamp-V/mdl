@@ -35,8 +35,8 @@ const SearchInput: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, 
           fontSize: 14
         },
         '& .MuiInputBase-input': {
-          paddingRight: 2 ,// Add padding before the endAdornment,
-        fontSize: '14px!important', // Change font size of the input text
+          paddingRight: 2, // Add padding before the endAdornment,
+          fontSize: '14px!important' // Change font size of the input text
         },
 
         '& .MuiOutlinedInput-root': {

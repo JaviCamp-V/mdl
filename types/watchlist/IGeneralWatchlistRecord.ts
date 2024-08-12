@@ -1,7 +1,6 @@
 import MediaType from '../tmdb/IMediaType';
 import WatchStatus from './WatchStatus';
 
-
 export default interface GeneralWatchlistRecord {
   id: number;
   mediaId: number;

@@ -45,13 +45,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
     reviews: <Box />,
     recommendations: <Box />,
     photos: <Photos id={details.id} mediaType={type} view="all" />
-  }[tab] || (
-    <DetailsTabPanel
-      id={details.id}
-      mediaType={type}
-      details={details}
-    />
-  );
+  }[tab] || <DetailsTabPanel id={details.id} mediaType={type} details={details} />;
   const title = getTitle({ ...details, media_type: type } as any);
   const year = getYear({ ...details, media_type: type } as any);
   const getLink = (link: string) => {

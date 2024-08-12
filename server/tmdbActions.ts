@@ -7,7 +7,13 @@ import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import PersonDetails, { Credits, PersonRoles } from '@/types/tmdb/IPeople';
 import RatingResponse, { Rating } from '@/types/tmdb/IRating';
-import SearchResponse, { MediaSearchResult, MovieSearchResponse, PersonSearchResponse, PersonSearchResult, TVSearchResponse } from '@/types/tmdb/ISearchResposne';
+import SearchResponse, {
+  MediaSearchResult,
+  MovieSearchResponse,
+  PersonSearchResponse,
+  PersonSearchResult,
+  TVSearchResponse
+} from '@/types/tmdb/ISearchResposne';
 import SeasonDetails from '@/types/tmdb/ISeason';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import TagsResponse, { Tags } from '@/types/tmdb/ITags';
@@ -19,7 +25,6 @@ import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
 import { getWatchlist } from './watchlistActions';
-
 
 const endpoints = {
   search_person: 'search/person',

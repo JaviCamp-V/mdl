@@ -7,7 +7,6 @@ import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
 import getRequest from './getRequest';
 
-
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
@@ -41,7 +40,7 @@ const nextAuthOptions: NextAuthOptions = {
         token.expiry = Date.now() + Number(user?.expiresIn);
       }
 
-      if (token.expiry && Date.now() < (token.expiry - 300000)) {
+      if (token.expiry && Date.now() < token.expiry - 300000) {
         return token;
       }
 
@@ -72,7 +71,6 @@ const nextAuthOptions: NextAuthOptions = {
       account!.expiry = user.expiry;
       delete (user as any)?.accessToken;
       delete (user as any)?.refreshToken;
-
 
       return true;
     }

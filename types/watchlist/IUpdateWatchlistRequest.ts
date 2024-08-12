@@ -3,7 +3,6 @@ import PriorityLevel from './PriorityLevel';
 import RewatchValue from './RewatchValue';
 import WatchStatus from './WatchStatus';
 
-
 export default interface UpdateWatchlistRequest {
   mediaId: number;
   mediaType: MediaType;

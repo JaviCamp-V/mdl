@@ -3,7 +3,6 @@
 import { Lato } from 'next/font/google';
 import { createTheme } from '@mui/material/styles';
 
-
 const lato = Lato({ subsets: ['latin'], display: 'swap', weight: ['300', '400', '700'] });
 
 const dark = createTheme({

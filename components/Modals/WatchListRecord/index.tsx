@@ -4,25 +4,9 @@ import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  IconButton
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import { deleteWatchlistRecord, updateWatchlistRecord } from '@/server/watchlistActions';
-import {
-  FormType,
-  advancedModel,
-  defaultValues,
-  formSchema,
-  generalModel
-} from '@/components/Forms/AddWatchItem/model';
+import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '@/components/Forms/AddWatchItem/model';
 import DramaPoster from '@/components/Poster';
 import RHFForm from '@/components/RHFElements/RHFForm';
 import SlideTransition from '@/components/common/SlideTransition';
@@ -37,6 +21,7 @@ import { formatDate, formatStringDate } from '@/utils/formatters';
 import { getTitle, getYear, hasRelease } from '@/utils/tmdbUtils';
 import WatchRecordHistoryList from './history';
 
+
 interface WatchlistRecordProps {
   open: boolean;
   onClose: () => void;
@@ -47,7 +32,6 @@ interface WatchlistRecordProps {
 }
 
 const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, mediaData, id, mediaType, record }) => {
-
   const [view, setView] = React.useState<'General' | 'Advanced' | 'History'>('General');
   const buttons = ['General', 'Advanced', 'History'].filter((button) => record || button !== 'History');
 
@@ -71,7 +55,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, m
     advancedModel.rewatchCount.disabled = !isReleased;
 
     return view === 'General' ? generalModel : advancedModel;
-  }, [view]);
+  }, [view, mediaData, isReleased, mediaType]);
 
   const newDefaultValues = React.useMemo(() => {
     if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
@@ -98,7 +82,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, m
         path: 'episodeWatched'
       });
     });
-  }, [mediaData]);
+  }, [mediaData, mediaType]);
 
   const methods = useForm<FormType>({
     mode: 'onChange',
@@ -147,7 +131,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, m
       onClose={onClose}
       maxWidth="sm"
       scroll="body"
-      fullWidth={true}
+      fullWidth
       sx={{}}
     >
       <Box

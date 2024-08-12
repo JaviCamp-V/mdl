@@ -1,6 +1,5 @@
 import { format, formatDistance } from 'date-fns';
 
-
 /**
  *
  * @param date
