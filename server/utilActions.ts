@@ -21,4 +21,8 @@ const setTheme = async (theme: 'light' | 'dark') => {
   return { success: true };
 };
 
-export { refreshPage, setTheme };
+const revalidateAll = async () => {
+  revalidatePath('/', 'layout'); // make user speficic
+};
+
+export { refreshPage, setTheme, revalidateAll };

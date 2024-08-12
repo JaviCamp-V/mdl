@@ -48,14 +48,8 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
   }[tab] || (
     <DetailsTabPanel
       id={details.id}
-      poster_path={details.poster_path}
       mediaType={type}
-      overview={details.overview}
-      genres={details.genres}
-      original_title={type === MediaType.movie ? details.original_title : details.original_name}
-      external_ids={details.external_ids}
-      vote_average={details.vote_average}
-      vote_count={details.vote_count}
+      details={details}
     />
   );
   const title = getTitle({ ...details, media_type: type } as any);
@@ -116,6 +110,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
           {type === MediaType.tv && (
             <NextEpisode
               tvdb_id={details?.external_ids?.tvdb_id}
+              imdb_id={details?.external_ids?.imdb_id}
               number_of_episodes={details.number_of_episodes}
               containerStyle={{ ...containerStyle, minHeight: 0 }}
               next_episode_to_air={details.next_episode_to_air}

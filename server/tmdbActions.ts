@@ -21,7 +21,6 @@ import { without_genres } from '@/libs/genres';
 import { getWatchlist } from './watchlistActions';
 
 
-
 const endpoints = {
   search_person: 'search/person',
   search: 'search',
@@ -85,7 +84,14 @@ const getDetails = async <T extends MediaType>(type: T, id: number): Promise<Med
     const params = { append_to_response: 'external_ids' };
     const response = await tmdbClient.get<MediaDetailsMap[T]>(endpoint, params);
     const isValid = type === MediaType.person ? isAsian(response as any) : isAsianMedia(response as any);
-    return isValid ? response : null;
+    if (!isValid) {
+      logger.info(`Content is not Asian, skipping...`);
+      return null;
+    }
+    if (type === MediaType.person) return response;
+    const watchlist = await getWatchlist();
+    const record = watchlist.find((item) => item.mediaId === Number(id) && item.mediaType === type.toUpperCase());
+    return { ...response, recordId: record?.id ?? null, watchStatus: record?.watchStatus ?? null };
   } catch (error: any) {
     logger.error(error.message);
     return null;
@@ -388,7 +394,9 @@ const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
     response.results = response.results.map((result) => ({
       ...result,
       media_type: type,
-      recordId: watchlist.find((item) => item.mediaId === result.id)?.id ?? null
+      recordId:
+        watchlist.find((item) => item.mediaId === Number(result.id) && item.mediaType === type.toUpperCase())?.id ??
+        null
     })) as any;
     return response;
   } catch (error: any) {
@@ -425,9 +433,13 @@ const getSearchType = async <T extends MediaType>(type: T, query: string, page?:
     const endpoint = `${endpoints.search}/${type}`;
     const params = new URLSearchParams({ query, page: page ?? '1' });
     const response = await tmdbClient.get<SearchTypeMap[T]>(endpoint, params);
+    const watchlist = await getWatchlist();
     response.results = response.results.map((result) => ({
       ...result,
-      media_type: type
+      media_type: type,
+      recordId:
+        watchlist.find((item) => item.mediaId === Number(result.id) && item.mediaType === type.toUpperCase())?.id ??
+        null
     })) as any[];
     const results = isMediaSearchResult(response)
       ? (response.results.filter((media) => isAsianMedia(media)) as any[])

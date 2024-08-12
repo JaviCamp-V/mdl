@@ -3,6 +3,7 @@
 import { Lato } from 'next/font/google';
 import { createTheme } from '@mui/material/styles';
 
+
 const lato = Lato({ subsets: ['latin'], display: 'swap', weight: ['300', '400', '700'] });
 
 const light = createTheme({
@@ -26,7 +27,7 @@ const light = createTheme({
       secondary: 'rgb(0 0 0 / 87%)'
     },
     info: {
-      main: '#fff', // New info color
+      main: 'hsl(225,10%,92.16%)', // New info color
       contrastText: 'rgb(0 0 0 / 87%)' // Text color when the button is using info color
     }
   }

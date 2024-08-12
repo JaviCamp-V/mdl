@@ -1,3 +1,4 @@
+import WatchStatus from '../watchlist/WatchStatus';
 import BaseMediaItem from './IBaseMediaDetails';
 import ExternalID from './IExternalID';
 import Genre from './IGenre';
@@ -32,4 +33,5 @@ export default interface TVDetails extends BaseMediaItem {
   tagline: string;
   type: string;
   external_ids: ExternalID;
+  watchStatus: WatchStatus | null;
 }

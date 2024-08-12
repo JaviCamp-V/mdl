@@ -43,9 +43,6 @@ const DramaList: React.FC<DramaListProps> = ({ dramas, length = 5 }) => {
               <EditWatchlistButton
                 type={MediaType.tv}
                 id={result.id}
-                poster_path={result.poster_path}
-                title={result.name}
-                year={getYear(result)}
                 recordId={result.recordId}
               />
             </Box>

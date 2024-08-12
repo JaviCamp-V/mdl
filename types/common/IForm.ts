@@ -27,6 +27,11 @@ export interface Field {
   rows?: number;
   total?: number;
   options?: { value: any; label: string; disabled: boolean }[];
+  disabled?: boolean;
+  min?: number;
+  max?: number;
+  maxDate?: Date;
+  minDate?: Date;
 }
 
 export interface FieldModel {

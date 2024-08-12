@@ -1,11 +1,12 @@
 import { capitalCase } from 'change-case';
+import dayjs from 'dayjs';
 import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import PriorityLevel from '@/types/watchlist/PriorityLevel';
 import RewatchValue from '@/types/watchlist/RewatchValue';
 import WatchStatus from '@/types/watchlist/WatchStatus';
+import { plusDays } from '@/utils/dateUtils';
 import getDefaultValues from '@/utils/getDefaultValues';
-
 
 const generalModel: FieldModel = {
   watchStatus: {
@@ -28,6 +29,8 @@ const generalModel: FieldModel = {
       required: 'Episodes watched is required',
       max: 'Episodes watched cannot be more than released episodes'
     },
+    min: 0,
+    max: 0,
     breakpoints: { xs: 12 }
   },
   rating: {
@@ -81,14 +84,16 @@ const advancedModel: FieldModel = {
     name: 'startDate',
     label: 'Start Date',
     type: 'date',
-    errorMessages: { invalid: 'Must be a valid date' },
+    maxDate: new Date(),
+    errorMessages: { invalid: 'Must be a valid date', max: 'Start date cannot be in the future' },
     breakpoints: { xs: 12 }
   },
   endDate: {
     name: 'endDate',
     label: 'End Date',
     type: 'date',
-    errorMessages: { invalid: 'Must be a valid date' },
+    maxDate: new Date(),
+    errorMessages: { invalid: 'Must be a valid date', max: 'End date cannot be in the future' },
     breakpoints: { xs: 12 }
   }
 };
@@ -105,6 +110,8 @@ const generalModelSchema = yup.object().shape({
   rating: yup
     .number()
     .transform((x) => (x ? Number(x) : undefined))
+    .min(0, generalModel?.rating?.errorMessages?.invalid)
+    .max(10, generalModel?.rating?.errorMessages?.invalid)
     .typeError(generalModel.rating.errorMessages?.invalid!),
   notes: yup
     .string()
@@ -131,12 +138,20 @@ const advancedModelSchema = yup.object().shape({
   // .typeError(advancedModel.rewatchCount.errorMessages?.invalid!),
   startDate: yup
     .date()
+    .nullable()
     .transform((x) => (!x ? undefined : x))
-    .typeError(advancedModel.startDate.errorMessages?.invalid!),
+    .max(
+      plusDays(advancedModel?.startDate?.maxDate!, 1).toISOString().split('T')[0],
+      advancedModel?.startDate?.errorMessages?.max
+    ),
   endDate: yup
     .date()
+    .nullable()
     .transform((x) => (!x ? undefined : x))
-    .typeError(advancedModel.endDate.errorMessages?.invalid!)
+    .max(
+      plusDays(advancedModel?.endDate?.maxDate!, 1).toISOString().split('T')[0],
+      advancedModel?.endDate?.errorMessages?.max
+    )
 });
 
 export type GeneralFormType = yup.InferType<typeof generalModelSchema>;

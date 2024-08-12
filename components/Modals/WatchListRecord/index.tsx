@@ -28,9 +28,13 @@ import RHFForm from '@/components/RHFElements/RHFForm';
 import SlideTransition from '@/components/common/SlideTransition';
 import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/tmdb/IMediaType';
+import MovieDetails from '@/types/tmdb/IMovieDetails';
+import TVDetails from '@/types/tmdb/ITVDetails';
 import UpdateWatchlistRequest from '@/types/watchlist/IUpdateWatchlistRequest';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
+import WatchStatus from '@/types/watchlist/WatchStatus';
 import { formatDate, formatStringDate } from '@/utils/formatters';
+import { getTitle, getYear, hasRelease } from '@/utils/tmdbUtils';
 import WatchRecordHistoryList from './history';
 
 interface WatchlistRecordProps {
@@ -38,35 +42,41 @@ interface WatchlistRecordProps {
   onClose: () => void;
   mediaType: MediaType;
   id: number;
-  poster_path: string | null;
-  title: string;
-  year: string | number;
+  mediaData: TVDetails | MovieDetails;
   record: WatchlistRecord | null;
 }
 
-const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
-  open,
-  onClose,
-  title,
-  year,
-  poster_path,
-  id,
-  mediaType,
-  record
-}) => {
+const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, mediaData, id, mediaType, record }) => {
+
   const [view, setView] = React.useState<'General' | 'Advanced' | 'History'>('General');
   const buttons = ['General', 'Advanced', 'History'].filter((button) => record || button !== 'History');
 
+  const isReleased = hasRelease(mediaData, mediaType);
+
   const formFields = React.useMemo(() => {
     if (view === 'History') return {};
+    generalModel.watchStatus.options = generalModel.watchStatus.options?.map((option) => {
+      let disabled = option.value !== WatchStatus.PLAN_TO_WATCH && !isReleased;
+      if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
+        disabled = (mediaData as TVDetails).last_episode_to_air?.episode_type !== 'finale';
+      }
+      return { ...option, disabled };
+    });
+    generalModel.episodeWatched.disabled = !isReleased || mediaType === MediaType.movie;
+    generalModel.episodeWatched.max = mediaType === MediaType.tv ? (mediaData as TVDetails).number_of_episodes : 0;
+    generalModel.rating.disabled = !isReleased;
+    advancedModel.startDate.disabled = !isReleased;
+    advancedModel.endDate.disabled = !isReleased;
+    advancedModel.rewatchValue.disabled = !isReleased;
+    advancedModel.rewatchCount.disabled = !isReleased;
+
     return view === 'General' ? generalModel : advancedModel;
   }, [view]);
 
-  console.log(record);
   const newDefaultValues = React.useMemo(() => {
-    if (!record) return defaultValues;
+    if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
     return {
-      watchStatus: record.watchStatus ?? defaultValues.watchStatus,
+      watchStatus: record.watchStatus ?? WatchStatus.PLAN_TO_WATCH,
       episodeWatched: record.episodeWatched ?? defaultValues.episodeWatched,
       rating: record.rating ?? defaultValues.rating,
       notes: record.notes ?? defaultValues.notes,
@@ -77,17 +87,28 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
       endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
     };
   }, [record]);
-  console.log(newDefaultValues);
+
+  const updatedSchema = React.useMemo(() => {
+    return formSchema.test('validEpisodeWatched', '', (value, context) => {
+      if (!value?.episodeWatched) return true;
+      const totalEpisodes = mediaType === MediaType.tv ? (mediaData as TVDetails).number_of_episodes : 0;
+      if (value.episodeWatched <= totalEpisodes) return true;
+      return context.createError({
+        message: 'Episodes watched cannot be more than released episodes',
+        path: 'episodeWatched'
+      });
+    });
+  }, [mediaData]);
+
   const methods = useForm<FormType>({
     mode: 'onChange',
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver(updatedSchema),
     defaultValues: newDefaultValues,
     shouldFocusError: true,
     criteriaMode: 'all'
   });
 
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
-    console.log(formData);
     const { startDate, endDate } = formData;
     const request: UpdateWatchlistRequest = {
       ...formData,
@@ -110,7 +131,6 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
   const onDelete = async () => {
     if (!record) return;
-    console.log(record);
     const response = await deleteWatchlistRecord(record?.id);
     if (response && 'errors' in response) {
       enqueueSnackbar('An error occurred while deleting the record', { variant: 'error' });
@@ -133,7 +153,11 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
       <Box
         sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingTop: 2 }}
       >
-        <DialogTitle fontSize={18} padding={'0!important'} marginLeft={2}>{`${title} (${year})`}</DialogTitle>
+        <DialogTitle
+          fontSize={18}
+          padding={'0!important'}
+          marginLeft={2}
+        >{`${getTitle(mediaData as any)} (${getYear(mediaData as any)})`}</DialogTitle>
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -151,7 +175,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
           <Grid item xs={12} md={4.5}>
             <Box sx={{ backgroundColor: 'background.default', padding: 2, height: { xs: 'max-content', md: '55vh' } }}>
               <Box sx={{ width: '100%', height: '30vh', display: { xs: 'none', md: 'block' } }}>
-                <DramaPoster src={poster_path} id={id} mediaType={mediaType} size="w300" />
+                <DramaPoster src={mediaData.poster_path} id={id} mediaType={mediaType} size="w300" />
               </Box>
               <Box sx={{ marginTop: 2 }}>
                 {buttons.map((button) => (

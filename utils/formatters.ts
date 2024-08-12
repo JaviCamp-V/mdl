@@ -1,5 +1,6 @@
 import { format, formatDistance } from 'date-fns';
 
+
 /**
  *
  * @param date
@@ -39,7 +40,6 @@ const formatTime = (date: Date): string => {
 
 const formatDateToDistance = (date: string): string => {
   const formattedDate = new Date(date);
-  console.log('formattedDate: ', formattedDate);
   return formatDistance(formattedDate, new Date(), { addSuffix: true });
 };
 

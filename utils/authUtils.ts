@@ -7,6 +7,7 @@ import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
 import getRequest from './getRequest';
 
+
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
@@ -40,7 +41,7 @@ const nextAuthOptions: NextAuthOptions = {
         token.expiry = Date.now() + Number(user?.expiresIn);
       }
 
-      if (token.expiry && Date.now() < token.expiry) {
+      if (token.expiry && Date.now() < (token.expiry - 300000)) {
         return token;
       }
 
@@ -54,7 +55,6 @@ const nextAuthOptions: NextAuthOptions = {
       token.refreshToken = refreshToken;
       token.expiry = Date.now() + Number(rest?.expiresIn);
       token.user = rest as any;
-      revalidatePath('/', 'layout');
 
       return token;
     },

@@ -10,6 +10,7 @@ import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 
+
 const baseUrl = 'user/watchlist';
 const endpoints = {
   byId: '/record/:id',
@@ -56,10 +57,8 @@ const getWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | 
   try {
     logger.info('Fetching watchlist record with id: ', id);
     const endpoint = baseUrl + endpoints.byId.replace(':id', id.toString());
-    console.log('endpoint: ', endpoint);
     return await mdlApiClient.get<WatchlistRecord>(endpoint);
   } catch (error: any) {
-    console.log(error);
     const message = error?.response?.data?.message ?? error?.message;
     const status = error?.response?.status ?? 408;
     logger.error(`Error fetching watchlist record: ${error?.message}`);

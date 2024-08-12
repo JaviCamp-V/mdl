@@ -2,12 +2,11 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Controller, useFormContext } from 'react-hook-form';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Field } from '@/types/common/IForm';
 
 interface DatePickerFieldProps extends Field {}
-const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, ...rest }) => {
+const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, maxDate, minDate, ...rest }) => {
   const { control } = useFormContext();
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -19,8 +18,9 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, ...rest }) => {
             {...field}
             {...rest}
             value={dayjs(field.value)}
+            minDate={minDate ? dayjs(minDate) : undefined}
+            maxDate={maxDate ? dayjs(maxDate) : undefined}
             onChange={(date) => {
-              console.log({ date });
               field.onChange(date);
             }}
             slotProps={{

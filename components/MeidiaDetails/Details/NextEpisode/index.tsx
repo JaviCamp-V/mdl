@@ -9,6 +9,7 @@ import Countdown from './Countdown';
 
 interface NextEpisodeProps {
   tvdb_id: number | null;
+  imdb_id: string | null;
   number_of_episodes: number;
   next_episode_to_air: Episode | null | undefined;
   containerStyle?: SxProps;
@@ -16,12 +17,13 @@ interface NextEpisodeProps {
 
 const NextEpisode: React.FC<NextEpisodeProps> = async ({
   tvdb_id,
+  imdb_id,
   next_episode_to_air,
   number_of_episodes,
   containerStyle
 }) => {
-  if (!next_episode_to_air || !tvdb_id) return <Box />;
-  const response = await lookupShow(tvdb_id);
+  if (!next_episode_to_air || (!tvdb_id && !imdb_id)) return <Box />;
+  const response = await lookupShow(tvdb_id ? tvdb_id! : imdb_id!, tvdb_id ? 'thetvdb' : 'imdb');
   const airTime = response?.schedule?.time;
   const timezone = response?.network?.country?.timezone;
   const airDate = next_episode_to_air?.air_date;

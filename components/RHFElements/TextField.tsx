@@ -13,37 +13,34 @@ export type TextFieldProps = MuiTextFieldProps &
     hideError?: boolean;
   };
 
-const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...props }) => {
+const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, max, inputProps, ...props }) => {
   const { control } = useFormContext();
   const getHelperText = (error: any) => {
     if (error && !hideError) return error.message;
     return props.helperText;
   };
 
-  console.log('TextField: ', name, sx);
   return (
     <Controller
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl fullWidth>
-          {/* {label && <FormLabel sx={{ paddingBottom: 0.5, fontSize: '14px' }}>{label}</FormLabel>} */}
           <MuiTextField
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'info.main', // Change background color here
-                // paddingRight: '0 !important', // Adjust padding-right to zero,
+                backgroundColor: 'info.main',
                 color: 'info.contrastText',
                 fontSize: '14px'
               },
               '& input': {
                 '&:-webkit-autofill': {
-                  WebkitBoxShadow: `0 0 0 1000px info.main inset`, // Prevent autofill from changing background
-                  WebkitTextFillColor: 'info.contrastText' // Adjust text color if needed
+                  WebkitBoxShadow: `0 0 0 1000px info.main inset`,
+                  WebkitTextFillColor: 'info.contrastText'
                 }
               },
               '& .MuiInputLabel-root': {
-                fontSize: '14px', // Change font size of the label text,
+                fontSize: '14px',
                 color: 'info.contrastText'
               },
               '& .MuiOutlinedInput-notchedOutline': {
@@ -55,20 +52,17 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...pr
                 }
               },
               '& .MuiSelect-icon': {
-                color: 'info.contrastText' // Change the icon color
+                color: 'info.contrastText'
               },
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                  borderColor: 'background.paper' // Default border color
-                  // borderRight: 'none'
+                  borderColor: 'background.paper'
                 },
                 '&:hover fieldset': {
-                  borderColor: 'background.paper' // Border color on hover
-                  // borderRight: 'none'
+                  borderColor: 'background.paper'
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: 'background.paper' // Border color when focused
-                  // borderRight: 'none'
+                  borderColor: 'background.paper'
                 }
               },
               ...sx,
@@ -77,6 +71,11 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, ...pr
             label={label}
             {...field}
             {...props}
+            inputProps={{
+              ...inputProps,
+              min,
+              max
+            }}
             error={Boolean(!hideError && !!error)}
             helperText={getHelperText(error)}
           />

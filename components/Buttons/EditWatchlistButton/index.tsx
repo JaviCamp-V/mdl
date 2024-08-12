@@ -1,77 +1,81 @@
 'use client';
 
 import React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import { Box, ClickAwayListener } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import { getMovieDetails, getTVDetails } from '@/server/tmdbActions';
 import { getWatchlistRecord } from '@/server/watchlistActions';
 import Iconify from '@/components/Icon/Iconify';
 import WatchlistRecordModal from '@/components/Modals/WatchListRecord';
 import MediaType from '@/types/tmdb/IMediaType';
+import MovieDetails from '@/types/tmdb/IMovieDetails';
+import TVDetails from '@/types/tmdb/ITVDetails';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 
 interface EditWatchlistButtonProps {
   type: MediaType;
   id: number;
-  poster_path: string | null;
-  title: string;
-  year: string | number;
   recordId: number | null;
-  // Add watchlist record
 }
 const icons = { edit: 'mdi:edit-outline', add: 'mdi:add' };
-const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, poster_path, title, year, recordId }) => {
+const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, recordId }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [mediaData, setMediaData] = React.useState<TVDetails | MovieDetails>();
   const [watchRecord, setWatchRecord] = React.useState<WatchlistRecord | null>(null);
   const handleClose = () => {
     setIsModalOpen(false);
     setWatchRecord(null);
   };
 
-  console.log('recordId: ', recordId);
   const handleClick = async () => {
-    if (!recordId) return setIsModalOpen(true);
-    console.log('fetching watchlist record');
-    const response = await getWatchlistRecord(recordId);
-    if (response && 'errors' in response) {
-      console.error('Error fetching watchlist record: ', response);
+    const mediaResponse = type === MediaType.tv ? await getTVDetails(id) : await getMovieDetails(id);
+    if (mediaResponse === null) {
+      enqueueSnackbar(`Error fetching ${type === MediaType.tv ? 'drama' : 'movie'} details`, { variant: 'error' });
       return;
     }
-    setWatchRecord(response);
+    setMediaData(mediaResponse);
+
+    if (recordId) {
+      const recordResponse = await getWatchlistRecord(recordId);
+      if (recordResponse && 'errors' in recordResponse) {
+        enqueueSnackbar('Error fetching watchlist record', { variant: 'error' });
+        return;
+      }
+      setWatchRecord(recordResponse);
+    }
+
     setIsModalOpen(true);
   };
 
   return (
-    // <ClickAwayListener onClickAway={() => setIsModalOpen(false)}>
     <Box>
       <IconButton
         color="primary"
         onClick={handleClick}
-        sx={{
+        sx={(theme) => ({
           borderRadius: '3px!important',
           overflow: 'hidden',
           paddingY: 0,
           paddingX: 0.5,
-          backgroundColor: '#3a3b3c!important',
-          border: '1px solid #3e4042!important'
-        }}
+          backgroundColor: `${theme.palette.info.main}!important`,
+          border: `1px solid ${theme.palette.background.default}!important`
+        })}
       >
         <Iconify icon={recordId ? icons.edit : icons.add} sx={{ width: 16, height: 16 }} />
       </IconButton>
-      {isModalOpen && (
+      {isModalOpen && mediaData && (
         <WatchlistRecordModal
           open={isModalOpen}
           onClose={handleClose}
           mediaType={type}
           id={id}
-          poster_path={poster_path}
-          title={title}
-          year={year}
+          mediaData={mediaData}
           record={watchRecord}
         />
       )}
     </Box>
-    // </ClickAwayListener>
   );
 };
 

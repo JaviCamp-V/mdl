@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import StarIcon from '@mui/icons-material/Star';
-import { Box, FormControl, FormLabel, Typography } from '@mui/material';
+import { Box, FormControl, FormHelperText, FormLabel, Typography } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { Field } from '@/types/common/IForm';
 import TextField from './TextField';
@@ -9,10 +9,14 @@ import TextField from './TextField';
 interface RatingsProps extends Field {
   total?: number;
 }
-const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
-  const { control } = useFormContext();
+const Ratings: React.FC<RatingsProps> = ({ name, total, label, disabled }) => {
+  const { control, formState } = useFormContext();
   const [hover, setHover] = React.useState(-1);
 
+  const hasError = name in formState.errors && name in formState.touchedFields;
+  const getHelperText = () => {
+    return <>{hasError ? formState.errors[name]?.message : ''}</>;
+  };
   return (
     <FormControl fullWidth>
       <FormLabel sx={{ marginBottom: 0.5, fontSize: '14px', color: 'info.contrastText' }}>{label}</FormLabel>
@@ -24,6 +28,8 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
             size="small"
             inputProps={{ inputMode: 'numeric', min: 0, max: total, step: 0.5 }}
             fullWidth={false}
+            disabled={disabled}
+            hideError
           />
         </Box>
         <Box sx={{ width: '75%' }}>
@@ -31,18 +37,19 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
             name={name}
             control={control}
             render={({ field }) => (
-              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Box
+                sx={{ display: 'flex', flexDirection: 'row', gap: 1, justifyContent: 'center', alignItems: 'flex-end' }}
+              >
                 <Rating
                   size={'large'}
                   value={Number(field.value) / 2}
                   name={name}
+                  disabled={disabled}
                   precision={0.5}
                   onChangeActive={(_, newHover) => {
-                    console.log('newHover: ', newHover);
-                    setHover(newHover);
+                    setHover(newHover !== -1 ? newHover * 2 : -1);
                   }}
                   onChange={(_, newValue) => {
-                    console.log('newValue: ', newValue);
                     field.onChange(newValue ? newValue * 2 : 0);
                   }}
                   sx={{
@@ -52,16 +59,17 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label }) => {
                   }}
                 />
                 <Typography fontSize={'14px'}>
-                  <Typography component={'span'} fontWeight={'bolder'}>
+                  <Typography component={'span'} fontWeight={'bolder'} fontSize={'14px'}>
                     {hover !== -1 ? hover : field.value}
                   </Typography>
-                  {` / ${total}`}
+                  {`/${total}`}
                 </Typography>
               </Box>
             )}
           />
         </Box>
       </Box>
+      {hasError && <FormHelperText sx={{ color: 'error.main' }}>{getHelperText()}</FormHelperText>}
     </FormControl>
   );
 };
