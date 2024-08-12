@@ -4,12 +4,15 @@ import { revalidatePath } from 'next/cache';
 import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
-import GeneralWatchlistRecord from '@/types/watchlist/IGeneralWatchlistRecord';
+import MediaType from '@/types/tmdb/IMediaType';
+import TVDetails from '@/types/tmdb/ITVDetails';
+import GeneralWatchlistRecord, { WatchlistItems } from '@/types/watchlist/IGeneralWatchlistRecord';
 import UpdateWatchlistRequest from '@/types/watchlist/IUpdateWatchlistRequest';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
-
+import { getTitle, getYear } from '@/utils/tmdbUtils';
+import { getMovieDetails, getTVDetails } from './tmdbActions';
 
 const baseUrl = 'user/watchlist';
 const endpoints = {
@@ -38,17 +41,6 @@ const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
     return await mdlApiClient.get<GeneralWatchlistRecord[]>(baseUrl);
   } catch (error: any) {
     logger.error(`Error fetching watchlist: ${error?.message}, ${error?.response?.data?.message}`);
-    return [];
-  }
-};
-
-const getWatchlistForUser = async (username: string): Promise<GeneralWatchlistRecord[]> => {
-  try {
-    logger.info(`Fetching watchlist for user with  ${username}`);
-    const endpoint = baseUrl + endpoints.byUsername.replace('{username}', username);
-    return await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoint);
-  } catch (error: any) {
-    logger.error(`Error fetching watchlist for user: ${error?.message}, ${error?.response?.data?.message}`);
     return [];
   }
 };
@@ -90,11 +82,56 @@ const deleteWatchlistRecord = async (id: number): Promise<GenericResponse | Erro
     revalidatePath('/', 'layout');
     return response;
   } catch (error: any) {
-      const message = error?.response?.data?.message ?? error?.message;
+    const message = error?.response?.data?.message ?? error?.message;
     const status = error?.response?.status ?? 408;
     logger.error(`Error deleting watchlist record: ${error?.message}`);
     return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
-export { updateWatchlistRecord, getWatchlist, getWatchlistRecord, getWatchlistRecordByMedia, deleteWatchlistRecord };
+const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Promise<WatchlistItems> => {
+  try {
+    const type = watchlist.mediaType.toLocaleLowerCase();
+    logger.info(
+      `Fetching details for watchlist item with mediaType: ${watchlist.mediaType}, mediaId: ${watchlist.mediaId}`
+    );
+    const details =
+      type === MediaType.tv ? await getTVDetails(watchlist.mediaId) : await getMovieDetails(watchlist.mediaId);
+    if (!details) {
+      return { ...watchlist, title: '', country: '', year: 0, isAiring: false, totalEpisodes: 1, runtime: 0 };
+    }
+    const title = getTitle({ ...details, media_type: type } as any);
+    const country = details.origin_country.length ? details.origin_country[0] : 'Unknown';
+    const year = getYear(details as any);
+    const isAiring = type === MediaType.tv ? details.status === 'Returning Series' : false;
+    const totalEpisodes = type === MediaType.tv ? (details as TVDetails).number_of_episodes : 1;
+    const runtime = type === MediaType.tv ? (details as TVDetails).episode_run_time[0] : (details as any).runtime;
+    const episodeWatched = type === MediaType.tv ? watchlist.episodeWatched : 1;
+    return { ...watchlist, title, country, year, isAiring, totalEpisodes, runtime: runtime ?? 0, episodeWatched };
+  } catch (error: any) {
+    logger.error(`Error fetching details for watchlist item: ${error?.message}, ${error?.response?.data?.message}`);
+    return { ...watchlist, title: '', country: '', year: 0, isAiring: false, totalEpisodes: 1, runtime: 0 };
+  }
+};
+
+const getWatchlistForUser = async (username: string): Promise<WatchlistItems[]> => {
+  try {
+    logger.info(`Fetching watchlist for user with  ${username}`);
+    const endpoint = baseUrl + endpoints.byUsername.replace('{username}', username);
+    const watchlist = await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoint);
+    const watchlistWithDetails = await Promise.all(watchlist.map(addAddDetailsToWatchlist));
+    return watchlistWithDetails;
+  } catch (error: any) {
+    logger.error(`Error fetching watchlist for user: ${error?.message}, ${error?.response?.data?.message}`);
+    return [];
+  }
+};
+
+export {
+  updateWatchlistRecord,
+  getWatchlist,
+  getWatchlistRecord,
+  getWatchlistRecordByMedia,
+  getWatchlistForUser,
+  deleteWatchlistRecord
+};

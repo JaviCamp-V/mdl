@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { capitalCase } from 'change-case';
 import { signOut } from 'next-auth/react';
 import { Popover } from 'react-tiny-popover';
@@ -27,9 +28,14 @@ const icons = {
 const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
+  const router = useRouter();
   const handleSignOut = async () => {
     await logout();
     await signOut();
+  };
+
+  const handleMenuItemClick = (href: string) => {
+    router.push(href?.replace('{username}', username));
   };
 
   return (
@@ -48,7 +54,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
             <Paper sx={{ width: 200, maxWidth: '100%' }}>
               <MenuList dense>
                 {Object.entries(userRoutes).map(([key, value]) => (
-                  <MenuItem key={key} href={value}>
+                  <MenuItem key={key} onClick={() => handleMenuItemClick(value)}>
                     <ListItemIcon>
                       <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'white' }} />
                     </ListItemIcon>

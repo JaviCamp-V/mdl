@@ -14,13 +14,15 @@ import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 
+
 interface EditWatchlistButtonProps {
   type: MediaType;
   id: number;
   recordId: number | null;
+  icon?: string | React.ReactNode;
 }
 const icons = { edit: 'mdi:edit-outline', add: 'mdi:add' };
-const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, recordId }) => {
+const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, recordId, icon }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [mediaData, setMediaData] = React.useState<TVDetails | MovieDetails>();
   const [watchRecord, setWatchRecord] = React.useState<WatchlistRecord | null>(null);
@@ -63,7 +65,7 @@ const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, rec
           border: `1px solid ${theme.palette.background.default}!important`
         })}
       >
-        <Iconify icon={recordId ? icons.edit : icons.add} sx={{ width: 16, height: 16 }} />
+        {icon ?? <Iconify icon={recordId ? icons.edit : icons.add} sx={{ width: 16, height: 16 }} />}
       </IconButton>
       {isModalOpen && mediaData && (
         <WatchlistRecordModal
