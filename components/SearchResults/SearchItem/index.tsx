@@ -1,6 +1,7 @@
 import React from 'react';
 import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import EditWatchlistButton from '@/components/Buttons/EditWatchlistButton';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import Ratings from '@/components/common/Ratings';
@@ -46,12 +47,16 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
           gap: 2
         }}
       >
-        <MediaTitle
-          title={media_type === 'movie' ? details.title : details.name}
-          id={id}
-          mediaType={media_type}
-          fontSize={'1rem'}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, alignItems: 'center', flexWrap: 'wrap' }}>
+          <MediaTitle
+            title={media_type === 'movie' ? details.title : details.name}
+            id={id}
+            mediaType={media_type}
+            fontSize={'1rem'}
+          />
+          {media_type !== 'person' && <EditWatchlistButton type={media_type} id={id} recordId={details.recordId} />}
+        </Box>
+
         {media_type === 'person' ? (
           <Box>
             <Typography sx={{ opacity: 0.6 }} fontSize={14}>

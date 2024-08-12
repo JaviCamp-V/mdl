@@ -13,7 +13,7 @@ const lookupShow = async (
 ): Promise<TVShowDetails | null> => {
   try {
     logger.info(`Looking up show with id: ${id}`);
-    const params = new URLSearchParams({ [lookup]: id.toString() });
+    const params = new URLSearchParams({ [lookup]: id?.toString() });
     const response = await tvMazeClient.get<TVShowDetails>(endpoints.lookup, params);
     return response;
   } catch (e: any) {

@@ -10,8 +10,7 @@ type PageProps = {
   searchParams: any;
 };
 
-export const revalidate = 0;
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1 hour
 
 export const metadata: Metadata = {
   title: 'Discover, Rate and Watch the Best Asian Dramas and Movies'

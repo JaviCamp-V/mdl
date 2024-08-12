@@ -7,8 +7,11 @@ import Socials from '@/components/Socials';
 import ExternalID from '@/types/tmdb/IExternalID';
 import Genre from '@/types/tmdb/IGenre';
 import MediaType from '@/types/tmdb/IMediaType';
+import MovieDetails from '@/types/tmdb/IMovieDetails';
+import TVDetails from '@/types/tmdb/ITVDetails';
 import { color } from '@/libs/common';
 import Credits from '../Credits';
+import WatchStatusButton from './WatchStatusButton';
 import Genres from './sections/Genres';
 import MediaOverview from './sections/Overview';
 import Score from './sections/Score';
@@ -16,27 +19,14 @@ import Tags from './sections/Tags';
 import Titles from './sections/Titles';
 
 interface DetailsTabPanelProps {
+  details: MovieDetails | TVDetails;
   id: number;
-  poster_path: string | null;
   mediaType: MediaType.movie | MediaType.tv;
-  genres: Genre[];
-  overview: string;
-  original_title: string;
-  external_ids: ExternalID;
-  vote_average: number;
-  vote_count: number;
 }
-const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({
-  id,
-  poster_path,
-  mediaType,
-  overview,
-  genres,
-  original_title,
-  external_ids,
-  vote_average,
-  vote_count
-}) => {
+const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, mediaType, details }) => {
+  const { poster_path, genres, overview, external_ids, vote_average, vote_count } = details;
+  const original_title =
+    mediaType === MediaType.movie ? (details as MovieDetails).original_title : (details as TVDetails).original_name;
   return (
     <Grid container spacing={3} sx={{ marginRight: 2, width: '100%' }}>
       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
@@ -54,10 +44,13 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({
           <Socials {...external_ids} />
         </Box>
         <ButtonGroup variant="contained" sx={{ width: '100%' }} size="large">
-          <Button variant="contained" sx={{ width: '75%', textTransform: 'none' }}>
-            {' '}
-            Add to List
-          </Button>
+          <WatchStatusButton
+            id={id}
+            mediaType={mediaType}
+            watchStatus={details.watchStatus}
+            recordId={details.recordId}
+            mediaData={details}
+          />
           <IconButton
             sx={{
               borderRadius: 0,

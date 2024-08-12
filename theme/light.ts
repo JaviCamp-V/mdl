@@ -24,6 +24,10 @@ const light = createTheme({
     text: {
       primary: 'rgb(0 0 0 / 87%)',
       secondary: 'rgb(0 0 0 / 87%)'
+    },
+    info: {
+      main: 'hsl(225,10%,92.16%)', // New info color
+      contrastText: 'rgb(0 0 0 / 87%)' // Text color when the button is using info color
     }
   }
 });

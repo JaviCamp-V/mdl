@@ -30,7 +30,10 @@ const DetailsSummary: React.FC<DetailsSummaryProps> = async ({ details, type, ta
   let daysAiring = '';
   let contentRating = 'Not Yet Rated';
   if (type === MediaType.tv) {
-    const response = await lookupShow(details.external_ids.tvdb_id);
+    const response = await lookupShow(
+      details.external_ids.tvdb_id ? details.external_ids.tvdb_id! : details.external_ids.imdb_id!,
+      details.external_ids.tvdb_id ? 'thetvdb' : 'imdb'
+    );
     daysAiring = response?.schedule?.days.join(', ') ?? 'N/A';
     const ratings = await getTVContentRating(details.id);
     contentRating =

@@ -1,4 +1,14 @@
-type RHFElementsType = 'text' | 'password' | 'email' | 'number' | 'select' | 'checkbox' | 'ratings';
+type RHFElementsType =
+  | 'text'
+  | 'password'
+  | 'email'
+  | 'number'
+  | 'select'
+  | 'checkbox'
+  | 'ratings'
+  | 'date'
+  | 'search'
+  | 'autocomplete';
 export interface Field {
   name: string;
   label?: string | React.ReactNode;
@@ -17,6 +27,11 @@ export interface Field {
   rows?: number;
   total?: number;
   options?: { value: any; label: string; disabled: boolean }[];
+  disabled?: boolean;
+  min?: number;
+  max?: number;
+  maxDate?: Date;
+  minDate?: Date;
 }
 
 export interface FieldModel {

@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { Provider } from 'next-auth/providers/index';
 import { login, refreshAuthToken, signUp } from '@/server/authActions';
 import routes from '@/libs/routes';
+import getRequest from './getRequest';
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -39,13 +40,13 @@ const nextAuthOptions: NextAuthOptions = {
         token.expiry = Date.now() + Number(user?.expiresIn);
       }
 
-      if (token.expiry && Date.now() < token.expiry) {
+      if (token.expiry && Date.now() < token.expiry - 300000) {
         return token;
       }
 
       const response = await refreshAuthToken();
       if ('errors' in response) {
-        return token; // figure out what to do here
+        return token;
       }
 
       const { accessToken, refreshToken, ...rest } = response;
@@ -53,7 +54,6 @@ const nextAuthOptions: NextAuthOptions = {
       token.refreshToken = refreshToken;
       token.expiry = Date.now() + Number(rest?.expiresIn);
       token.user = rest as any;
-      revalidatePath('/', 'layout');
 
       return token;
     },
@@ -72,8 +72,6 @@ const nextAuthOptions: NextAuthOptions = {
       delete (user as any)?.accessToken;
       delete (user as any)?.refreshToken;
 
-      revalidatePath('/', 'layout');
-
       return true;
     }
   },
@@ -89,9 +87,15 @@ const nextAuthOptions: NextAuthOptions = {
 };
 
 const getSession = async (): Promise<Session | null> => {
-  // const req = getRequest();
+  // const req = await getRequest();
   const session = await getServerSession(nextAuthOptions);
   return session;
 };
 
-export { nextAuthOptions, getSession };
+const getServerActionSession = async (): Promise<Session | null> => {
+  const req = await getRequest();
+  const session = await getServerSession({ req } as any);
+  return session as Session | null;
+};
+
+export { nextAuthOptions, getSession, getServerActionSession };

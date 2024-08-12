@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 
 /**
  *
@@ -37,6 +37,11 @@ const formatTime = (date: Date): string => {
   return new Intl.DateTimeFormat('en-US', options).format(date);
 };
 
+const formatDateToDistance = (date: string): string => {
+  const formattedDate = new Date(date);
+  return formatDistance(formattedDate, new Date(), { addSuffix: true });
+};
+
 const formatDigitsWithPadding = (num: number, digits: number): string => num.toString().padStart(digits, '0');
 
 const formatRuntime = (minutes: number): string => {
@@ -44,4 +49,12 @@ const formatRuntime = (minutes: number): string => {
   const remainingMinutes = minutes % 60;
   return hours > 0 ? `${hours} hr. ${remainingMinutes} mins` : `${remainingMinutes} mins`;
 };
-export { formatDate, formatTime, formatDigitsWithPadding, formatRuntime, formatShortDate, formatStringDate };
+export {
+  formatDate,
+  formatTime,
+  formatDigitsWithPadding,
+  formatRuntime,
+  formatShortDate,
+  formatStringDate,
+  formatDateToDistance
+};

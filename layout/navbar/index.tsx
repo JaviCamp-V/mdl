@@ -11,15 +11,16 @@ import ExpandableMenuItem from '@/components/ExpandableMenuItem';
 import SearchForm from '@/components/Forms/SearchForm';
 import model from '../model';
 import SideBar from '../sidebar';
+import AuthContent from './sections/auth_content';
 import NotificationsAlert from './sections/notifications';
 import ProfileDropdown from './sections/profile_dropdown';
 
 interface NavbarProps {
   session?: Session | null;
 }
-const Navbar: React.FC<NavbarProps> = ({ session }) => {
+const Navbar: React.FC<NavbarProps> = ({}) => {
   return (
-    <AppBar sx={{ backgroundColor: '#00568C', zIndex: 10000 }}>
+    <AppBar sx={{ backgroundColor: '#00568C', zIndex: 100 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -126,29 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({ session }) => {
                   gap: 1
                 }}
               >
-                {session && session.user ? (
-                  <React.Fragment>
-                    <NotificationsAlert />
-                    <ProfileDropdown username={session.user?.username ?? 'U'} />
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <Link
-                      href={model.signUp}
-                      passHref
-                      style={{ textDecoration: 'none', whiteSpace: 'nowrap', marginRight: 1 }}
-                    >
-                      <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }}>
-                        Sign Up
-                      </Typography>
-                    </Link>
-                    <Link href={model.signIn} passHref style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                      <Typography fontSize={14} fontWeight={500} sx={{ color: 'white' }} whiteSpace="nowrap">
-                        Login
-                      </Typography>
-                    </Link>
-                  </React.Fragment>
-                )}
+                <AuthContent />
               </Box>
 
               <Box sx={{ display: { xs: 'flex', md: 'none' } }} whiteSpace="nowrap">
