@@ -14,9 +14,6 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label, disabled }) => {
   const [hover, setHover] = React.useState(-1);
 
   const hasError = name in formState.errors && name in formState.touchedFields;
-  const getHelperText = () => {
-    return <>{hasError ? formState.errors[name]?.message : ''}</>;
-  };
   return (
     <FormControl fullWidth>
       <FormLabel sx={{ marginBottom: 0.5, fontSize: '14px', color: 'info.contrastText' }}>{label}</FormLabel>
@@ -69,7 +66,9 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label, disabled }) => {
           />
         </Box>
       </Box>
-      {hasError && <FormHelperText sx={{ color: 'error.main' }}>{getHelperText()}</FormHelperText>}
+      {hasError && (
+        <FormHelperText sx={{ color: 'error.main' }}>{`${(formState.errors as any)[name]?.message}`}</FormHelperText>
+      )}
     </FormControl>
   );
 };
