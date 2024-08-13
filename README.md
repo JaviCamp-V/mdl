@@ -4,4 +4,4 @@ This is a clone of the website [MyDramalist](https://mydramalist.com/). It is a 
 
 ### Non-commercial use
 
- Features search, add to watchlist, and review dramas and movies.
+Features search, add to watchlist, and review dramas and movies.

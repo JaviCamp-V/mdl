@@ -2,26 +2,15 @@
 
 import React from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import {
-  Box,
-  Table as MuiTable,
-  SxProps,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow
-} from '@mui/material';
+import { Box, Table as MuiTable, SxProps, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 
-//<Icon icon="mdi:arrow-drop-up" />
-//<Icon icon="mdi:arrow-down-drop" />
 
 export interface DataColumn {
   field: string;
   headerName: string;
   format?: (value: any, values?: any) => string;
-  render?: (value: any) => JSX.Element;
+  render?: (value: any) => React.ReactNode | string;
   sx?: SxProps;
   justifyContent?: string;
 }
@@ -36,12 +25,8 @@ interface TableProps {
 }
 
 const descendingComparator = (a: any, b: any, orderBy: any) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
   return 0;
 };
 

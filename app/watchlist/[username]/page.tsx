@@ -49,6 +49,18 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
       items.filter((item) => item.mediaType.toLowerCase() === MediaType.movie).length,
     days: (items: WatchlistItems[]) => (items.reduce((acc, item) => acc + item.runtime, 0) / 1440).toFixed(2)
   };
+
+  const getBackgroundColor = (watchStatus: string) => {
+    if (!status && watchStatus === all) return '#FFF';
+    if (watchStatus === status) return '#FFF';
+    return 'primary.main';
+  };
+
+  const getColor = (watchStatus: string) => {
+    if (!status && watchStatus === all) return 'info.main';
+    if (watchStatus === status) return 'info.main';
+    return '#FFF';
+  };
   return (
     <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 }, backgroundColor: 'background.default' }}>
       <Typography fontSize={20} fontWeight={700} marginBottom={2}>
@@ -82,11 +94,10 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
             href={`${routes.user.watchlist.replace('{username}', username)}${watchStatus === all ? '' : `?status=${watchStatus}`}`}
             sx={{
               flex: 1,
-              backgroundColor:
-                !status && watchStatus === all ? '#FFF' : watchStatus === status ? '#FFF' : 'primary.main',
+              backgroundColor: getBackgroundColor(watchStatus),
               padding: 1,
               textDecoration: 'none',
-              color: !status && watchStatus === all ? 'info.main' : watchStatus === status ? 'info.main' : '#FFF'
+              color: getColor(watchStatus)
             }}
             // passHref
           >
