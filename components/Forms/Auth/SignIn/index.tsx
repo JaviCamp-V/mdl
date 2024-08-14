@@ -82,8 +82,7 @@ const SignInForm: React.FC<AuthFormProps> = () => {
                 disabled={
                   methods.formState.isSubmitting ||
                   methods.formState.isValidating ||
-                  !methods.formState.isValid ||
-                  !methods.formState.isDirty
+                  !methods.formState.isValid 
                 }
                 onClick={methods.handleSubmit(onSubmit)}
               >

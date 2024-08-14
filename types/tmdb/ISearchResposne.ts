@@ -1,6 +1,7 @@
 import BaseMediaItem from './IBaseMediaDetails';
 import MediaType from './IMediaType';
 import { PersonBase } from './IPeople';
+import { Video } from './IVideo';
 
 export interface MovieSearchResult extends BaseMediaItem {
   media_type: MediaType.movie;
@@ -9,6 +10,7 @@ export interface MovieSearchResult extends BaseMediaItem {
   genre_ids: number[];
   release_date: string;
   video: boolean;
+  trailer?: Video | null;
 }
 
 export interface TVSearchResult extends BaseMediaItem {
@@ -19,6 +21,7 @@ export interface TVSearchResult extends BaseMediaItem {
   first_air_date: string;
   origin_country: string[];
   episode_count: number;
+  trailer?: Video | null;
 }
 
 export type MediaSearchResult = TVSearchResult | MovieSearchResult;

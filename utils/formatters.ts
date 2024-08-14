@@ -1,4 +1,4 @@
-import { format, formatDistance } from 'date-fns';
+import { addHours, format, formatDistance, parse } from 'date-fns';
 
 /**
  *
@@ -38,8 +38,10 @@ const formatTime = (date: Date): string => {
 };
 
 const formatDateToDistance = (date: string): string => {
-  const formattedDate = new Date(date);
-  return formatDistance(formattedDate, new Date(), { addSuffix: true });
+  const formatString = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
+  const formattedDate = parse(date, formatString, new Date());
+  // account for api time difference
+  return formatDistance(formattedDate, addHours(new Date(), 5), { addSuffix: true });
 };
 
 const formatDigitsWithPadding = (num: number, digits: number): string => num.toString().padStart(digits, '0');

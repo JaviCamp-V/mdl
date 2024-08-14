@@ -8,6 +8,7 @@ import WatchStatus from '@/types/watchlist/WatchStatus';
 import { plusDays } from '@/utils/dateUtils';
 import getDefaultValues from '@/utils/getDefaultValues';
 
+
 const generalModel: FieldModel = {
   watchStatus: {
     name: 'watchStatus',
@@ -106,7 +107,7 @@ const generalModelSchema = yup.object().shape({
       generalModel.watchStatus.options?.map((option) => option.value) as WatchStatus[],
       generalModel.watchStatus.errorMessages!.invalid
     ),
-  episodeWatched: yup.number(),
+  episodeWatched: yup.number().transform((x) => (!x ? undefined : x)),
   rating: yup
     .number()
     .transform((x) => (x ? Number(x) : undefined))

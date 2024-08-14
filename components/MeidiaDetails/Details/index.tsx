@@ -1,11 +1,10 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, IconButton, Typography } from '@mui/material';
+import { Box, ButtonGroup, IconButton, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Iconify from '@/components/Icon/Iconify';
 import DramaPoster from '@/components/Poster';
 import Socials from '@/components/Socials';
-import ExternalID from '@/types/tmdb/IExternalID';
-import Genre from '@/types/tmdb/IGenre';
+import WatchVideos from '@/components/WatchVideos';
 import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
@@ -17,6 +16,7 @@ import MediaOverview from './sections/Overview';
 import Score from './sections/Score';
 import Tags from './sections/Tags';
 import Titles from './sections/Titles';
+
 
 interface DetailsTabPanelProps {
   details: MovieDetails | TVDetails;
@@ -43,6 +43,7 @@ const DetailsTabPanel: React.FC<DetailsTabPanelProps> = ({ id, mediaType, detail
         >
           <Socials {...external_ids} />
         </Box>
+        <WatchVideos id={id} mediaType={mediaType} />
         <ButtonGroup variant="contained" sx={{ width: '100%' }} size="large">
           <WatchStatusButton
             id={id}

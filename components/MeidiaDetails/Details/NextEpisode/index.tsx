@@ -36,7 +36,7 @@ const NextEpisode: React.FC<NextEpisodeProps> = async ({
     <Box
       sx={{
         ...containerStyle,
-        padding: 3,
+        padding: 2,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -44,7 +44,7 @@ const NextEpisode: React.FC<NextEpisodeProps> = async ({
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-        <Iconify icon="simple-line-icons:calender" sx={{ color: '#1B92E4', fontSize: 48, width: 50, height: 50 }} />
+        <Iconify icon="mdi:calendar-month" sx={{ color: '#1B92E4', fontSize: 48, width: 50, height: 50 }} />
         <Box>
           <Typography color="#a1aac1" fontSize={16}>
             {`Episode ${episode_number} of ${number_of_episodes} airing on`}

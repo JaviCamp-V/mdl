@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
+import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
-import { Box, ClickAwayListener } from '@mui/material';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { getMovieDetails, getTVDetails } from '@/server/tmdbActions';
 import { getWatchlistRecord } from '@/server/watchlistActions';
@@ -14,6 +14,7 @@ import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 
+
 interface EditWatchlistButtonProps {
   type: MediaType;
   id: number;
@@ -22,6 +23,7 @@ interface EditWatchlistButtonProps {
 }
 const icons = { edit: 'mdi:edit-outline', add: 'mdi:add' };
 const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, recordId, icon }) => {
+  const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [mediaData, setMediaData] = React.useState<TVDetails | MovieDetails>();
   const [watchRecord, setWatchRecord] = React.useState<WatchlistRecord | null>(null);
@@ -29,6 +31,8 @@ const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, rec
     setIsModalOpen(false);
     setWatchRecord(null);
   };
+
+  if (!session?.user) return;
 
   const handleClick = async () => {
     const mediaResponse = type === MediaType.tv ? await getTVDetails(id) : await getMovieDetails(id);

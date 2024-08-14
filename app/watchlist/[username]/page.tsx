@@ -2,20 +2,17 @@ import React from 'react';
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
 import { capitalCase } from 'change-case';
-import { Typography } from '@mui/material';
+import { FormControl, MenuItem, Select, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { getWatchlistForUser } from '@/server/watchlistActions';
-import EditWatchlistButton from '@/components/Buttons/EditWatchlistButton';
-import MediaTitle from '@/components/MediaTitle';
+import { getUserWatchlist } from '@/server/watchlistActions';
 import columns from '@/components/Tables/watchlist/columns';
-import Ratings from '@/components/common/Ratings';
-import Table, { DataColumn } from '@/components/common/Table';
+import Table from '@/components/common/Table';
 import MediaType from '@/types/tmdb/IMediaType';
 import { WatchlistItems } from '@/types/watchlist/IGeneralWatchlistRecord';
 import WatchStatus from '@/types/watchlist/WatchStatus';
 import { getSession } from '@/utils/authUtils';
-import countries from '@/libs/countries';
 import routes from '@/libs/routes';
+
 
 type PageProps = {
   params: { username: string };
@@ -30,7 +27,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 
 const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, searchParams: { status } }) => {
-  const response = await getWatchlistForUser(username);
+  const response = await getUserWatchlist(username);
   const session = await getSession();
   const isOwner = session?.user?.username === username;
   const all = 'allDramasAndFilms';
@@ -80,7 +77,7 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
       </Typography>
       <Box
         sx={{
-          display: 'flex',
+          display: { xs: 'none', md: 'flex' },
           flexDirection: 'rows',
           alignItems: 'center',
           justifyContent: 'flex-start',
@@ -106,6 +103,70 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
             </Typography>
           </Box>
         ))}
+      </Box>
+      <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+        <FormControl fullWidth>
+          <Select
+            value={status ?? all}
+            sx={{
+              '& .MuiSelect-select': {
+                backgroundColor: 'background.paper',
+                color: '#fff!important',
+                borderColor: 'info.main',
+                fontSize: '15px'
+              },
+              '& input': {
+                '&:-webkit-autofill': {
+                  WebkitBoxShadow: `0 0 0 1000px info.main inset`,
+                  WebkitTextFillColor: 'info.contrastText'
+                }
+              },
+              '& .MuiSelect-icon': {
+                color: 'info.contrastText'
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'background.paper'
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'background.paper'
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'background.paper'
+              }
+            }}
+          >
+            {[all, ...Object.keys(sections)].map((watchStatus) => (
+              <MenuItem
+                key={watchStatus}
+                value={watchStatus}
+                sx={{
+                  flex: 1,
+                  padding: 1,
+                  textDecoration: 'none',
+                  color: `info.main`,
+                  '&.Mui-selected': {
+                    backgroundColor: '#FFF'
+                  },
+                  '&.Mui-selected:hover': {
+                    backgroundColor: '#FFF'
+                  }
+                }}
+              >
+                <Link
+                  href={`${routes.user.watchlist.replace('{username}', username)}${watchStatus === all ? '' : `?status=${watchStatus}`}`}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <Typography
+                    fontSize={14}
+                    sx={{ color: `${getColor(watchStatus)}!important`, textDecoration: 'none' }}
+                  >
+                    {capitalCase(watchStatus)}
+                  </Typography>
+                </Link>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>

@@ -1,6 +1,5 @@
 'use server';
 
-import { getSession } from 'next-auth/react';
 import tmdbClient from '@/clients/TMDBClient';
 import { MediaImagesResponse, PersonImagesResponse } from '@/types/tmdb/IImage';
 import MediaType from '@/types/tmdb/IMediaType';
@@ -19,12 +18,14 @@ import TVDetails from '@/types/tmdb/ITVDetails';
 import TagsResponse, { Tags } from '@/types/tmdb/ITags';
 import TitleResponse, { Title } from '@/types/tmdb/ITitle';
 import TranslationResponse, { Translation } from '@/types/tmdb/ITranslation';
+import VideoResults from '@/types/tmdb/IVideo';
 import WatchProviderResponse from '@/types/tmdb/IWatchProvider';
-import { getServerActionSession } from '@/utils/authUtils';
+import GeneralWatchlistRecord from '@/types/watchlist/IGeneralWatchlistRecord';
 import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
 import { getWatchlist } from './watchlistActions';
+
 
 const endpoints = {
   search_person: 'search/person',
@@ -81,7 +82,11 @@ type MediaDetailsMap = {
  * @param {MediaType} type - TV or MOVIE
  * @param {number} id
  * @returns {Promise<MediaDetailsMap[T] | null>}
- */
+ * @description If the content is not Asian, it returns null.
+ *  If the type is a person, it checks if the person is born in an Asian country.
+ * If the type is a TV show or movie, it checks if the original language is an Asian language.
+ * If the user is logged in, it fetches the watchlist and appends recordId and watchStatus to the response.
+ *  */
 const getDetails = async <T extends MediaType>(type: T, id: number): Promise<MediaDetailsMap[T] | null> => {
   try {
     logger.info(`Fetching details for ${type} with id ${id}`);
@@ -94,7 +99,7 @@ const getDetails = async <T extends MediaType>(type: T, id: number): Promise<Med
       return null;
     }
     if (type === MediaType.person) return response;
-    const watchlist = await getWatchlist();
+    const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
     const record = watchlist.find((item) => item.mediaId === Number(id) && item.mediaType === type.toUpperCase());
     return { ...response, recordId: record?.id ?? null, watchStatus: record?.watchStatus ?? null };
   } catch (error: any) {
@@ -214,6 +219,24 @@ const getProviders = async (type: MediaType.tv | MediaType.movie, id: number): P
   } catch (error: any) {
     logger.error(error.message);
     return { id, results: {} };
+  }
+};
+
+/**
+ * Fetches videos for a TV show or movie
+ * @param {MediaType.tv | MediaType.movie} type
+ * @param {number} id
+ * @returns {Promise<VideoResults>}
+ */
+const getVideos = async (type: MediaType.tv | MediaType.movie, id: number): Promise<VideoResults> => {
+  try {
+    logger.info(`Fetching videos for ${type} with id ${id}`);
+    const endpoint = `${type}/${endpoints.details}/${endpoints.videos}`.replace(':id', id.toString());
+    const response = await tmdbClient.get<VideoResults>(endpoint);
+    return response;
+  } catch (error: any) {
+    logger.error(error.message);
+    return { id, results: [] };
   }
 };
 
@@ -369,6 +392,23 @@ const defaultParams = {
   with_origin_country: countries.map((country) => country.code).join('|')
 };
 
+const addMediaType = <T>(results: T, type: MediaType): T => {
+  return { ...results, media_type: type };
+};
+const addTrailer = async <T>(results: MediaSearchResult): Promise<T> => {
+  const response = await getVideos(results.media_type, results.id);
+  const trailer = response.results.find((video) => video.type === 'Trailer') ?? null;
+  return { ...results, trailer: trailer } as any as T;
+};
+
+const addRecordId = <T>(value: T, watchlist: GeneralWatchlistRecord[]): T => {
+  const results = value as any;
+  const recordId =
+    watchlist.find((item) => item.mediaId === Number(results.id) && item.mediaType === results.media_type.toUpperCase())
+      ?.id ?? null;
+  return { ...results, recordId: recordId };
+};
+
 type DiscoverTypeMap = {
   [MediaType.tv]: TVSearchResponse;
   [MediaType.movie]: MovieSearchResponse;
@@ -380,7 +420,9 @@ type DiscoverTypeMap = {
  * @param params URLSearchParams (check DiscoverMovieSearchParams and DiscoverTVSearchParams for possible params)
  * @returns TVSearchResponse or MovieSearchResponse based on the type param
  * @description data filters out non-Asian content, reality shows, talk shows, and animated content,
- *     and sorts by votes from high to low.
+ *     and sorts by votes from high to low,
+ *   appends media_type to the results based on type (media_type is only returned using search/multi).
+ *  appends recordId to the results based on the watchlist for logged-in users.
  */
 const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
   type: T,
@@ -395,14 +437,15 @@ const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
 
     const endpoint = `${endpoints.discover}`.replace(':mediaType', type);
     const response = await tmdbClient.get<DiscoverTypeMap[T]>(endpoint, params);
-    const watchlist = await getWatchlist();
-    response.results = response.results.map((result) => ({
-      ...result,
-      media_type: type,
-      recordId:
-        watchlist.find((item) => item.mediaId === Number(result.id) && item.mediaType === type.toUpperCase())?.id ??
-        null
-    })) as any;
+    const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
+    response.results = await Promise.all(
+      response.results.map(async (result) => {
+       const data = addMediaType(result, type);
+        const trailer = await addTrailer(data);
+        const record = addRecordId(trailer, watchlist);
+        return record as any;
+      })
+    );
     return response;
   } catch (error: any) {
     logger.error(error.message);
@@ -423,6 +466,8 @@ const isMediaSearchResult = (media: SearchResponse): media is TVSearchResponse |
   return media.results.length > 0 && media.results[0].media_type !== MediaType.person;
 };
 
+
+
 /**
  * Fetches search results based on the type and query,
  * @param type MediaType (TV or MOVIE)
@@ -431,6 +476,7 @@ const isMediaSearchResult = (media: SearchResponse): media is TVSearchResponse |
  * @returns TVSearchResponse or MovieSearchResponse or PersonSearchResponse based on the type param
  * @description  filters out non-Asian content, reality shows, talk shows, and animated content,
  *    appends media_type to the results based on type (media_type is only returned using search/multi).
+ * appends recordId to the results based on the watchlist for logged-in users.
  */
 const getSearchType = async <T extends MediaType>(type: T, query: string, page?: string): Promise<SearchTypeMap[T]> => {
   try {
@@ -438,17 +484,17 @@ const getSearchType = async <T extends MediaType>(type: T, query: string, page?:
     const endpoint = `${endpoints.search}/${type}`;
     const params = new URLSearchParams({ query, page: page ?? '1' });
     const response = await tmdbClient.get<SearchTypeMap[T]>(endpoint, params);
-    const watchlist = await getWatchlist();
-    response.results = response.results.map((result) => ({
-      ...result,
-      media_type: type,
-      recordId:
-        watchlist.find((item) => item.mediaId === Number(result.id) && item.mediaType === type.toUpperCase())?.id ??
-        null
-    })) as any[];
-    const results = isMediaSearchResult(response)
-      ? (response.results.filter((media) => isAsianMedia(media)) as any[])
-      : response.results;
+    response.results = response.results.map((result) => ({ ...result, media_type: type })) as any[];
+    if (!isMediaSearchResult(response)) return response;
+    const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
+    const filtered = response.results.filter((media) => isAsianMedia(media)) as any[];
+    const results = await Promise.all(
+      filtered.map(async (result) => {
+        const trailer = await addTrailer<MediaSearchResult>(result);
+        const record = addRecordId<MediaSearchResult>(trailer, watchlist);
+        return record;
+      })
+    );
     return { ...response, results, total_results: results.length };
   } catch (error: any) {
     logger.error(error.message);
@@ -475,6 +521,7 @@ const getSearchPerson = async (name: string, page?: string): Promise<SearchRespo
       })
     );
     const filtered = results.filter((person) => isAsian(person));
+
     return { ...response, results: filtered };
   } catch (error: any) {
     logger.error(error.message);
@@ -550,6 +597,7 @@ export {
   getTVContentRating,
   getRoles,
   getKeywordDetails,
+  getVideos,
   getDiscoverType,
   getSearchResults
 };

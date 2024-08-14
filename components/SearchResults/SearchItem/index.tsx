@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import EditWatchlistButton from '@/components/Buttons/EditWatchlistButton';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
+import PlayButton from '@/components/WatchVideos/PlayButton';
 import Ratings from '@/components/common/Ratings';
 import { MediaSearchResult, PersonSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin, getYear } from '@/utils/tmdbUtils';
@@ -83,6 +84,11 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
         >
           {media_type === 'person' ? details.biography : details.overview}
         </Typography>
+        {media_type !== 'person' && details.trailer && (
+          <Box sx={{ width: '40%' }}>
+            <PlayButton video={details.trailer} />
+          </Box>
+        )}
       </Box>
     </Box>
   );

@@ -1,12 +1,13 @@
 'use client';
 
+import React from 'react';
 import { capitalCase } from 'change-case';
 import { Box, Typography } from '@mui/material';
 import EditWatchlistButton from '@/components/Buttons/EditWatchlistButton';
+import MediaCardToolTip from '@/components/MediaCardToolTip';
 import MediaTitle from '@/components/MediaTitle';
 import Ratings from '@/components/common/Ratings';
 import { DataColumn } from '@/components/common/Table';
-import { getOrigin } from '@/utils/tmdbUtils';
 import countries from '@/libs/countries';
 
 const columns: DataColumn[] = [
@@ -18,13 +19,28 @@ const columns: DataColumn[] = [
     render: (values) => (
       <Box>
         <Box sx={{ display: 'flex', gap: 0.5, flexDirection: 'row', alignItems: 'center' }}>
-          <MediaTitle
+          <MediaCardToolTip
             title={values.title}
-            id={values.mediaId}
+            year={values.year}
+            originalTitle={values.originalTitle}
+            country={values.country}
             mediaType={values.mediaType}
-            fontSize={14}
-            fontWeight={600}
-          />
+            posterPath={values.posterPath}
+            id={values.mediaId}
+            voteAverage={values.rating}
+            overview={values.overview}
+            genres={values.genres}
+          >
+            <span>
+              <MediaTitle
+                title={values.title}
+                id={values.mediaId}
+                mediaType={values.mediaType.toLowerCase()}
+                fontSize={14}
+                fontWeight={600}
+              />
+            </span>
+          </MediaCardToolTip>
           {values.isAiring && (
             <Box sx={{ backgroundColor: '#6cc788', color: '#fff', paddingX: 0.2, borderRadius: '4px' }}>
               <Typography fontSize={10}>airing</Typography>
@@ -43,7 +59,7 @@ const columns: DataColumn[] = [
     sx: { textAlign: 'left', display: { xs: 'none', md: 'table-cell' } },
     render: (values) => (
       <EditWatchlistButton
-        type={values.mediaType}
+        type={values.mediaType.toLowerCase()}
         id={values.mediaId}
         recordId={values.id}
         icon={<Typography fontSize={12}>edit</Typography>}

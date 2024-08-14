@@ -4,17 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  IconButton
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from '@mui/material';
 import { deleteWatchlistRecord, updateWatchlistRecord } from '@/server/watchlistActions';
 import {
   FormType,
@@ -26,7 +16,6 @@ import {
 import DramaPoster from '@/components/Poster';
 import RHFForm from '@/components/RHFElements/RHFForm';
 import SlideTransition from '@/components/common/SlideTransition';
-import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/tmdb/IMediaType';
 import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
@@ -201,7 +190,11 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({ open, onClose, m
           <Grid item xs={12} md={7.5}>
             <Box sx={{ paddingX: 2 }}>
               {record && view === 'History' ? (
-                <WatchRecordHistoryList history={record?.history} />
+                <WatchRecordHistoryList
+                  history={record?.history}
+                  type={mediaType}
+                  runtime={mediaType === 'movie' ? (mediaData as MovieDetails)?.runtime : null}
+                />
               ) : (
                 <RHFForm fields={formFields} methods={methods} />
               )}

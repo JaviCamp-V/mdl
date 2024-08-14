@@ -1,3 +1,4 @@
+import Genre from '../tmdb/IGenre';
 import MediaType from '../tmdb/IMediaType';
 import WatchStatus from './WatchStatus';
 
@@ -14,9 +15,14 @@ export default interface GeneralWatchlistRecord {
 
 export interface WatchlistItems extends GeneralWatchlistRecord {
   title: string;
+  originalTitle: string;
   country: string;
   year: number | string;
   isAiring: boolean;
   totalEpisodes: number;
   runtime: number;
+  posterPath: string | null;
+  genres: Genre[];
+  overview: string | null;
+  voteAverage: number;
 }

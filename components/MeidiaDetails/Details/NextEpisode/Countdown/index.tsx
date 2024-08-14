@@ -6,17 +6,14 @@ import Typography from '@mui/material/Typography';
 import useTimer from '@/hooks/useTimer';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
+
 type CountdownProps = {
   date: Date;
 };
 
 // TODO: add a refresh logic
-// TODO: update the styles
 const Countdown: React.FC<CountdownProps> = ({ date }) => {
   const { hasEnded, isValid, ...timer } = useTimer(date);
-  if (hasEnded) {
-    // refresh the page
-  }
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
       {Object.entries(timer).map(([key, value], index, arr) => (
@@ -25,17 +22,18 @@ const Countdown: React.FC<CountdownProps> = ({ date }) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 0.5,
+            gap: 0,
             justifyContent: 'center',
-            paddingY: 0.5,
-            paddingX: 1.5,
+            alignItems: 'center',
+            paddingY: 0.2,
+            paddingX: 1,
             ...(index !== arr.length - 1 && { borderRight: '1px solid #fff' })
           }}
         >
-          <Typography sx={{ fontSize: 30, fontWeight: 700, color: '#fff' }} suppressHydrationWarning>
+          <Typography sx={{ fontSize: 28, fontWeight: 700, color: '#fff' }} suppressHydrationWarning>
             {formatDigitsWithPadding(value, 2)}
           </Typography>
-          <Typography sx={{ fontSize: 16, fontWeight: 400, color: '#a1aac1' }}>{key}</Typography>
+          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#a1aac1' }}>{key}</Typography>
         </Box>
       ))}
     </Box>

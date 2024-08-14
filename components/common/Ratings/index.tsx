@@ -24,7 +24,7 @@ const Ratings: React.FC<RatingsProps> = ({ rating, showText }) => {
         icon={<Iconify icon="ic:round-star" fontSize={'14px!important'} />}
         emptyIcon={<Iconify icon="ic:round-star-outline" fontSize={'14px!important'} />}
       />
-      {showText && <Typography fontSize={'14px'}>{`${rating}/10`}</Typography>}
+      {showText && <Typography fontSize={'14px'}>{`${rating.toFixed(1)}/10`}</Typography>}
     </Box>
   );
 };
