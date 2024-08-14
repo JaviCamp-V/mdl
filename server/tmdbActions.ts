@@ -26,7 +26,6 @@ import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
 import { getWatchlist } from './watchlistActions';
 
-
 const endpoints = {
   search_person: 'search/person',
   search: 'search',
@@ -440,7 +439,7 @@ const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
     const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
     response.results = await Promise.all(
       response.results.map(async (result) => {
-       const data = addMediaType(result, type);
+        const data = addMediaType(result, type);
         const trailer = await addTrailer(data);
         const record = addRecordId(trailer, watchlist);
         return record as any;
@@ -465,8 +464,6 @@ type SearchTypeMap = DiscoverTypeMap & {
 const isMediaSearchResult = (media: SearchResponse): media is TVSearchResponse | MovieSearchResponse => {
   return media.results.length > 0 && media.results[0].media_type !== MediaType.person;
 };
-
-
 
 /**
  * Fetches search results based on the type and query,

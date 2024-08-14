@@ -5,7 +5,6 @@ import RefreshTokenRequest from '@/types/Auth/IResfreshTokenRequest';
 import getDeviceId from '@/utils/getDevice';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
-
 /**
  * Default configuration for Axios.
  */

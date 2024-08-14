@@ -2,9 +2,17 @@
 
 import React from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { Box, Table as MuiTable, SxProps, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Box,
+  Table as MuiTable,
+  SxProps,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
+} from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
-
 
 export interface DataColumn {
   field: string;

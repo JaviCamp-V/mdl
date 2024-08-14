@@ -19,13 +19,11 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ open, onClose, vide
         sx={{ padding: 0, margin: 0, overflow: 'hidden', paddingBottom: '56.25%', position: 'relative', height: 0 }}
       >
         <iframe
-          // width="100%"
-          // height="500"
           src={generateYoutubeEmbedLink(videoKey, true)}
           title={name}
           style={{ left: 0, top: 0, height: '100%', width: '100%', position: 'absolute', border: 'none' }}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        ></iframe>
+        />
         <IconButton
           aria-label="close"
           onClick={onClose}

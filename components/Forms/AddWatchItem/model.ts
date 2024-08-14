@@ -8,7 +8,6 @@ import WatchStatus from '@/types/watchlist/WatchStatus';
 import { plusDays } from '@/utils/dateUtils';
 import getDefaultValues from '@/utils/getDefaultValues';
 
-
 const generalModel: FieldModel = {
   watchStatus: {
     name: 'watchStatus',

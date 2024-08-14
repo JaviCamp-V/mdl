@@ -80,9 +80,7 @@ const SignInForm: React.FC<AuthFormProps> = () => {
                 color="primary"
                 sx={{ width: '100%' }}
                 disabled={
-                  methods.formState.isSubmitting ||
-                  methods.formState.isValidating ||
-                  !methods.formState.isValid 
+                  methods.formState.isSubmitting || methods.formState.isValidating || !methods.formState.isValid
                 }
                 onClick={methods.handleSubmit(onSubmit)}
               >

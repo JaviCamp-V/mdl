@@ -14,7 +14,6 @@ import MovieDetails from '@/types/tmdb/IMovieDetails';
 import TVDetails from '@/types/tmdb/ITVDetails';
 import WatchlistRecord from '@/types/watchlist/IWatchlistRecord';
 
-
 interface EditWatchlistButtonProps {
   type: MediaType;
   id: number;

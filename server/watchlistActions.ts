@@ -17,7 +17,6 @@ import logger from '@/utils/logger';
 import { getTitle, getYear } from '@/utils/tmdbUtils';
 import { getMovieDetails, getTVDetails } from './tmdbActions';
 
-
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',
@@ -132,11 +131,11 @@ const deleteWatchlistRecord = async (id: number): Promise<GenericResponse | Erro
 /**
  * Helper function to add details to watchlist item
  * @param watchlist<GeneralWatchlistRecord>
- * @returns response<WatchlistItems> 
+ * @returns response<WatchlistItems>
  * @description Fetch details for watchlist item and return WatchlistItems
  *  makes a call to tmdb Actions to fetch movie or tv details for watchlist item
  * if error return default values
- * if success return WatchlistItems with posterPath, genres, overview, voteAverage, title, 
+ * if success return WatchlistItems with posterPath, genres, overview, voteAverage, title,
  * originalTitle,  country, year, isAiring, totalEpisodes, runtime, episodeWatched
  */
 const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Promise<WatchlistItems> => {
@@ -200,7 +199,7 @@ const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Prom
 };
 
 /**
- * Get watchlist for user by username 
+ * Get watchlist for user by username
  * @param username<string>
  * @returns response<WatchlistItems[]>
  * @description Fetch watchlist for user by username

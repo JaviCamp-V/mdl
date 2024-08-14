@@ -17,7 +17,6 @@ import Score from './sections/Score';
 import Tags from './sections/Tags';
 import Titles from './sections/Titles';
 
-
 interface DetailsTabPanelProps {
   details: MovieDetails | TVDetails;
   id: number;
