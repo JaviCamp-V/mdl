@@ -21,7 +21,7 @@ const Tags: React.FC<TagsProps> = async ({ id, mediaType }) => {
         Tags:
       </Typography>
       {tags.length
-        ? tags?.map((tag, index, arr) => (
+        ? tags?.slice(0,10).map((tag, index, arr) => (
             <React.Fragment key={tag.id}>
               <Link key={tag.id} href={`${routes.search}?keywords=${tag.id}`} style={{ textDecoration: 'none' }}>
                 <Typography fontSize={14} color="primary">

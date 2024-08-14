@@ -42,7 +42,8 @@ const WatchStatusButton: React.FC<WatchStatusButtonProps> = ({ mediaData, id, me
 
   return (
     <React.Fragment>
-      <Button variant="contained" sx={{ width: '75%', textTransform: 'none' }} onClick={handleClick}>
+      <Button variant="contained" sx={{ width: '75%', textTransform: 'none', fontSize: 14, whiteSpace: "nowrap"
+        }} onClick={handleClick}>
         {watchStatus ? capitalCase(watchStatus) : 'Add to List'}
       </Button>
       {isModalOpen && (
