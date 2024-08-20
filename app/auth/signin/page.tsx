@@ -6,7 +6,10 @@ import Box from '@mui/material/Box';
 import SignInForm from '@/components/Forms/Auth/SignIn';
 import routes from '@/libs/routes';
 
+
 interface SignInPageProps {}
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Sign In'

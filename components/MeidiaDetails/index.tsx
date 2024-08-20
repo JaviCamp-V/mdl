@@ -1,4 +1,5 @@
 import React from 'react';
+import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
 import { Tab } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -19,17 +20,19 @@ type GeneralMovieDetailsProps = {
   details: MovieDetails;
   containerStyle?: any;
   type: MediaType.movie;
-  tab: string;
+  sections?: string[];
+  mode?: any;
 };
 type GeneralTVDetailsProps = {
   details: TVDetails;
   containerStyle?: any;
   type: MediaType.tv;
-  tab?: string;
+  sections?: string[];
 };
 
 type GeneralDetailsProps = GeneralMovieDetailsProps | GeneralTVDetailsProps;
-const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details, type, tab = '' }) => {
+const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details, type, sections }) => {
+  const tab = sections ? sections[0] : '';
   const links = [
     { label: 'Details', href: '' },
     { label: 'Episode Guide', href: 'episodes' },
@@ -42,7 +45,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
   const TabPanel = {
     episodes: <EpisodeGuide id={details.id} season_number={1} name={(details as TVDetails).name} />,
     credits: <Credits id={details.id} mediaType={type} view="all" />,
-    reviews: <Box />,
+    reviews: <ReviewDetails mediaType={type} mediaId={details.id} section={sections?.slice(1)} />,
     recommendations: <Box />,
     photos: <Photos id={details.id} mediaType={type} view="all" />
   }[tab] || <DetailsTabPanel id={details.id} mediaType={type} details={details} />;
@@ -50,7 +53,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
   const year = getYear({ ...details, media_type: type } as any);
   const getLink = (link: string) => {
     const baseUri = `/${type}/${details.id}`;
-    return link ? `${baseUri}?tab=${link}` : baseUri;
+    return link ? `${baseUri}/${link}` : baseUri;
   };
   return (
     <React.Fragment>
@@ -92,7 +95,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
           sx={{
             width: '100%',
             height: '100%',
-            paddingLeft: 2,
+            paddingLeft: tab === 'reviews' ? 0 : 2,
             paddingBottom: 2
           }}
         >
@@ -121,6 +124,9 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
           </Box>
           <Box sx={{ ...containerStyle, minHeight: 0 }}>
             <Photos id={details.id} mediaType={type} view="overview" />
+          </Box>
+          <Box sx={{ ...containerStyle, minHeight: 0, padding: 0 }}>
+            <ReviewDetails mediaType={type} mediaId={details.id} section="overview" />
           </Box>
         </React.Fragment>
       )}

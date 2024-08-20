@@ -10,6 +10,9 @@ interface SignUpPageProps {}
 export const metadata: Metadata = {
   title: 'Sign Up'
 };
+
+export const dynamic = 'force-dynamic';
+
 const SignUpPage: NextPage<SignUpPageProps> = () => {
   return (
     <Box

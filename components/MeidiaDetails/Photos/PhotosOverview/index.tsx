@@ -22,11 +22,11 @@ const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> =
           justifyContent: 'space-between'
         }}
       >
-        <Typography fontSize={18} fontWeight={700} lineHeight={1}>
+        <Typography fontSize={16} fontWeight={700} lineHeight={1}>
           Photos
         </Typography>
         <Link href={`/${mediaType}/${id}?tab=photos`} style={{ textDecoration: 'none' }} passHref>
-          <Typography fontSize={16} color="#1675b6" textAlign={'center'}>
+          <Typography fontSize={13} fontWeight={700} color="#1675b6" textAlign={'center'}>
             {`View all (${photos.length})`}
           </Typography>
         </Link>

@@ -3,6 +3,7 @@ import ErrorResponse from '@/types/common/ErrorResponse';
 import { getSession } from '@/utils/authUtils';
 import { generateErrorResponse } from '@/utils/handleError';
 
+
 /***
  * This function is a middleware that checks if the user is authenticated and has the required access level.
  * If the user is authenticated and has the required access level, it will call the action function.

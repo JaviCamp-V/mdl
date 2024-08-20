@@ -1,4 +1,4 @@
-type RHFElementsType =
+export type RHFElementsType =
   | 'text'
   | 'password'
   | 'email'
@@ -25,6 +25,8 @@ export interface Field {
   fullWidth?: boolean;
   multiline?: boolean;
   rows?: number;
+  minRows?: number;
+  maxRows?: number;
   total?: number;
   options?: { value: any; label: string; disabled: boolean }[];
   disabled?: boolean;
@@ -32,6 +34,7 @@ export interface Field {
   max?: number;
   maxDate?: Date;
   minDate?: Date;
+  showInput?: boolean;
 }
 
 export interface FieldModel {

@@ -12,7 +12,7 @@ import { Credits as CreditsProps } from '@/types/tmdb/IPeople';
 const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, crew, type }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
-      <Typography paddingX={2} fontSize={18} fontWeight={700} lineHeight={1}>
+      <Typography paddingX={2} fontSize={16} fontWeight={700} lineHeight={1}>
         Cast & Credits
       </Typography>
 
@@ -44,7 +44,7 @@ const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, 
       <Divider />
       <Box paddingX={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Link href={`/${type}/${id}?tab=credits`} passHref style={{ textDecoration: 'none' }}>
-          <Typography color="primary">{`View all (${Number(cast?.length || 0) + Number(crew?.length || 0)})`}</Typography>
+          <Typography color="primary" fontSize={14}>{`View all (${Number(cast?.length || 0) + Number(crew?.length || 0)})`}</Typography>
         </Link>
       </Box>
     </Box>

@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
                   </Typography>
                 </Link>
               </Box>
-              <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
                 {Object.entries(model.navbarLinks).map(([label, links]) => (
                   <React.Fragment key={label}>
                     {(() => {
