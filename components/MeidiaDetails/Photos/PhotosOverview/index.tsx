@@ -25,7 +25,7 @@ const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> =
         <Typography fontSize={16} fontWeight={700} lineHeight={1}>
           Photos
         </Typography>
-        <Link href={`/${mediaType}/${id}?tab=photos`} style={{ textDecoration: 'none' }} passHref>
+        <Link href={`/${mediaType}/${id}/photos`} style={{ textDecoration: 'none' }} passHref>
           <Typography fontSize={13} fontWeight={700} color="#1675b6" textAlign={'center'}>
             {`View all (${photos.length})`}
           </Typography>

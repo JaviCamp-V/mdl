@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
+import RecentReviewsCarousel from '@/features/reviews/components/ui/RecentReviews';
 import { Box } from '@mui/material';
 import DramaUpdates from '@/components/Discover/DramaUpdates';
 import MostPopularDramas from '@/components/Discover/MostPopular';

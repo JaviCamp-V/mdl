@@ -7,6 +7,7 @@ import AuthResponse from '@/types/Auth/IAuthResposne';
 import CreateUserRequest from '@/types/Auth/ICreateUserRequest';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
+import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 
 const endpoints = {
@@ -25,8 +26,11 @@ const signUp = async (request: CreateUserRequest): Promise<AuthResponse | ErrorR
     const response = await mdlApiClient.post<CreateUserRequest, AuthResponse>(endpoints.register, request);
     return response;
   } catch (error: any) {
-    logger.error(`Error signing up  ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+
+    logger.error(`Error signing up  : ${message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
@@ -36,8 +40,10 @@ const login = async (request: Omit<CreateUserRequest, 'email'>): Promise<AuthRes
     const resposne = await mdlApiClient.post<Omit<CreateUserRequest, 'email'>, AuthResponse>(endpoints.login, request);
     return resposne;
   } catch (error: any) {
-    logger.error(`Error logging token:  ${error?.message}, ${error?.response?.data?.message}`);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error logging token: ${message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
@@ -46,8 +52,10 @@ const logout = async (): Promise<GenericResponse> => {
     logger.info('Logging out user');
     return await mdlApiClient.del<GenericResponse>(endpoints.logout);
   } catch (error: any) {
-    logger.error('Error logging out user ', error?.message, error?.response?.data?.message);
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error('Error logging out user ', message);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 
@@ -56,10 +64,10 @@ const refreshAuthToken = async (): Promise<AuthResponse | ErrorResponse> => {
     logger.info('Refreshing token');
     return await mdlApiClient.refreshAuthToken<AuthResponse>(endpoints.refreshToken);
   } catch (error: any) {
-    logger.error('Error refreshing token: ', error?.message, error?.response?.data?.message);
-    // await cookies().delete('next-auth.session-token');
-    // await cookies().delete('next-auth.csrf-token');
-    return error.response.data ?? error;
+    const message = error?.response?.data?.message ?? error?.message;
+    const status = error?.response?.status ?? 408;
+    logger.error(`Error refreshing token: ${message}`);
+    return error.response.data ?? generateErrorResponse(status, message);
   }
 };
 

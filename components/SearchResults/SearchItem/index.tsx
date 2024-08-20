@@ -24,18 +24,19 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
         borderRadius: 2,
         overflow: 'hidden',
         padding: 2,
+        paddingX:{xs: 2, md: 4},
         display: 'flex',
         flexDirection: 'row',
-        gap: 2
+        gap: 2.5
       }}
     >
-      <Box sx={{ width: '30%', height: '38vh' }}>
-        <Box sx={{ width: '100%', height: '100%' }}>
+      <Box sx={{ width: '25%', height: '100%' }}>
+        <Box sx={{ width: '100%', height: '35vh' }}>
           <DramaPoster
             src={media_type === 'person' ? details.profile_path : details.poster_path}
             id={id}
             mediaType={media_type}
-            size="w185"
+            size="w500"
           />
         </Box>
       </Box>
@@ -45,7 +46,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
           paddingRight: 4,
           display: 'flex',
           flexDirection: 'column',
-          gap: 2
+          gap: 1
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, alignItems: 'center', flexWrap: 'wrap' }}>

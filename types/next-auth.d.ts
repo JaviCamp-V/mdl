@@ -26,5 +26,7 @@ declare module 'next-auth/jwt' {
     role: Role | null | undefined;
     accessLevels: AccessLevel[] | null | undefined;
     expiry: number | null | undefined;
+    error: string | null | undefined;
+    
   }
 }

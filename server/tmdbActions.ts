@@ -86,7 +86,11 @@ type MediaDetailsMap = {
  * If the type is a TV show or movie, it checks if the original language is an Asian language.
  * If the user is logged in, it fetches the watchlist and appends recordId and watchStatus to the response.
  *  */
-const getDetails = async <T extends MediaType>(type: T, id: number): Promise<MediaDetailsMap[T] | null> => {
+const getDetails = async <T extends MediaType>(
+  type: T,
+  id: number,
+  includeWatchRecord?: boolean
+): Promise<MediaDetailsMap[T] | null> => {
   try {
     logger.info(`Fetching details for ${type} with id ${id}`);
     const endpoint = `${type}/${endpoints.details}`.replace(':id', id.toString());
@@ -98,7 +102,7 @@ const getDetails = async <T extends MediaType>(type: T, id: number): Promise<Med
       return null;
     }
     if (type === MediaType.person) return response;
-    const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
+    const watchlist = includeWatchRecord ? ((await getWatchlist()) as GeneralWatchlistRecord[]) : [];
     const record = watchlist.find((item) => item.mediaId === Number(id) && item.mediaType === type.toUpperCase());
     return { ...response, recordId: record?.id ?? null, watchStatus: record?.watchStatus ?? null };
   } catch (error: any) {
@@ -286,16 +290,19 @@ const getSeasonDetails = async (id: number, seasonNumber: number): Promise<Seaso
 /**
  * Fetches details for a movie by its id
  * @param {number} id
+ * @param {boolean} includeWatchRecord
  * @returns {Promise<MovieDetails>}
  */
-const getMovieDetails = async (id: number): Promise<MovieDetails | null> => getDetails(MediaType.movie, id);
+const getMovieDetails = async (id: number, includeWatchRecord?: boolean): Promise<MovieDetails | null> =>
+  getDetails(MediaType.movie, id, includeWatchRecord);
 
 /**
  * Fetches details for a TV show by its id
  * @param {number} id
  * @returns {Promise<TVDetails>}
  */
-const getTVDetails = async (id: number): Promise<TVDetails | null> => getDetails(MediaType.tv, id);
+const getTVDetails = async (id: number, includeWatchRecord?: boolean): Promise<TVDetails | null> =>
+  getDetails(MediaType.tv, id, includeWatchRecord);
 
 /**
  * Fetches details for a person by their id
@@ -425,7 +432,9 @@ type DiscoverTypeMap = {
  */
 const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
   type: T,
-  params: URLSearchParams
+  params: URLSearchParams,
+  includeTrailer?: boolean,
+  includeWatchlist: boolean = true
 ): Promise<DiscoverTypeMap[T]> => {
   try {
     logger.info(`Fetching discover for ${type} with params ${params.toString()}`);
@@ -436,12 +445,12 @@ const getDiscoverType = async <T extends MediaType.tv | MediaType.movie>(
 
     const endpoint = `${endpoints.discover}`.replace(':mediaType', type);
     const response = await tmdbClient.get<DiscoverTypeMap[T]>(endpoint, params);
-    const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
+    const watchlist = includeWatchlist ? ((await getWatchlist()) as GeneralWatchlistRecord[]) : [];
     response.results = await Promise.all(
       response.results.map(async (result) => {
         const data = addMediaType(result, type);
-        const trailer = await addTrailer(data);
-        const record = addRecordId(trailer, watchlist);
+        const trailer = includeTrailer ? await addTrailer(data) : data;
+        const record = includeWatchlist ? addRecordId(trailer, watchlist) : trailer;
         return record as any;
       })
     );

@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { markReviewHelpful, removedHelpfulRating } from '@/features/reviews/services/reviewService';
+import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import { capitalCase } from 'change-case';
 import { error } from 'console';
@@ -17,6 +18,7 @@ import routes from '@/libs/routes';
 
 interface OverallReviewCardProps {
   review: ExtendOverallReview;
+  totalEpisodes?: number;
 }
 
 const chipColor = {
@@ -26,8 +28,9 @@ const chipColor = {
   [WatchStatus.PLAN_TO_WATCH]: 'primary',
   [WatchStatus.CURRENTLY_WATCHING]: 'primary'
 };
+const minContent = 4;
 
-const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
+const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpisodes }) => {
   const {
     user,
     id,
@@ -45,13 +48,15 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
     actingRating,
     musicRating,
     overallRating,
-    rewatchValueRating
+    rewatchValueRating,
+    hasSpoilers,
+    hasCompleted
   } = review;
   const rating = { overallRating, storyRating, actingRating, musicRating, rewatchValueRating };
 
   const [isReadMore, setIsReadMore] = React.useState(false);
   const text = React.useMemo(() => {
-    return isReadMore ? content : content.split('\n').slice(0, 8).join('\n');
+    return isReadMore ? content : content.split('\n').slice(0, minContent).join('\n');
   }, [isReadMore, content]);
 
   const addHelpfulRating = async (newIsHelpful: boolean | null) => {
@@ -75,9 +80,11 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
     setIsReadMore(value);
     scrollToElementByID(`review-${id}`);
   };
+  const defaultWatchStatus = hasCompleted ? WatchStatus.COMPLETED : 'Not Recorded';
+  const defaultChipColor = hasCompleted ? 'success' : 'error';
 
   return (
-    <Box>
+    <Box sx={{}}>
       <Box
         sx={{
           paddingX: 2,
@@ -135,14 +142,21 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
           </Typography>
           {mediaType.toLowerCase() === 'tv' && (
             <Typography fontSize={12} fontWeight={'bolder'} sx={{ opacity: 0.6 }}>
-              {episodeWatched ?? 0} episodes watched
+              <Typography fontSize={12} component={'span'} sx={{ fontWeight: 700 }}>
+                {episodeWatched ?? 0}
+              </Typography>
+              {' of '}
+              <Typography fontSize={12} component={'span'}>
+                {totalEpisodes ?? 0}
+              </Typography>
+              {' episodes watched'}
             </Typography>
           )}
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
             <Chip
-              label={capitalCase(watchStatus ?? 'No Recorded')}
+              label={capitalCase(watchStatus ?? defaultWatchStatus)}
               variant="outlined"
-              color={watchStatus ? (chipColor[watchStatus] as any) : 'error'}
+              color={watchStatus ? (chipColor[watchStatus] as any) : defaultChipColor}
               sx={{ height: 'min-content', padding: 0.2, fontSize: 12 }}
             />
             <Box
@@ -197,6 +211,13 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
         <Typography fontSize={14} fontWeight="bolder" marginY={1}>
           {headline}
         </Typography>
+
+        {hasSpoilers && (
+          <Typography fontSize={14} color="error" fontWeight="bolder" marginY={1}>
+            This review contains spoilers
+          </Typography>
+        )}
+
         <Typography
           fontSize={14}
           lineHeight={1.5}
@@ -208,7 +229,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
         >
           {text}
         </Typography>
-        {content.split('\n').length > 8 && (
+        {content.split('\n').length > minContent && (
           <Box
             sx={{
               zIndex: 101,
@@ -251,7 +272,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review }) => {
             gap: 1,
             alignItems: 'center',
             justifyContent: 'flex-start',
-            marginTop: 1.5
+            marginY: 1.5
           }}
         >
           <Typography fontSize={14} sx={{ opacity: 0.6 }}>

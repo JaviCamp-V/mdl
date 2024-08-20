@@ -1,4 +1,5 @@
 import { revalidatePath } from 'next/cache';
+import { error } from 'console';
 import { Account, NextAuthOptions, Session, User, getServerSession } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -46,6 +47,7 @@ const nextAuthOptions: NextAuthOptions = {
 
       const response = await refreshAuthToken();
       if ('errors' in response) {
+        token.error = 'Failed to refresh token';
         return token;
       }
 

@@ -17,6 +17,7 @@ import logger from '@/utils/logger';
 import { getTitle, getYear } from '@/utils/tmdbUtils';
 import { getMovieDetails, getTVDetails } from './tmdbActions';
 
+
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',
@@ -146,7 +147,9 @@ const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Prom
     );
 
     const details =
-      type === MediaType.tv ? await getTVDetails(watchlist.mediaId) : await getMovieDetails(watchlist.mediaId);
+      type === MediaType.tv
+        ? await getTVDetails(watchlist.mediaId, false)
+        : await getMovieDetails(watchlist.mediaId, false);
 
     if (!details) throw new Error('Details not found');
 

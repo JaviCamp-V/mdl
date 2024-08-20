@@ -4,6 +4,7 @@ import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import { get } from 'http';
 import mdlApiClient from '@/clients/mdlApiClient';
+import { getMovieDetails, getTVDetails } from '@/server/tmdbActions';
 import AccessLevel from '@/types/Auth/AccessLevel';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
@@ -12,8 +13,10 @@ import { getSession } from '@/utils/authUtils';
 import { formatStringDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
+import { getTitle } from '@/utils/tmdbUtils';
 import { userRoutes } from '@/libs/routes';
 import ReviewType from '../types/enums/ReviewType';
+import { ExtendOverallReviewWithMedia } from '../types/interfaces/ExtendReviewResponse';
 import ReviewHelpfulData from '../types/interfaces/ReviewHelpfulData';
 import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/ReviewRequest';
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
@@ -93,8 +96,6 @@ const markReviewHelpful = async (
     logger.info('Marking review helpful with : ', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const params = new URLSearchParams({ isHelpful: Boolean(isHelpful)?.toString() });
-    console.log('params', params);
-    console.log(endpoint);
     const response = await mdlApiClient.post<null, GenericResponse>(endpoint, null, params);
     revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}`);
     revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}/reviews`);
@@ -198,11 +199,26 @@ const getReviewHelpful = async (id: number): Promise<ReviewHelpfulData> => {
   }
 };
 
-const getRecentReviews = async (): Promise<OverallReview[] | ErrorResponse> => {
+const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[] | ErrorResponse> => {
   try {
     logger.info('Fetching recent reviews');
     const endpoint = endpoints.public.getRecentReviews;
-    return await mdlApiClient.get<OverallReview[]>(endpoint);
+    const response = await mdlApiClient.get<OverallReview[]>(endpoint);
+    const withMedia = await Promise.all(
+      response.map(async (review) => {
+        const type = review.mediaType.toLowerCase();
+        const details =
+          type === MediaType.tv
+            ? await getTVDetails(review.mediaId, false)
+            : await getMovieDetails(review.mediaId, false);
+
+        if (!details) return { ...review, poster_path: null, title: 'Unknown', origin: 'Unknown' };
+        const title = getTitle({ ...details, media_type: type } as any);
+        const country = details.origin_country.length ? details.origin_country[0] : 'Unknown';
+        return { ...review, poster_path: details.poster_path, title, origin: country };
+      })
+    );
+    return withMedia;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
     const status = error?.response?.status ?? 408;

@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import { getDiscoverType } from '@/server/tmdbActions';
 import MediaType from '@/types/tmdb/IMediaType';
 import { upcomingTvShows } from '@/utils/tmdbQueries';
-import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 import DramaList from '../../DramaList';
 
@@ -15,7 +14,7 @@ interface TopUpComingDramasProps {
   containerStyle?: React.CSSProperties;
 }
 const TopUpcomingDramas: React.FC<TopUpComingDramasProps> = async ({ containerStyle }) => {
-  const response = await getDiscoverType(MediaType.tv, upcomingTvShows);
+  const response = await getDiscoverType(MediaType.tv, upcomingTvShows, false);
 
   return (
     <Box sx={{ ...containerStyle, paddingX: 0, paddingY: 2, minHeight: 0 }}>

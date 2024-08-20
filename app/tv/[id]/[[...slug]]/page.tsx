@@ -23,8 +23,8 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     description: response?.overview ?? ''
   };
 };
-const TVDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams: { tab, mode } }) => {
-  const response = await getTVDetails(id);
+const TVDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams: { tab } }) => {
+  const response = await getTVDetails(id, true);
   if (!response) return <NotFound type={MediaType.tv} />;
 
   const boxStyle = {

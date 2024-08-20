@@ -44,10 +44,10 @@ const DramaList: React.FC<DramaListProps> = ({ dramas, length = 5 }) => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Ratings rating={result.vote_average / 2} />
-              <Typography fontSize={13}>{`${result.vote_average.toFixed(1)}`}</Typography>
+              <Typography fontSize={13}>{`${result.vote_average?.toFixed(1)}`}</Typography>
             </Box>
             <Typography fontSize={13}>{`${getOrigin(result)}`}</Typography>
-            <Typography fontSize={13}>{`${result.vote_count.toLocaleString()} Watchers`}</Typography>
+            <Typography fontSize={13}>{`${result.vote_count?.toLocaleString()} Watchers`}</Typography>
           </Box>
         </Box>
       ))}

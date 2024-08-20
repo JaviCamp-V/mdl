@@ -16,6 +16,7 @@ import WhereToWatch from './Details/WhereToWatch';
 import EpisodeGuide from './EpisodeGuide';
 import Photos from './Photos';
 
+
 type GeneralMovieDetailsProps = {
   details: MovieDetails;
   containerStyle?: any;
@@ -45,7 +46,14 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
   const TabPanel = {
     episodes: <EpisodeGuide id={details.id} season_number={1} name={(details as TVDetails).name} />,
     credits: <Credits id={details.id} mediaType={type} view="all" />,
-    reviews: <ReviewDetails mediaType={type} mediaId={details.id} section={sections?.slice(1)} />,
+    reviews: (
+      <ReviewDetails
+        mediaType={type}
+        mediaId={details.id}
+        section={sections?.slice(1)}
+        totalEpisodes={type === MediaType.tv ? details.number_of_episodes : 0}
+      />
+    ),
     recommendations: <Box />,
     photos: <Photos id={details.id} mediaType={type} view="all" />
   }[tab] || <DetailsTabPanel id={details.id} mediaType={type} details={details} />;
@@ -126,7 +134,7 @@ const GeneralDetails: React.FC<GeneralDetailsProps> = ({ containerStyle, details
             <Photos id={details.id} mediaType={type} view="overview" />
           </Box>
           <Box sx={{ ...containerStyle, minHeight: 0, padding: 0 }}>
-            <ReviewDetails mediaType={type} mediaId={details.id} section="overview" />
+            <ReviewDetails mediaType={type} mediaId={details.id} section="overview" totalEpisodes={ type === MediaType.tv ? details.number_of_episodes : 0} />
           </Box>
         </React.Fragment>
       )}

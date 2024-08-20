@@ -8,6 +8,7 @@ import model from '@/layout/model';
 import NotificationsAlert from '../notifications';
 import ProfileDropdown from '../profile_dropdown';
 
+
 const AuthContent = () => {
   const { data: session, status } = useSession();
   if (status === 'loading' || !session?.user) {
@@ -26,6 +27,9 @@ const AuthContent = () => {
       </React.Fragment>
     );
   }
+
+  console.log(session);
+
   return (
     <React.Fragment>
       <NotificationsAlert />

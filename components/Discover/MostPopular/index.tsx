@@ -11,11 +11,12 @@ import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 import DramaList from '../../DramaList';
 
+
 interface MostPopularDramasProps {
   containerStyle?: React.CSSProperties;
 }
 const MostPopularDramas: React.FC<MostPopularDramasProps> = async ({ containerStyle }) => {
-  const response = await getDiscoverType(MediaType.tv, mostPopular);
+  const response = await getDiscoverType(MediaType.tv, mostPopular, false);
 
   return (
     <Box sx={{ ...containerStyle, paddingX: 0, paddingY: 2, minHeight: 0 }}>

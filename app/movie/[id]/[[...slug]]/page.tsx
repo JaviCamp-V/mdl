@@ -10,8 +10,8 @@ import MediaType from '@/types/tmdb/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
 
 type PageProps = {
-  params: { id: number };
-  searchParams: { [tab: string]: string };
+  params: { id: number; slug?: string[] };
+  searchParams: { [key: string]: string };
 };
 
 const getReleaseYear = (release_date: string | undefined) => {
@@ -20,14 +20,14 @@ const getReleaseYear = (release_date: string | undefined) => {
 };
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { id } = params;
-  const response = await getMovieDetails(id);
+  const response = await getMovieDetails(id, true);
   const title = `${response?.title} (${getReleaseYear(response?.release_date)})`;
   return {
     title: response?.title ? title : 'Movie Details',
     description: response?.overview ?? ''
   };
 };
-const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchParams: { tab } }) => {
+const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams: { tab } }) => {
   const response = await getMovieDetails(id);
   if (!response) return <NotFound type={MediaType.movie} />;
 
@@ -43,7 +43,7 @@ const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id }, searchPar
     <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 }, backgroundColor: 'background.default' }}>
       <Grid container spacing={3} sx={{ padding: { xs: 0, md: 0 } }}>
         <Grid item xs={12} md={8.5}>
-          <GeneralDetails details={response} type={MediaType.movie} tab={tab} containerStyle={boxStyle} />
+          <GeneralDetails details={response} type={MediaType.movie} sections={slug} containerStyle={boxStyle} />
         </Grid>
         <Grid item xs={12} md={3.5} sx={{ marginTop: 4 }}>
           <SidePanel details={response} type={MediaType.movie} tab={tab ?? ''} />

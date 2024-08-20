@@ -10,7 +10,7 @@ interface DramaCarouselSectionProps {
   params: URLSearchParams;
 }
 const DiscoverCarousel: React.FC<DramaCarouselSectionProps> = async ({ type, params }) => {
-  const response = await getDiscoverType(type, params);
+  const response = await getDiscoverType(type, params, false, false);
   return (
     <Box marginX={2} sx={{ minHeight: '30vh' }}>
       <Carousel>

@@ -1,4 +1,5 @@
 import React from 'react';
+import RecentReviewsCarousel from '@/features/reviews/components/ui/RecentReviews';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,6 +16,7 @@ const DramaUpdates: React.FC<DramaUpdatesProps> = ({ containerStyle }) => {
   const updatesQueries = { trending, startingThisWeek, endingThisWeek };
   return (
     <Box sx={{ ...containerStyle, paddingTop: 2, paddingBottom: 4 }}>
+      <RecentReviewsCarousel />
       {Object.entries(updatesQueries).map(([title, params], index, arr) => (
         <Box paddingY={0} key={title}>
           <Typography
