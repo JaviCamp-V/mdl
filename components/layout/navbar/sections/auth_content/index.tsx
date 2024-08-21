@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Typography from '@mui/material/Typography';
 import routes from '@/libs/routes';
 import NotificationsAlert from '../notifications';
@@ -27,7 +27,10 @@ const AuthContent = () => {
     );
   }
 
-  console.log(session);
+  if (session?.user?.authError) {
+    signOut();
+    return;
+  }
 
   return (
     <React.Fragment>

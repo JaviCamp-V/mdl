@@ -15,6 +15,7 @@ declare module 'next-auth' {
     accessToken: string | null | undefined;
     refreshToken: string | null | undefined;
     expiresIn: number | null | undefined;
+    authError?: string | null | undefined;
   }
 }
 
@@ -25,8 +26,6 @@ declare module 'next-auth/jwt' {
     refreshToken: string | null | undefined;
     role: Role | null | undefined;
     accessLevels: AccessLevel[] | null | undefined;
-    expiry: number | null | undefined;
-    error: string | null | undefined;
-    
+    expiry: number | null | undefined;    
   }
 }

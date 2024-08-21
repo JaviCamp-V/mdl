@@ -6,6 +6,7 @@ import logger from '@/utils/logger';
 import routes from '@/libs/routes';
 import { login, refreshAuthToken, signUp } from '../services/authService';
 
+
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
@@ -53,7 +54,7 @@ const nextAuthOptions: NextAuthOptions = {
       } catch (error: any) {
         const message = error?.response?.data?.message ?? error?.message;
         logger.error(`Error refreshing token: ${message}`);
-        token.error = 'Failed to refresh token';
+        token.user.authError = "Can't refresh token";
       }
 
       return token;
