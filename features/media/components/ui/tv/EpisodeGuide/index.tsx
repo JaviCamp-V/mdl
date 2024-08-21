@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import DramaPoster from '@/components/Poster';
 import Link from '@/components/common/Link';
+import NotFound from '@/components/common/NotFound';
 import Ratings from '@/components/common/Ratings';
 import { formatShortDate, formatStringDate } from '@/utils/formatters';
 
@@ -18,7 +19,7 @@ interface EpisodeGuideProps {
 const hasAired = (date: string) => formatStringDate(date).getTime() < new Date().getTime();
 const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_number }) => {
   const season = await getSeasonDetails(id, season_number);
-  if (!season) return <Box p={2}>Episodes Not Found</Box>;
+  if (!season) return <NotFound type="episode guide" />;
 
   return (
     <Box padding={2}>
@@ -40,12 +41,12 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_numb
                   })
             }}
           >
-            <Box sx={{ width: '100%', height: '40vh' }}>
+            <Box sx={{ width: '100%', height: '25vh' }}>
               <DramaPoster
                 src={episode.still_path}
                 id={`${season_number}/${episode.id}`}
                 mediaType="episode"
-                size="original"
+                size="w780"
               />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>

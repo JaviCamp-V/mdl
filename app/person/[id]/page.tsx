@@ -1,16 +1,8 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
 import PersonContainer from '@/features/media/containers/Person';
-import { Typography } from '@mui/material';
+import { getPersonDetails } from '@/features/media/service/tmdbService';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import { getPersonDetails } from '@/server/tmdbActions';
-import PersonDetails from '@/components/PersonDetails';
-import BioData from '@/components/PersonDetails/BioData';
-import DramaPoster from '@/components/Poster';
-import Socials from '@/components/Socials';
-import NotFound from '@/components/common/NotFound';
-import MediaType from '@/types/tmdb/IMediaType';
 
 type PageProps = {
   params: { id: number };

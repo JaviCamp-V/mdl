@@ -3,15 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { markReviewHelpful, removedHelpfulRating } from '@/features/reviews/services/reviewService';
-import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import { capitalCase } from 'change-case';
-import { error } from 'console';
 import { enqueueSnackbar } from 'notistack';
 import { Avatar, Box, Button, Chip, Typography } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 import Divider from '@/components/common/Divider';
-import WatchStatus from '@/types/watchlist/WatchStatus';
+import WatchStatus from '@/types/enums/WatchStatus';
 import { formatDateToDistance } from '@/utils/formatters';
 import { scrollToElementByID } from '@/utils/scrollToElement';
 import routes from '@/libs/routes';

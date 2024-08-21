@@ -1,5 +1,4 @@
-import MediaType from '@/types/tmdb/IMediaType';
-import ReviewType from '../enums/ReviewType';
+import MediaType from '@/types/enums/IMediaType';
 
 export interface ReviewBase {
   mediaId: number;

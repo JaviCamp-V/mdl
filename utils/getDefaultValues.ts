@@ -1,4 +1,4 @@
-import { Field, RHFElementsType } from '@/types/common/IForm';
+import { RHFElementsType } from '@/types/common/IForm';
 
 interface FieldMap {
   [key: string]: any;

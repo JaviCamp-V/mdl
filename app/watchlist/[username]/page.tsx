@@ -2,16 +2,17 @@ import React from 'react';
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
 import columns from '@/features/watchlist/components/tables/watchlist/columns';
+import { getUserWatchlist } from '@/features/watchlist/service/watchlistService';
+import WatchlistItems from '@/features/watchlist/types/interfaces/WatchlistItem';
 import { capitalCase } from 'change-case';
 import { FormControl, MenuItem, Select, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { getUserWatchlist } from '@/server/watchlistActions';
 import Table from '@/components/common/Table';
-import MediaType from '@/types/tmdb/IMediaType';
-import { WatchlistItems } from '@/types/watchlist/IGeneralWatchlistRecord';
-import WatchStatus from '@/types/watchlist/WatchStatus';
+import MediaType from '@/types/enums/IMediaType';
+import WatchStatus from '@/types/enums/WatchStatus';
 import { getSession } from '@/utils/authUtils';
 import routes from '@/libs/routes';
+
 
 type PageProps = {
   params: { username: string };

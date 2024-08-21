@@ -3,8 +3,9 @@ import { Metadata, NextPage } from 'next/types';
 import ContentContainer from '@/features/media/containers/Content';
 import { getTVDetails } from '@/features/media/service/tmdbService';
 import Box from '@mui/material/Box';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
+
 
 type PageProps = {
   params: { id: number; slug?: string[] };

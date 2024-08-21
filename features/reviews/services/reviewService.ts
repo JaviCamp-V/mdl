@@ -1,19 +1,18 @@
 'use server';
 
-import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
+import { revalidatePath } from 'next/cache';
+import AccessLevel from '@/features/auth/types/enums/AccessLevel';
+import { getContentDetails } from '@/features/media/service/tmdbService';
+import { getTitle } from '@/features/media/utils/tmdbUtils';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
-import { get } from 'http';
 import mdlApiClient from '@/clients/mdlApiClient';
-import { getMovieDetails, getTVDetails } from '@/server/tmdbActions';
-import AccessLevel from '@/types/Auth/AccessLevel';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
 import { formatStringDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
-import { getTitle } from '@/utils/tmdbUtils';
 import { userRoutes } from '@/libs/routes';
 import ReviewType from '../types/enums/ReviewType';
 import { ExtendOverallReviewWithMedia } from '../types/interfaces/ExtendReviewResponse';
@@ -206,11 +205,8 @@ const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[]> => {
     const response = await mdlApiClient.get<OverallReview[]>(endpoint);
     const withMedia = await Promise.all(
       response.map(async (review) => {
-        const type = review.mediaType.toLowerCase();
-        const details =
-          type === MediaType.tv
-            ? await getTVDetails(review.mediaId, false)
-            : await getMovieDetails(review.mediaId, false);
+        const type = review.mediaType.toLowerCase() as MediaType.tv | MediaType.movie;
+        const details = await getContentDetails(type, review.mediaId);
 
         if (!details) return { ...review, poster_path: null, title: 'Unknown', origin: 'Unknown' };
         const title = getTitle({ ...details, media_type: type } as any);

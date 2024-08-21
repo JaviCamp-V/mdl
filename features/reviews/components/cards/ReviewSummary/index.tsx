@@ -7,8 +7,8 @@ import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import Avatar from '@/components/common/Avatar';
 import Ratings from '@/components/common/Ratings';
-import countries from '@/libs/countries';
 import routes from '@/libs/routes';
+
 
 interface ReviewSummaryCardProps {
   review: ExtendOverallReviewWithMedia;

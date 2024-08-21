@@ -1,9 +1,9 @@
+import PriorityLevel from '@/features/watchlist/types/enums/PriorityLevel';
+import RewatchValue from '@/features/watchlist/types/enums/RewatchValue';
 import { capitalCase } from 'change-case';
 import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
-import PriorityLevel from '@/types/watchlist/PriorityLevel';
-import RewatchValue from '@/types/watchlist/RewatchValue';
-import WatchStatus from '@/types/watchlist/WatchStatus';
+import WatchStatus from '@/types/enums/WatchStatus';
 import { plusDays } from '@/utils/dateUtils';
 import getDefaultValues from '@/utils/getDefaultValues';
 

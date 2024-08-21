@@ -1,11 +1,12 @@
 'use server';
 
 import React from 'react';
-import { Box } from '@mui/material';
-import { getImages } from '@/server/tmdbActions';
+import { getImages } from '@/features/media/service/tmdbService';
+import Box from '@mui/material/Box';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import FullPhotoGallery from './FullPhotoGallery';
 import PhotosOverview from './PhotosOverview';
+
 
 interface PhotosProps extends MediaDetailsProps {
   view: 'overview' | 'all';

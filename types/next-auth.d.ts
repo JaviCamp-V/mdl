@@ -1,7 +1,7 @@
 import NextAuth, { User } from 'next-auth';
 import NextAuth from 'next-auth/jwt';
-import AccessLevel from './Auth/AccessLevel';
-import Role from './Auth/Role';
+import AccessLevel from '@/features/auth/types/enums/AccessLevel';
+import Role from '@/features/auth/types/enums/Role'
 declare module 'next-auth' {
   interface Session {
     user: User;

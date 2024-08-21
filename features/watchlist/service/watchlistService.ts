@@ -1,13 +1,13 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import { getContentDetails } from '@/features/media/service/tmdbService';
 import MovieDetails from '@/features/media/types/interfaces/MovieDetails';
 import TVDetails from '@/features/media/types/interfaces/TVDetails';
 import { getTitle, getYear } from '@/features/media/utils/tmdbUtils';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
-import AccessLevel from '@/types/Auth/AccessLevel';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import MediaType from '@/types/enums/IMediaType';
@@ -17,6 +17,7 @@ import GeneralWatchlistRecord from '../types/interfaces/GeneralWatchlistRecord';
 import UpdateWatchlistRequest from '../types/interfaces/UpdateWatchlistRequest';
 import WatchlistItems from '../types/interfaces/WatchlistItem';
 import WatchlistRecord from '../types/interfaces/WatchlistRecord';
+
 
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',

@@ -41,9 +41,11 @@ const ContentCards: React.FC<ContentCardsProps> = ({
           imdb_id={external_ids.imdb_id}
           number_of_episodes={number_of_episodes}
           next_episode_to_air={next_episode_to_air}
+          containerStyle={cardStyle}
         />
       )}
-      <WhereToWatch title={title} mediaType={mediaType} mediaId={mediaId} />
+      <WhereToWatch title={title} mediaType={mediaType} mediaId={mediaId}           containerStyle={cardStyle}
+ />
 
       {Object.entries(cards).map(([key, value]) => (
         <Box key={key} sx={{ ...cardStyle }}>

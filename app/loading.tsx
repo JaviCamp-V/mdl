@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import model from '@/layout/model';
-import LoadingSkeleton from '@/components/common/LoadingSkeleton';
+import model from '@/components/layout/model';
+
 
 const LoadingPage = () => {
   return (

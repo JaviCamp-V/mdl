@@ -1,8 +1,0 @@
-enum WatchStatus {
-  CURRENTLY_WATCHING = 'CURRENTLY_WATCHING',
-  COMPLETED = 'COMPLETED',
-  PLAN_TO_WATCH = 'PLAN_TO_WATCH',
-  DROPPED = 'DROPPED',
-  ON_HOLD = 'ON_HOLD'
-}
-export default WatchStatus;

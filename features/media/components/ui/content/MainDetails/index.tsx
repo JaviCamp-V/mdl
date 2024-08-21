@@ -59,7 +59,7 @@ const MainDetails: React.FC<MainDetailsProps> = ({
   original_title
 }) => {
   return (
-    <Grid container spacing={3} sx={{ width: '100%', paddingX: 2 }}>
+    <Grid container spacing={3} sx={{ width: '100%', paddingX: 2, }}>
       <Grid item xs={12} sm={4} sx={{}}>
         <MediaLinks
           poster_path={poster_path}

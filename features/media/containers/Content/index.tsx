@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import NotFound from '@/components/common/NotFound';
 import TabsList from '@/components/common/Tablist';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
 import Credits from '../../components/ui/content/Credits';
 import MainDetails from '../../components/ui/content/MainDetails';
@@ -108,6 +108,9 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
             sx={{
               width: '100%',
               height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               padding: 0,
               paddingY: 2
             }}

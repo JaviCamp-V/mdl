@@ -1,15 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
+import { Credits } from '@/features/media/types/interfaces/People';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import Divider from '@/components/common/Divider';
-import MediaType from '@/types/tmdb/IMediaType';
-import { Credits as CreditsProps } from '@/types/tmdb/IPeople';
+import MediaType from '@/types/enums/IMediaType';
 
-const CastOverview: React.FC<CreditsProps & { type: MediaType }> = ({ id, cast, crew, type }) => {
+const CastOverview: React.FC<Credits & { type: MediaType }> = ({ id, cast, crew, type }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
       <Typography paddingX={2} fontSize={16} fontWeight={700} lineHeight={1}>

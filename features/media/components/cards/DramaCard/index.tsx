@@ -3,8 +3,9 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
+
 
 interface DramaCardProps {
   title: string;

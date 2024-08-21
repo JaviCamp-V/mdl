@@ -2,12 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
+
 
 interface PosterProps {
   src: string | null;
   id: number | string;
-  size?: 'w45' | 'w185' | 'w300' | 'w342' | 'w500' | 'original';
+  size?: 'w45' | 'w185' | 'w300' | 'w342' | 'w500' | 'w780' | 'original';
   mediaType: MediaType | 'photo' | 'episode' | 'profile';
   priority?: boolean;
   overlay?: React.ReactNode;
@@ -33,7 +34,7 @@ const DramaPoster: React.FC<PosterProps> = ({
             width: '100%', // equivalent to size-full
             borderRadius: noRadius ? '0' : '0.175rem', // equivalent to rounded-md
             backgroundColor: 'var(--muted-color)', // equivalent to bg-muted
-            objectFit: 'fill' // equivalent to object-cover
+            objectFit: 'cover' // equivalent to object-cover
           }}
           fill
           priority={priority}

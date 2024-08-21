@@ -1,10 +1,11 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
+import SignInForm from '@/features/auth/components/forms/SignIn';
 import { Button, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import SignInForm from '@/components/Forms/Auth/SignIn';
 import routes from '@/libs/routes';
+
 
 interface SignInPageProps {}
 

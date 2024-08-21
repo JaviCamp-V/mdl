@@ -1,7 +1,7 @@
 'use server';
 
+import { getWatchlist } from '@/features/watchlist/service/watchlistService';
 import tmdbClient from '@/clients/TMDBClient';
-import { getWatchlist } from '@/server/watchlistActions';
 import MediaType from '@/types/enums/IMediaType';
 import GeneralWatchlistRecord from '@/types/watchlist/IGeneralWatchlistRecord';
 import logger from '@/utils/logger';
