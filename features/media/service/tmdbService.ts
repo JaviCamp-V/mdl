@@ -1,9 +1,9 @@
 'use server';
 
 import { getWatchlist } from '@/features/watchlist/service/watchlistService';
+import GeneralWatchlistRecord from '@/features/watchlist/types/interfaces/GeneralWatchlistRecord';
 import tmdbClient from '@/clients/TMDBClient';
 import MediaType from '@/types/enums/IMediaType';
-import GeneralWatchlistRecord from '@/types/watchlist/IGeneralWatchlistRecord';
 import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
