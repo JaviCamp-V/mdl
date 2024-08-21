@@ -3,9 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import ThemeButtons from '@/components/Buttons/ThemeButtons';
 import Iconify from '@/components/Icon/Iconify';
-import ThemeButtons from '@/components/buttons/ThemeButtons';
 import model from '../model';
+
 
 interface FooterProps {}
 const Footer: React.FC<FooterProps> = () => {
