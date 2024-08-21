@@ -2,12 +2,15 @@ import React from 'react';
 import MuiAvatar, { AvatarProps } from '@mui/material/Avatar';
 
 const stringToColor = (string: string): string => {
+  /* eslint-disable no-bitwise */
+
   const hash = Array.from(string).reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
 
   return [...Array(3)]
     .map((_, i) => `00${((hash >> (i * 8)) & 0xff).toString(16)}`.slice(-2))
     .join('')
     .replace(/^/, '#');
+  /* eslint-enable no-bitwise */
 };
 
 interface CustomAvatarProps extends AvatarProps {
