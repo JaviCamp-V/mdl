@@ -1,4 +1,4 @@
-import WatchStatus from '@/types/watchlist/WatchStatus';
+import WatchStatus from '@/types/enums/WatchStatus';
 import TVShowStatus from '../enums/TVShowStatus';
 import BaseShowDetails from './BaseShowDetails';
 import ExternalID from './ExternalID';
