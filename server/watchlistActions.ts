@@ -17,7 +17,6 @@ import logger from '@/utils/logger';
 import { getTitle, getYear } from '@/utils/tmdbUtils';
 import { getMovieDetails, getTVDetails } from './tmdbActions';
 
-
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',

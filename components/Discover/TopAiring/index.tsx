@@ -8,7 +8,6 @@ import { getTopAiring } from '@/utils/tmdbQueries';
 import countries from '@/libs/countries';
 import TopAiringResults from './Results';
 
-
 interface TopAiringProps {
   containerStyle?: React.CSSProperties;
 }

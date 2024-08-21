@@ -4,7 +4,7 @@ import React from 'react';
 import { Video } from '@/features/media/types/interfaces/VideosResponse';
 import Button from '@mui/material/Button';
 import Iconify from '@/components/Icon/Iconify';
-import VideoPlayerModal from '@/components/Modals/VideoPlayer';
+import VideoPlayerModal from '../../modals/VideoPlayer';
 
 interface PlayButtonProps {
   video: Video;

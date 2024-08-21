@@ -11,7 +11,6 @@ import { color } from '@/libs/common';
 import routes from '@/libs/routes';
 import DramaList from '../../DramaList';
 
-
 interface MostPopularDramasProps {
   containerStyle?: React.CSSProperties;
 }

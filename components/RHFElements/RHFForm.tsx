@@ -5,7 +5,6 @@ import { FieldModel } from '@/types/common/IForm';
 import Values from '@/types/common/Values';
 import RHFElementsSelector from '.';
 
-
 interface RHFFormProps {
   fields: FieldModel;
   methods: UseFormReturn<any>;

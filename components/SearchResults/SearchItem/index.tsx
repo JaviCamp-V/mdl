@@ -1,10 +1,10 @@
 import React from 'react';
+import PlayButton from '@/features/media/components/buttons/PlayButton';
 import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import EditWatchlistButton from '@/components/Buttons/EditWatchlistButton';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
-import PlayButton from '@/components/WatchVideos/PlayButton';
 import Ratings from '@/components/common/Ratings';
 import { MediaSearchResult, PersonSearchResult } from '@/types/tmdb/ISearchResposne';
 import { getOrigin, getYear } from '@/utils/tmdbUtils';
@@ -24,7 +24,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
         borderRadius: 2,
         overflow: 'hidden',
         padding: 2,
-        paddingX:{xs: 2, md: 4},
+        paddingX: { xs: 2, md: 4 },
         display: 'flex',
         flexDirection: 'row',
         gap: 2.5
@@ -87,7 +87,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ details }) => {
         </Typography>
         {media_type !== 'person' && details.trailer && (
           <Box sx={{ width: '40%' }}>
-            <PlayButton video={details.trailer} />
+            <PlayButton video={details.trailer as any} />
           </Box>
         )}
       </Box>

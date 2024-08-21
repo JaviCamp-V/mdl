@@ -30,14 +30,14 @@ const CheckBoxField: React.FC<CheckBoxFieldProps> = ({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl component="fieldset" variant="standard" error={Boolean(error)} >
+        <FormControl component="fieldset" variant="standard" error={Boolean(error)}>
           <FormControlLabel
             label={showLabel ? label : ''}
-            componentsProps={{ typography: {fontSize: '14px!important', color: 'info.contrastText'}}}
+            componentsProps={{ typography: { fontSize: '14px!important', color: 'info.contrastText' } }}
             sx={{}}
             control={
               <Checkbox
-              sx={{paddingY: 0}}
+                sx={{ paddingY: 0 }}
                 icon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
                 checkedIcon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
                 {...field}
