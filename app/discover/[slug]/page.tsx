@@ -9,6 +9,7 @@ import NotFound from '@/components/common/NotFound';
 import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 
+
 interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string };
@@ -40,7 +41,7 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
     slug === 'airing'
       ? `${data.title} in ${countries.find((c) => c.code === country)?.fullName ?? country}`
       : data.title;
-  const response = await getDiscoverType(MediaType.tv, params);
+  const response = await getDiscoverType(MediaType.tv, params, true);
   if (response.total_results === 0) return <NotFound />;
 
   return (

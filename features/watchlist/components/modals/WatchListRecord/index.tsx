@@ -1,6 +1,4 @@
 import React from 'react';
-import MovieDetails from '@/features/media/types/interfaces/MovieDetails';
-import TVDetails from '@/features/media/types/interfaces/TVDetails';
 import { deleteWatchlistRecord, updateWatchlistRecord } from '@/features/watchlist/service/watchlistService';
 import UpdateWatchlistRequest from '@/features/watchlist/types/interfaces/UpdateWatchlistRequest';
 import WatchlistRecord from '@/features/watchlist/types/interfaces/WatchlistRecord';
@@ -13,6 +11,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, I
 import DramaPoster from '@/components/Poster';
 import RHFForm from '@/components/RHFElements/RHFForm';
 import SlideTransition from '@/components/common/SlideTransition';
+import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/enums/IMediaType';
 import WatchStatus from '@/types/enums/WatchStatus';
 import { formatDate, formatStringDate } from '@/utils/formatters';
@@ -50,9 +49,11 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
   const buttons = ['General', 'Advanced', 'History'].filter((button) => record || button !== 'History');
 
   const isReleased = release_date ? formatStringDate(release_date) < new Date() : false;
+  const [formFields, setFormFields] = React.useState<FieldModel>(generalModel);
 
-  const formFields = React.useMemo(() => {
-    if (view === 'History') return {};
+  React.useEffect(() => {
+    if (view === 'History') return;
+
     generalModel.watchStatus.options = generalModel.watchStatus.options?.map((option) => {
       let disabled = option.value !== WatchStatus.PLAN_TO_WATCH && !isReleased;
       if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
@@ -68,7 +69,8 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
     advancedModel.rewatchValue.disabled = !isReleased;
     advancedModel.rewatchCount.disabled = !isReleased;
 
-    return view === 'General' ? generalModel : advancedModel;
+    const values = view === 'General' ? generalModel : advancedModel;
+    setFormFields(values);
   }, [view, lastEpisodeType, number_of_episodes, isReleased, mediaType]);
 
   const newDefaultValues = React.useMemo(() => {
@@ -137,6 +139,23 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
     enqueueSnackbar(response.message, { variant: 'success' });
     onClose();
   };
+
+  const watchStatus = methods.watch('watchStatus');
+  React.useEffect(() => {
+    const copy = { ...formFields };
+    if (watchStatus === WatchStatus.COMPLETED) {
+      methods.setValue('episodeWatched', number_of_episodes);
+      copy.episodeWatched.disabled = true;
+      copy.rating.disabled = false;
+    } else if (watchStatus === WatchStatus.PLAN_TO_WATCH) {
+      copy.episodeWatched.disabled = true;
+      copy.rating.disabled = true;
+    } else {
+      copy.episodeWatched.disabled = false;
+      copy.rating.disabled = false;
+    }
+    setFormFields(copy);
+  }, [watchStatus]);
 
   return (
     <Dialog

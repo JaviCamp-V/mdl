@@ -9,7 +9,7 @@ const LoadingPage = () => {
     <Box
       sx={{
         backgroundColor: 'background.paper',
-        minHeight: '50vh',
+        minHeight: '70vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
