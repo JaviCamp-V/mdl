@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers';
+import RefreshTokenRequest from '@/features/auth/types/interfaces/ResfreshTokenRequest';
 import axios from 'axios';
 import { JWT, getToken } from 'next-auth/jwt';
-import RefreshTokenRequest from '@/types/Auth/IResfreshTokenRequest';
 import getDeviceId from '@/utils/getDevice';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
