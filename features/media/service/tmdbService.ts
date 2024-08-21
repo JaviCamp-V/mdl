@@ -11,13 +11,7 @@ import ContentRatingResponse, { ContentRating } from '../types/interfaces/Conten
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, {
-  MediaSearchResult,
-  MovieSearchResponse,
-  PersonSearchResponse,
-  PersonSearchResult,
-  TVSearchResponse
-} from '../types/interfaces/SearchResponse';
+import SearchResponse, { MediaSearchResult, MovieSearchResponse, PersonSearchResponse, PersonSearchResult, TVSearchResponse } from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags } from '../types/interfaces/Tags';
@@ -25,6 +19,7 @@ import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
 import WatchProviderResponse from '../types/interfaces/WatchProvider';
+
 
 const endpoints = {
   search_person: 'search/person',
@@ -578,8 +573,8 @@ const getSearchResults = async (options: SearchParams): Promise<SearchResponse> 
         with_keywords: keywords ?? '',
         with_genres: genre ?? ''
       });
-      const tv = await getDiscoverType(MediaType.tv, params);
-      const movie = await getDiscoverType(MediaType.movie, params);
+      const tv = await getDiscoverType(MediaType.tv, params, true);
+      const movie = await getDiscoverType(MediaType.movie, params, true);
       const page = Math.max(tv.page, movie.page);
       const results = [...tv.results, ...movie.results];
       const total_pages = Math.max(tv.total_pages, movie.total_pages);
