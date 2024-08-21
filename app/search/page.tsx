@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import NotFound from '@/components/common/NotFound';
 import genres from '@/libs/genres';
 
-
 type PageProps = {
   searchParams: { [key: string]: string };
 };

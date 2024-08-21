@@ -13,7 +13,6 @@ import WatchStatus from '@/types/enums/WatchStatus';
 import { getSession } from '@/utils/authUtils';
 import routes from '@/libs/routes';
 
-
 type PageProps = {
   params: { username: string };
   searchParams: { [status: string]: string };

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 
-
 interface PosterProps {
   src: string | null;
   id: number | string;

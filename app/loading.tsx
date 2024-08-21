@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import model from '@/components/layout/model';
 
-
 const LoadingPage = () => {
   return (
     <Box

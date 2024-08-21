@@ -1,12 +1,10 @@
 import React from 'react';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 
 interface NotificationsAlertProps {
   notificationCount?: number;
-  recentNotifications?: any[];
 }
 const NotificationsAlert: React.FC<NotificationsAlertProps> = ({ notificationCount = 0 }) => {
   return (

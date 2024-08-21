@@ -9,7 +9,6 @@ import Avatar from '@/components/common/Avatar';
 import Ratings from '@/components/common/Ratings';
 import routes from '@/libs/routes';
 
-
 interface ReviewSummaryCardProps {
   review: ExtendOverallReviewWithMedia;
 }

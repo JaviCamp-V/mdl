@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { logout } from '@/features/auth/services/authService';
 import { capitalCase } from 'change-case';
 import { signOut } from 'next-auth/react';
@@ -15,7 +15,6 @@ import { userRoutes } from '@/libs/routes';
 
 interface ProfileDropdownProps {
   username: string;
-  avatar?: string | null;
 }
 
 const icons = {

@@ -7,7 +7,6 @@ import Iconify from '@/components/Icon/Iconify';
 import ThemeButtons from '@/components/buttons/ThemeButtons';
 import model from '../model';
 
-
 interface FooterProps {}
 const Footer: React.FC<FooterProps> = () => {
   return (
@@ -28,7 +27,7 @@ const Footer: React.FC<FooterProps> = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{}}>
             <Link href="/" passHref>
-              <Image src={model.logo} width={160} height={30} alt="Footer logo" priority={true} />
+              <Image src={model.logo} width={160} height={30} alt="Footer logo" priority />
             </Link>
             <Typography sx={{ opacity: 0.6 }} fontSize={13}>
               &copy; {`${new Date().getFullYear().toString()} ${model.name}, LLC.`}

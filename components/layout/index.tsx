@@ -6,12 +6,11 @@ import Navbar from './navbar';
 
 interface MainLayoutProps {
   children?: React.ReactNode;
-  session?: Session | null;
 }
-const MainLayout: React.FC<MainLayoutProps> = ({ children, session }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <React.Fragment>
-      <Navbar session={session} />
+      <Navbar />
       <Paper
         sx={{
           backgroundColor: 'background.default',

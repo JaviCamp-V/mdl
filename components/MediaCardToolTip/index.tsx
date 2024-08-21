@@ -9,7 +9,6 @@ import countries from '@/libs/countries';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';
 
-
 interface MediaCardProps {
   id: number;
   title: string;

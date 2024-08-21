@@ -35,7 +35,7 @@ const RootLayout: React.FC<Props> = async ({ children }) => {
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <MuiThemeProvider>
                 <NonStickSnackbarProvider>
-                  <MainLayout session={session}>{children}</MainLayout>
+                  <MainLayout>{children}</MainLayout>
                 </NonStickSnackbarProvider>
               </MuiThemeProvider>
             </AppRouterCacheProvider>

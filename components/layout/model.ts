@@ -1,10 +1,9 @@
 import routes from '@/libs/routes';
 
 const model = {
-  //Fist column  brand info
   logo: '/static/images/logo_w.webp',
   name: 'MyDramaList',
-  aberration: 'MDL', // use for mobile view
+  aberration: 'MDL',
   description: 'Explore Asian Drama and Movies',
   socialMedia: {
     facebook: 'https://www.facebook.com/MyDramaListdotcom/',
@@ -22,7 +21,6 @@ const model = {
   signUp: routes.register,
   profile: routes.home,
   navbarLinks: {
-    //one row
     Home: [
       { label: 'Feeds', href: '#' },
       { label: 'Articles', href: '#' },
@@ -41,7 +39,6 @@ const model = {
     Calendar: [{ label: 'Calendar', href: '#' }]
   },
   footerLinks: [
-    //Number of columns
     {
       About: [
         { label: 'FAQ', href: routes.faq },
@@ -53,7 +50,7 @@ const model = {
       ]
     },
     {
-      'Dark Mode': [], //,
+      'Dark Mode': [],
       'Work With Us': [
         { label: 'Advertise', href: routes.advertise },
         { label: 'API', href: routes.api }

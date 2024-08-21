@@ -6,7 +6,6 @@ import { Button, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import routes from '@/libs/routes';
 
-
 interface SignInPageProps {}
 
 export const dynamic = 'force-dynamic';

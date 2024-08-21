@@ -13,10 +13,8 @@ import model from '../model';
 import SideBar from '../sidebar';
 import AuthContent from './sections/auth_content';
 
-interface NavbarProps {
-  session?: Session | null;
-}
-const Navbar: React.FC<NavbarProps> = ({}) => {
+interface NavbarProps {}
+const Navbar: React.FC<NavbarProps> = () => {
   return (
     <AppBar sx={{ backgroundColor: '#00568C', zIndex: 100 }}>
       <Container maxWidth="xl">
@@ -42,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
             >
               <Box sx={{ marginRight: 4, display: { xs: 'none', md: 'flex' } }}>
                 <Link href="/" passHref>
-                  <Image src={model.logo} width={200} height={30} alt="Desktop logo" priority={true} />
+                  <Image src={model.logo} width={200} height={30} alt="Desktop logo" priority />
                 </Link>
               </Box>
               <Box sx={{ marginRight: 4, display: { xs: 'flex', md: 'none' } }}>
