@@ -199,7 +199,7 @@ const getReviewHelpful = async (id: number): Promise<ReviewHelpfulData> => {
   }
 };
 
-const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[] | ErrorResponse> => {
+const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[]> => {
   try {
     logger.info('Fetching recent reviews');
     const endpoint = endpoints.public.getRecentReviews;
@@ -221,9 +221,8 @@ const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[] | Erro
     return withMedia;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error(`Error fetching recent reviews: ${error?.message}`);
-    return error.response.data ?? generateErrorResponse(status, message);
+    logger.error(`Error fetching recent reviews: ${message}`);
+    return [];
   }
 };
 

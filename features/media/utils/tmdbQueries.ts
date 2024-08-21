@@ -1,6 +1,6 @@
 import { endOfWeek, lastDayOfWeek, startOfWeek } from 'date-fns';
-import { plusDays } from './dateUtils';
-import { formatDate } from './formatters';
+import { plusDays } from '@/utils/dateUtils';
+import { formatDate } from '@/utils/formatters';
 
 export const trending = new URLSearchParams({
   sort_by: 'popularity.desc'

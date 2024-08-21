@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/tmdb/IMediaType';
 
+
 interface PosterProps {
   src: string | null;
   id: number | string;
@@ -11,8 +12,17 @@ interface PosterProps {
   mediaType: MediaType | 'photo' | 'episode' | 'profile';
   priority?: boolean;
   overlay?: React.ReactNode;
+  noRadius?: boolean;
 }
-const DramaPoster: React.FC<PosterProps> = ({ src, id, size = 'w500', mediaType, priority = true, overlay }) => {
+const DramaPoster: React.FC<PosterProps> = ({
+  src,
+  id,
+  size = 'w500',
+  mediaType,
+  priority = true,
+  overlay,
+  noRadius
+}) => {
   const path = src ? `https://image.tmdb.org/t/p/${size}${src}` : '/static/images/no_poster.jpg';
   return (
     <Link href={`/${mediaType}/${id}`} passHref>
@@ -22,7 +32,7 @@ const DramaPoster: React.FC<PosterProps> = ({ src, id, size = 'w500', mediaType,
           alt={id?.toString()}
           style={{
             width: '100%', // equivalent to size-full
-            borderRadius: '0.175rem', // equivalent to rounded-md
+            borderRadius: noRadius ? '0' : '0.175rem', // equivalent to rounded-md
             backgroundColor: 'var(--muted-color)', // equivalent to bg-muted
             objectFit: 'fill' // equivalent to object-cover
           }}

@@ -19,12 +19,6 @@ interface EditWatchlistButtonProps {
   id: number;
   recordId: number | null;
   icon?: string | React.ReactNode;
-  runtime: number | null | undefined;
-  poster_path: string | null;
-  title: string;
-  release_date: string | null;
-  number_of_episodes: number;
-  lastEpisodeType: string | null | undefined;
 }
 const icons = { edit: 'mdi:edit-outline', add: 'mdi:add' };
 const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, recordId, icon }) => {
@@ -82,12 +76,12 @@ const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, rec
           mediaType={type}
           id={id}
           record={watchRecord}
-          runtime={undefined}
-          poster_path={null}
-          title={''}
-          release_date={null}
-          number_of_episodes={0}
-          lastEpisodeType={undefined}
+          runtime={(mediaData as MovieDetails)?.runtime}
+          poster_path={mediaData.poster_path}
+          title={(mediaData as MovieDetails)?.title ?? (mediaData as TVDetails).name}
+          release_date={(mediaData as MovieDetails)?.release_date ?? (mediaData as TVDetails).first_air_date}
+          number_of_episodes={(mediaData as TVDetails)?.number_of_episodes ?? 1}
+          lastEpisodeType={(mediaData as TVDetails)?.last_episode_to_air?.episode_type}
         />
       )}
     </Box>

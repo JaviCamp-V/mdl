@@ -10,13 +10,13 @@ import TabsList from '@/components/common/Tablist';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import MediaType from '@/types/tmdb/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
+import Credits from '../../components/ui/content/Credits';
+import MainDetails from '../../components/ui/content/MainDetails';
+import ContentCards from '../../components/ui/content/MainTabCards';
+import Photos from '../../components/ui/content/Photos';
+import SidePanel from '../../components/ui/content/SidePanel';
+import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
 import { getContentDetails } from '../../service/tmdbService';
-import Credits from './sections/Credits';
-import Photos from './sections/Photos';
-import SidePanel from './sections/SidePanel';
-import EpisodeGuide from './tabs/EpisodeGuide';
-import MainDetails from './tabs/Main';
-import ContentCards from './tabs/Main/sections/MainTabCards';
 
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];

@@ -1,19 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import SearchForm from '@/features/media/components/forms/SearchForm';
 import { Session } from 'next-auth';
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container/Container';
 import Toolbar from '@mui/material/Toolbar';
-import ExpandableMenuItem from '@/components/ExpandableMenuItem';
-import SearchForm from '@/components/Forms/SearchForm';
+import ExpandableMenuItem from '@/components/common/ExpandableMenuItem';
 import model from '../model';
 import SideBar from '../sidebar';
 import AuthContent from './sections/auth_content';
-import NotificationsAlert from './sections/notifications';
-import ProfileDropdown from './sections/profile_dropdown';
 
 interface NavbarProps {
   session?: Session | null;

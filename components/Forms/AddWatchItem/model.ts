@@ -1,5 +1,4 @@
 import { capitalCase } from 'change-case';
-import dayjs from 'dayjs';
 import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import PriorityLevel from '@/types/watchlist/PriorityLevel';
