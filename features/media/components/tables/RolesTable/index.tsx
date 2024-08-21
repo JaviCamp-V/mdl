@@ -1,5 +1,5 @@
 import React from 'react';
-import { MediaSearchResult, MovieSearchResult, TVSearchResult } from '@/features/media/types/interfaces/SearchResponse';
+import { MediaSearchResult } from '@/features/media/types/interfaces/SearchResponse';
 import { getOrigin, getTitle, getYear } from '@/features/media/utils/tmdbUtils';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -16,7 +16,7 @@ import { formatStringDate } from '@/utils/formatters';
 
 interface RolesTableProps {
   type: string; //drama or movies or crew
-  roles: TVSearchResult[] | MovieSearchResult[];
+  roles: MediaSearchResult[];
 }
 
 const getReleaseDate = (role: MediaSearchResult) => {
