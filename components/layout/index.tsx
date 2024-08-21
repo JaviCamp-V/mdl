@@ -1,5 +1,4 @@
 import React from 'react';
-import { Session } from 'next-auth';
 import Paper from '@mui/material/Paper';
 import Footer from './footer';
 import Navbar from './navbar';

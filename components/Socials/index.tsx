@@ -1,7 +1,8 @@
 import React from 'react';
+import ExternalID from '@/features/media/types/interfaces/ExternalID';
 import { Avatar, Box, IconButton } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
-import ExternalID from '@/types/tmdb/IExternalID';
+
 
 const urlMappings = {
   wikidata: 'https://www.wikidata.org/wiki/:id',
