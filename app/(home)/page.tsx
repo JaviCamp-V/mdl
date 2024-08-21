@@ -1,10 +1,10 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
-import { Box } from '@mui/material';
-import DramaUpdates from '@/components/Discover/DramaUpdates';
-import MostPopularDramas from '@/components/Discover/MostPopular';
-import TopAiringDramas from '@/components/Discover/TopAiring';
-import TopUpcomingDramas from '@/components/Discover/TopUpcoming';
+import MostPopularDramas from '@/features/media/components/lists/MostPopular';
+import TopAiringDramas from '@/features/media/components/lists/TopAiring';
+import TopUpcomingDramas from '@/features/media/components/lists/TopUpcoming';
+import DramaUpdates from '@/features/media/components/ui/discover/DramaUpdates';
+import Box from '@mui/material/Box';
 
 type PageProps = {
   searchParams: any;

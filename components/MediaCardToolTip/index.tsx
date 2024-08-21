@@ -1,10 +1,10 @@
 import React from 'react';
+import Genre from '@/features/media/types/interfaces/Genre';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import Genre from '@/types/tmdb/IGenre';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';

@@ -1,4 +1,4 @@
-import AccessLevel from '@/types/Auth/AccessLevel';
+import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import { getSession } from '@/utils/authUtils';
 import { generateErrorResponse } from '@/utils/handleError';

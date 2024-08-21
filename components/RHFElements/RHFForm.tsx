@@ -8,12 +8,13 @@ import RHFElementsSelector from '.';
 interface RHFFormProps {
   fields: FieldModel;
   methods: UseFormReturn<any>;
+  spacing?: number;
 }
-const RHFForm: React.FC<RHFFormProps> = ({ fields, methods }) => {
+const RHFForm: React.FC<RHFFormProps> = ({ fields, methods, spacing }) => {
   return (
     <FormProvider {...methods}>
       <form>
-        <Grid container spacing={2}>
+        <Grid container spacing={spacing ?? 2}>
           {Object.values(fields).map((field) => (
             <Grid key={field.name} item {...field?.breakpoints}>
               <RHFElementsSelector {...field} fullWidth />
