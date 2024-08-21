@@ -30,7 +30,7 @@ const RecentReviewsCarousel: React.FC<RecentReviewsCarouselProps> = async ({ con
       <React.Suspense fallback={<LoadingSkeleton width={'100%'} height={'30vh'} />}>
         <Box marginX={2} sx={{ minHeight: '30vh' }}>
           <Carousel>
-            {reviews.map((review: ExtendOverallReviewWithMedia) => (
+            {reviews?.map((review: ExtendOverallReviewWithMedia) => (
               <ReviewSummaryCard key={review.id} review={review} />
             ))}
           </Carousel>

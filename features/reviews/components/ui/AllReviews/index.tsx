@@ -45,7 +45,7 @@ const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, to
 
   const onPageChange = (page: number) => setPage(page);
 
-  if (sortedReviews.length === 0) return <NoReviews mediaId={mediaId} mediaType={mediaType} />;
+  if (sortedReviews.length === 0) return <NoReviews mediaId={mediaId} mediaType={mediaType} containerStyle={{minHeight: "40vh"}} />;
 
   return (
     <Box>

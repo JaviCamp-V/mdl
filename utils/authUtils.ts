@@ -46,7 +46,7 @@ const nextAuthOptions: NextAuthOptions = {
       }
 
       const response = await refreshAuthToken();
-      if ('errors' in response) {
+      if ('errors' in response || !response.accessToken) {
         token.error = 'Failed to refresh token';
         return token;
       }
