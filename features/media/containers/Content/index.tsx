@@ -19,11 +19,25 @@ import SidePanel from '../../components/ui/content/SidePanel';
 import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
 import { getContentDetails } from '../../service/tmdbService';
 
+
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];
 }
 
 const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, mediaId, sections }) => {
+  const tab = sections ? sections[0] : '';
+
+  const tabs = [
+    { label: 'Details', href: '' },
+    { label: 'Episode Guide', href: 'episodes' },
+    { label: 'Cast & Crew', href: 'credits' },
+    { label: 'Reviews', href: 'reviews' },
+    { label: 'Recommendations', href: 'recommendations' },
+    { label: 'Photos', href: 'photos' }
+  ].filter((link) => link.href !== 'episodes' || mediaType === MediaType.tv);
+
+  if (tab !== '' && !tabs.find((link) => link.href === tab)) return <NotFound type={mediaType} />;
+
   const details = await getContentDetails(mediaType, mediaId, true);
   const anyDetails = details as any;
   if (!details) return <NotFound type={mediaType} />;
@@ -36,16 +50,6 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const title = mediaType === MediaType.movie ? anyDetails.title : anyDetails.name;
   const year = mediaType === MediaType.movie ? anyDetails.release_date : anyDetails.first_air_date;
   const formattedYear = year ? formatStringDate(year).getFullYear() : 'TBA';
-  const tab = sections ? sections[0] : '';
-
-  const tabs = [
-    { label: 'Details', href: '' },
-    { label: 'Episode Guide', href: 'episodes' },
-    { label: 'Cast & Crew', href: 'credits' },
-    { label: 'Reviews', href: 'reviews' },
-    { label: 'Recommendations', href: 'recommendations' },
-    { label: 'Photos', href: 'photos' }
-  ].filter((link) => link.href !== 'episodes' || mediaType === MediaType.tv);
 
   const TabPanel = {
     episodes: <EpisodeGuide id={mediaId} season_number={1} name={anyDetails.name} />,
@@ -58,7 +62,13 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
         totalEpisodes={mediaType === MediaType.tv ? anyDetails.number_of_episodes : 0}
       />
     ),
-    recommendations: <RecommendationDetails mediaId={mediaId} mediaType={mediaType} />,
+    recommendations: (
+      <RecommendationDetails
+        mediaId={mediaId}
+        mediaType={mediaType}
+        section={sections?.length && sections.length > 1 ? sections[1] : undefined}
+      />
+    ),
     photos: <Photos mediaId={mediaId} mediaType={mediaType} view="all" />
   }[tab] || (
     <MainDetails

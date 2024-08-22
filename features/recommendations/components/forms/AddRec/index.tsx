@@ -4,7 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getImagePath } from '@/features/media/utils/tmdbUtils';
+import { makeRecommendation } from '@/features/recommendations/service/recommendationService';
+import MakeRecommendation from '@/features/recommendations/types/interface/MakeRecommendation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Typography } from '@mui/material';
@@ -26,7 +29,25 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
   });
 
   const router = useRouter();
-  const onSubmit: SubmitHandler<FormType> = async (formData) => {};
+  const onSubmit: SubmitHandler<FormType> = async (formData) => {
+    const { suggested, reason } = formData;
+    const request: MakeRecommendation = {
+      source: { mediaId: Number(mediaId), mediaType: mediaType?.toUpperCase() as any },
+      suggested: { mediaId: Number(suggested.mediaId), mediaType: suggested.mediaType?.toUpperCase() as any },
+      reason
+    };
+    const response = await makeRecommendation(request);
+    if (response && 'errors' in response) {
+      response.errors.forEach((error) => {
+        methods.setError(error.field as keyof FormType, { type: 'manual', message: error.message });
+        enqueueSnackbar(error.message, { variant: 'error' });
+      });
+      return;
+    }
+    enqueueSnackbar(response.message, { variant: 'success' });
+    router.push(`/${mediaType}/${mediaId}/recommendations`);
+  };
+
   const watchFields = methods.watch('suggested');
   return (
     <Box sx={{ paddingY: 2, paddingX: 4, width: '100%' }}>
@@ -55,7 +76,14 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
               loading={methods.formState.isSubmitting}
               onClick={methods.handleSubmit(onSubmit)}
               variant="contained"
-              sx={{ textTransform: 'capitalize' }}
+              sx={{
+                textTransform: 'capitalize',
+                '&.Mui-disabled': {
+                  color: 'info.contrastText',
+                  backgroundColor: 'info.light',
+                  opacity: 0.6
+                }
+              }}
             >
               Submit Recommendation
             </LoadingButton>

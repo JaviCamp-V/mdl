@@ -36,8 +36,8 @@ const MediaLinks: React.FC<MediaLinksProps> = ({
 }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-      <Box sx={{ width: '100%', height: { xs: '70vh', sm: '50vh' } }}>
-        <DramaPoster src={poster_path} id={mediaId} mediaType={mediaType} size="original" />
+      <Box sx={{ width: '100%', height: { xs: '70vh', sm: '60vh' } }}>
+        <DramaPoster src={poster_path} id={mediaId} mediaType={mediaType} size="w780" />
       </Box>
       <Box
         sx={{

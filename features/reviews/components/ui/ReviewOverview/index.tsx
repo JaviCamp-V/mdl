@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
-import { OverallReview } from '@/features/reviews/types/interfaces/ReviewResponse';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -9,6 +8,7 @@ import Divider from '@/components/common/Divider';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import OverallReviewCard from '../../cards/OverallReview';
 import NoReviews from '../NoReview';
+
 
 interface ReviewsSummaryProps extends MediaDetailsProps {
   reviews: ExtendOverallReview[];

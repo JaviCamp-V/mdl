@@ -554,7 +554,7 @@ const getMinSearchResponse = async <T extends MediaType>(
  */
 const getSearchPerson = async (name: string, page?: string): Promise<SearchResponse> => {
   try {
-    const response = await getSearchType(MediaType.person, name, page);
+    const response = await getMinSearchResponse(MediaType.person, name, page);
     const results = await Promise.all(
       response.results.map(async (person) => {
         const details = await getDetails(MediaType.person, person.id);
@@ -633,8 +633,8 @@ const getSearchResults = async (options: SearchParams): Promise<SearchResponse> 
       return { page, results, total_pages, total_results };
     }
 
-    const tv = await getSearchType(MediaType.tv, query!, stringPage);
-    const movie = await getSearchType(MediaType.movie, query!, stringPage);
+    const tv = await getMinSearchResponse(MediaType.tv, query!, stringPage);
+    const movie = await getMinSearchResponse(MediaType.movie, query!, stringPage);
     const persons = await getSearchPerson(query!, stringPage);
     const current_page = Math.max(tv.page, movie.page, persons.page);
     const results = [...tv.results, ...movie.results, ...persons.results];
