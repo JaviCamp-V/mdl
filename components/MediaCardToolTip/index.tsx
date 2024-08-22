@@ -20,7 +20,6 @@ interface MediaCardProps {
   overview: string;
   posterPath: string | null;
   genres: Genre[];
-  tooltipProps?: any;
 }
 
 interface MediaCardToolTipProps extends MediaCardProps {
@@ -51,14 +50,6 @@ const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
             marginRight: 2
           }
         }
-        // modifiers: [
-        //   {
-        //     name: 'offset',
-        //     options: {
-        //       offset: [20, 0]
-        //     }
-        //   }
-        // ]
       }
     }}
   />
@@ -173,10 +164,9 @@ const MediaCard: React.FC<MediaCardProps> = ({
   );
 };
 
-const MediaCardToolTip: React.FC<MediaCardToolTipProps> = ({ children, tooltipProps, ...props }) => {
+const MediaCardToolTip: React.FC<MediaCardToolTipProps> = ({ children, ...props }) => {
   return (
     <CustomWidthTooltip
-      {...tooltipProps}
       sx={{
         display: {
           xs: 'none', // Hide tooltip on mobile

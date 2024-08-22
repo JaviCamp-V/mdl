@@ -19,7 +19,6 @@ import SidePanel from '../../components/ui/content/SidePanel';
 import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
 import { getContentDetails } from '../../service/tmdbService';
 
-
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];
 }

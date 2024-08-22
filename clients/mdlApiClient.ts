@@ -5,7 +5,6 @@ import { JWT, getToken } from 'next-auth/jwt';
 import getDeviceId from '@/utils/getDevice';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
-
 /**
  * Default configuration for Axios.
  */
@@ -91,7 +90,7 @@ const post = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchPar
 const put = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams): Promise<T2> => {
   const response = await instance.put<T2>(endpoint, request, { params });
   return response.data;
-}
+};
 
 /**
  * Sends a PATCH request
@@ -103,7 +102,7 @@ const put = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchPara
 const patch = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams): Promise<T2> => {
   const response = await instance.patch<T2>(endpoint, request, { params });
   return response.data;
-}
+};
 
 /**
  * Sends a GET request

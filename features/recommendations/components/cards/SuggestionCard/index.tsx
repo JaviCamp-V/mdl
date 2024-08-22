@@ -37,9 +37,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion }) => {
         overview={overview}
         posterPath={poster_path}
         genres={genres}
-        // tooltipProps={{
-        //   placement: 'top-end'
-        // }}
       >
         <Box
           sx={{

@@ -6,7 +6,6 @@ import logger from '@/utils/logger';
 import routes from '@/libs/routes';
 import { login, refreshAuthToken, signUp } from '../services/authService';
 
-
 const providers: Provider[] = [
   CredentialsProvider({
     id: 'credentials',
