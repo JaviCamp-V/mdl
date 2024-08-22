@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+import { updateRecommendationLike } from '@/features/recommendations/service/recommendationService';
 import Recommendation from '@/features/recommendations/types/interface/Recommendation';
 import { Suggestion } from '@/features/recommendations/types/interface/Suggestion';
 import EditWatchlistButton from '@/features/watchlist/components/buttons/EditWatchlistButton';
+import { enqueueSnackbar } from 'notistack';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 import MediaTitle from '@/components/MediaTitle';
@@ -25,12 +27,28 @@ interface LikeActionProps {
   numberOfLikes: number;
 }
 
-const LikeAction: React.FC<LikeActionProps> = ({ hasUserLiked, numberOfLikes }) => {
-  const onClick = async () => {};
+const LikeAction: React.FC<LikeActionProps> = ({
+  hasUserLiked,
+  numberOfLikes,
+  mediaId,
+  mediaType,
+  recommendationID
+}) => {
+  const onClick = async () => {
+    const response = await updateRecommendationLike(mediaType, mediaId, recommendationID, !hasUserLiked);
+    if (response && 'errors' in response) {
+      response.errors.forEach((error) => {
+        enqueueSnackbar(error.message, { variant: 'error' });
+      });
+      return;
+    }
+    enqueueSnackbar(response.message, { variant: 'success' });
+  };
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 0.5 }}>
       <Typography fontSize={14}>{numberOfLikes}</Typography>
-      <IconButton sx={{ margin: 0, padding: 0 }}>
+      <IconButton sx={{ margin: 0, padding: 0 }} onClick={onClick}>
         <Iconify icon="mdi:heart-outline" color={hasUserLiked ? '#FF007F' : 'text.primary'} width={14} height={14} />
       </IconButton>
     </Box>
@@ -82,15 +100,23 @@ interface CardHeaderProps {
 
 const CardHeader: React.FC<CardHeaderProps> = ({ title, mediaId, mediaType, recordId, voteAverage }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        justifyContent: { xs: 'center', md: 'space-between' },
+        alignItems: { xs: 'flex-start', md: 'center' },
+        gap: 0.2,
+        marginBottom: 1
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'row',
           gap: 0.5,
           alignItems: 'flex-end',
-          flexWrap: 'wrap',
-          marginBottom: 2
+          flexWrap: 'wrap'
         }}
       >
         <MediaTitle title={title} id={mediaId} mediaType={mediaType} fontSize={'14px'} />
@@ -121,7 +147,7 @@ const GroupedSuggestionCard: React.FC<GroupedSuggestionCardProps> = ({ suggestio
           sx={{
             position: 'relative',
             width: { xs: '100%', md: '100%' },
-            height: { xs: '20vh', sm: '35vh', lg: '25vh' }
+            height: { xs: '15vh', sm: '20vh', lg: '25vh' }
           }}
         >
           <DramaPoster
@@ -146,8 +172,8 @@ const GroupedSuggestionCard: React.FC<GroupedSuggestionCardProps> = ({ suggestio
             .slice(0, showMore ? suggestion.recommendations.length : 1)
             .map((recommendation, index) => (
               <React.Fragment key={recommendation.id}>
-                <Grid item xs={12} key={index}>
-                  <RecommendationCard key={index} {...recommendation} />
+                <Grid item xs={12}>
+                  <RecommendationCard {...recommendation} />
                 </Grid>
                 {hasMultipleRecommendations && index === 0 && (
                   <Grid item xs={12}>

@@ -8,7 +8,7 @@ interface NotificationsAlertProps {
 }
 const NotificationsAlert: React.FC<NotificationsAlertProps> = ({ notificationCount = 0 }) => {
   return (
-    <IconButton sx={{ margin: 0 }}>
+    <IconButton sx={{ margin: 0, padding: 0 }}>
       <Badge badgeContent={notificationCount} color="primary" sx={{ margin: 0 }}>
         <NotificationsNoneOutlinedIcon sx={{ color: '#fff' }} />
       </Badge>
