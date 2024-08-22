@@ -9,7 +9,6 @@ import NotFound from '@/components/common/NotFound';
 import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 
-
 interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string };

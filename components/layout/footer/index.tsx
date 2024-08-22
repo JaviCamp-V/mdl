@@ -7,7 +7,6 @@ import ThemeButtons from '@/components/Buttons/ThemeButtons';
 import Iconify from '@/components/Icon/Iconify';
 import model from '../model';
 
-
 interface FooterProps {}
 const Footer: React.FC<FooterProps> = () => {
   return (

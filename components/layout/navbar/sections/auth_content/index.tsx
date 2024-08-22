@@ -8,7 +8,6 @@ import routes from '@/libs/routes';
 import NotificationsAlert from '../notifications';
 import ProfileDropdown from '../profile_dropdown';
 
-
 const AuthContent = () => {
   const { data: session, status } = useSession();
   if (status === 'loading' || !session?.user) {

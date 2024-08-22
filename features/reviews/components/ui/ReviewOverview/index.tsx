@@ -9,7 +9,6 @@ import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import OverallReviewCard from '../../cards/OverallReview';
 import NoReviews from '../NoReview';
 
-
 interface ReviewsSummaryProps extends MediaDetailsProps {
   reviews: ExtendOverallReview[];
   totalEpisodes?: number;

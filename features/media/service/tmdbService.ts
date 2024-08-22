@@ -12,7 +12,15 @@ import ContentRatingResponse, { ContentRating } from '../types/interfaces/Conten
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, { MediaSearchResult, MovieSearchResponse, MovieSearchResult, PersonSearchResponse, PersonSearchResult, TVSearchResponse, TVSearchResult } from '../types/interfaces/SearchResponse';
+import SearchResponse, {
+  MediaSearchResult,
+  MovieSearchResponse,
+  MovieSearchResult,
+  PersonSearchResponse,
+  PersonSearchResult,
+  TVSearchResponse,
+  TVSearchResult
+} from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags } from '../types/interfaces/Tags';
@@ -20,7 +28,6 @@ import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
 import WatchProviderResponse from '../types/interfaces/WatchProvider';
-
 
 const endpoints = {
   search_person: 'search/person',
@@ -540,7 +547,7 @@ const getMinSearchResponse = async <T extends MediaType>(
       break;
     }
   }
-  combineResponse.total_results = combineResponse.results.length
+  combineResponse.total_results = combineResponse.results.length;
   return combineResponse;
 };
 

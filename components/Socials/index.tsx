@@ -3,7 +3,6 @@ import ExternalID from '@/features/media/types/interfaces/ExternalID';
 import { Avatar, Box, IconButton } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 
-
 const urlMappings = {
   wikidata: 'https://www.wikidata.org/wiki/:id',
   facebook: 'https://www.facebook.com/:id',

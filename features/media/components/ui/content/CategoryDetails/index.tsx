@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import routes from '@/libs/routes';
 
-
 interface ContentCategoryDetailProps extends MediaDetailsProps {
   genres: Genre[];
 }
