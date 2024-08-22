@@ -8,7 +8,8 @@ export type RHFElementsType =
   | 'ratings'
   | 'date'
   | 'search'
-  | 'autocomplete';
+  | 'autocomplete'
+  | 'media_select';
 export interface Field {
   name: string;
   label?: string | React.ReactNode;
@@ -35,6 +36,7 @@ export interface Field {
   maxDate?: Date;
   minDate?: Date;
   showInput?: boolean;
+  InputLabelProps?: any;
 }
 
 export interface FieldModel {

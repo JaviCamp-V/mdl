@@ -67,7 +67,12 @@ const WriteReviewForm: React.FC<WriteReviewFormProps> = ({ mediaId, mediaType })
       )}
       <RHFForm fields={formFields} methods={methods} />
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 2, gap: 2 }}>
-        <Button variant="contained" color="info" onClick={() => router.push(`/${mediaType}/${mediaId}/reviews`)}>
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => router.push(`/${mediaType}/${mediaId}/reviews`)}
+          sx={{ textTransform: 'capitalize' }}
+        >
           Cancel
         </Button>
         <LoadingButton

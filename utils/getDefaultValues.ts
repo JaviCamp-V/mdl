@@ -7,6 +7,7 @@ interface FieldMap {
 const mapToDefaultValues = (type: RHFElementsType) => {
   switch (type) {
     case 'date':
+    case 'media_select':
       return null;
     case 'checkbox':
       return false;

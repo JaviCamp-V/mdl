@@ -2,6 +2,7 @@
 
 import { getWatchlist } from '@/features/watchlist/service/watchlistService';
 import GeneralWatchlistRecord from '@/features/watchlist/types/interfaces/GeneralWatchlistRecord';
+import Search from '@mui/icons-material/Search';
 import tmdbClient from '@/clients/TMDBClient';
 import MediaType from '@/types/enums/IMediaType';
 import logger from '@/utils/logger';
@@ -11,7 +12,7 @@ import ContentRatingResponse, { ContentRating } from '../types/interfaces/Conten
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, { MediaSearchResult, MovieSearchResponse, PersonSearchResponse, PersonSearchResult, TVSearchResponse } from '../types/interfaces/SearchResponse';
+import SearchResponse, { MediaSearchResult, MovieSearchResponse, MovieSearchResult, PersonSearchResponse, PersonSearchResult, TVSearchResponse, TVSearchResult } from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags } from '../types/interfaces/Tags';
@@ -493,7 +494,12 @@ const isMediaSearchResult = (media: SearchResponse): media is TVSearchResponse |
  *    appends media_type to the results based on type (media_type is only returned using search/multi).
  * appends recordId to the results based on the watchlist for logged-in users.
  */
-const getSearchType = async <T extends MediaType>(type: T, query: string, page?: string): Promise<SearchTypeMap[T]> => {
+const getSearchType = async <T extends MediaType>(
+  type: T,
+  query: string,
+  page?: string,
+  includeTrailer?: false
+): Promise<SearchTypeMap[T]> => {
   try {
     logger.info(`Fetching search for ${type} with query ${query}`);
     const endpoint = `${endpoints.search}/${type}`;
@@ -505,7 +511,7 @@ const getSearchType = async <T extends MediaType>(type: T, query: string, page?:
     const filtered = response.results.filter((media) => isAsianMedia(media)) as any[];
     const results = await Promise.all(
       filtered.map(async (result) => {
-        const trailer = await addTrailer<MediaSearchResult>(result);
+        const trailer = includeTrailer ? await addTrailer<MediaSearchResult>(result) : result;
         const record = addRecordId<MediaSearchResult>(trailer, watchlist);
         return record;
       })
@@ -515,6 +521,27 @@ const getSearchType = async <T extends MediaType>(type: T, query: string, page?:
     logger.error(error.message);
     return { page: 0, results: [], total_pages: 0, total_results: 0 };
   }
+};
+
+const getMinSearchResponse = async <T extends MediaType>(
+  type: T,
+  query: string,
+  page?: string,
+  includeTrailer?: false
+): Promise<SearchTypeMap[T]> => {
+  let numberPage = page ? parseInt(page) : 1;
+  const combineResponse: SearchTypeMap[T] = { page: 0, results: [], total_pages: 0, total_results: 0 };
+  for (let i = 0; i < 3; i++) {
+    const response = await getSearchType(type, query, numberPage.toString(), includeTrailer);
+    numberPage++;
+    combineResponse.results = [...combineResponse.results, ...response.results] as any;
+    combineResponse.total_pages = Math.max(combineResponse.total_pages, response.total_pages);
+    if (combineResponse.results.length >= 15 || response.total_pages == response.page) {
+      break;
+    }
+  }
+  combineResponse.total_results = combineResponse.results.length
+  return combineResponse;
 };
 
 /**
@@ -541,6 +568,30 @@ const getSearchPerson = async (name: string, page?: string): Promise<SearchRespo
   } catch (error: any) {
     logger.error(error.message);
     return { page: 0, results: [], total_pages: 0, total_results: 0 };
+  }
+};
+
+/**
+ * Fetch search results fror a TV show or movie based on the query
+ * @param type MediaType (TV or MOVIE)
+ * @param query string (search query)
+ * @param page string (page number)
+ * @returns TVSearchResponse or MovieSearchResponse based on the type param
+ */
+
+const getSearchContent = async (
+  query: string,
+  page?: string,
+  includeTrailer?: false
+): Promise<TVSearchResult[] & MovieSearchResult[]> => {
+  try {
+    const types = [MediaType.tv, MediaType.movie];
+    const response = await Promise.all(types.map((type) => getMinSearchResponse(type, query, page, includeTrailer)));
+    const results = response.map((res) => res.results).flat();
+    return results as TVSearchResult[] & MovieSearchResult[];
+  } catch (error: any) {
+    logger.error(error.message);
+    return [];
   }
 };
 
@@ -615,5 +666,7 @@ export {
   getVideos,
   getDiscoverType,
   getSearchResults,
-  getContentDetails
+  getContentDetails,
+  getSearchType,
+  getSearchContent
 };

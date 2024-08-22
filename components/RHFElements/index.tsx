@@ -3,6 +3,7 @@ import { Field } from '@/types/common/IForm';
 import AutoCompleteField from './AutoCompleteField';
 import CheckBoxField from './CheckBoxField';
 import DatePickerField from './DatePickerField';
+import MediaField from './MediaField';
 import PasswordField from './PasswordField';
 import RatingsField from './RatingsField';
 import SearchField from './SearchField';
@@ -19,7 +20,8 @@ const RHFElements = {
   autocomplete: AutoCompleteField,
   ratings: RatingsField,
   number: TextField,
-  date: DatePickerField
+  date: DatePickerField,
+  media_select: MediaField
 };
 
 export type RHFElementsType = keyof typeof RHFElements;

@@ -1,6 +1,7 @@
 'use server';
 
 import React from 'react';
+import RecommendationDetails from '@/features/recommendations/components/ui/RecDetails';
 import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -57,7 +58,7 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
         totalEpisodes={mediaType === MediaType.tv ? anyDetails.number_of_episodes : 0}
       />
     ),
-    recommendations: <Box />,
+    recommendations: <RecommendationDetails mediaId={mediaId} mediaType={mediaType} />,
     photos: <Photos mediaId={mediaId} mediaType={mediaType} view="all" />
   }[tab] || (
     <MainDetails

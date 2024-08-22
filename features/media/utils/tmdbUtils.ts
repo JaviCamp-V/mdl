@@ -1,5 +1,7 @@
 import { capitalCase } from 'change-case';
+import { ImageSizes } from '@/types/common/ImageSizes';
 import MediaType from '@/types/enums/IMediaType';
+import ImageType from '@/types/enums/ImageType';
 import { formatStringDate } from '@/utils/formatters';
 import countries from '@/libs/countries';
 import MovieDetails from '../types/interfaces/MovieDetails';
@@ -28,4 +30,11 @@ const getOrigin = (role: MediaSearchResult) => {
   return capitalCase(`${nationality} Drama`);
 };
 
-export { getTitle, getYear, getOrigin, hasRelease };
+const getImagePath = <T extends ImageType>(path: string | null, type?: T, size?: ImageSizes[T]) => {
+  if (!path) return '/static/images/no_poster.jpg';
+  const defaultSize = type === ImageType.poster ? 'w342' : 'w300';
+  const src = `https://image.tmdb.org/t/p/${size ?? defaultSize}${path}`;
+  return src;
+};
+
+export { getTitle, getYear, getOrigin, hasRelease, getImagePath };

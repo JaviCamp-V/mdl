@@ -60,7 +60,7 @@ const MainDetails: React.FC<MainDetailsProps> = ({
 }) => {
   return (
     <Grid container spacing={3} sx={{ width: '100%', paddingX: 2 }}>
-      <Grid item xs={12} sm={4} sx={{}}>
+      <Grid item xs={12} sm={5} md={4}  sx={{}}>
         <MediaLinks
           poster_path={poster_path}
           external_ids={external_ids}
@@ -75,7 +75,7 @@ const MainDetails: React.FC<MainDetailsProps> = ({
           mediaId={mediaId}
         />
       </Grid>
-      <Grid item xs={12} sm={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <Grid item xs={12} sm={7} md={8} sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         <ContentScore
           vote_average={vote_average}
           vote_count={vote_count}
