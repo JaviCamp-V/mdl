@@ -38,9 +38,10 @@ const NextEpisode: React.FC<NextEpisodeProps> = async ({
         ...containerStyle,
         padding: 2,
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: {xs:'column' ,sm:'row'},
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: {xs: 1, sm: 0},
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

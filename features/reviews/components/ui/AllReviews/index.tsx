@@ -68,12 +68,17 @@ const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, to
           value={sortedBy ?? 'helpful'}
           onChange={onChange}
         />
-        <Button variant="contained" onClick={() => router.push(`/${mediaType}/${mediaId}/reviews/new`)}>
+        <Button
+          variant="contained"
+          onClick={() => router.push(`/${mediaType}/${mediaId}/reviews/new`)}
+          sx={{ textTransform: 'capitalize' }}
+        >
           {' '}
           Write Review{' '}
         </Button>
       </Box>
       <Divider marginBottom={0} />
+
       <Grid
         container
         spacing={0}

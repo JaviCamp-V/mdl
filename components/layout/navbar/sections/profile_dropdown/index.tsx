@@ -70,8 +70,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
             </Paper>
           }
         >
-          <IconButton onClick={() => setIsMenuOpen((prev) => !prev)}>
-            <Avatar sx={{ width: 25, height: 25 }}>{username?.charAt(0) || 'U'}</Avatar>
+          <IconButton onClick={() => setIsMenuOpen((prev) => !prev)} sx={{margin: 0, padding: 0}}>
+            <Avatar sx={{ width: 25, height: 25 }}>{username?.charAt(0)?.toUpperCase() || 'U'}</Avatar>
             <Iconify icon="mdi:arrow-down-drop" fontSize="small" sx={{ color: 'white' }} />
           </IconButton>
         </Popover>
