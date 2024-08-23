@@ -15,8 +15,8 @@ const LoadingPage = () => {
         justifyContent: 'center',
         alignItems: 'center',
         gap: 1,
-        padding: { xs: 0, md: 4 },
-        marginTop: { xs: 0, md: 4 },
+        padding: { xs: 2, md: 4 },
+        marginTop: 4,
         marginX: { xs: 2, lg: 8 }
       }}
     >

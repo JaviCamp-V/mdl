@@ -82,10 +82,10 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpis
   const defaultChipColor = hasCompleted ? 'success' : 'error';
 
   return (
-    <Box sx={{}}>
+    <Box sx={{width: "100%"}}>
       <Box
         sx={{
-          paddingX: 2,
+          paddingX: {xs: 1, md: 2},
           paddingY: 1.5,
           backgroundColor: 'background.default',
           display: 'flex',
@@ -95,7 +95,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpis
         }}
       >
         <Box
-          sx={{ display: 'flex', flexDirection: 'row', gap: 1, justifyContent: 'flex-start', alignItems: 'center' }}
+          sx={{ display: 'flex', flexDirection: 'row', gap: 0.2, justifyContent: 'flex-start', alignItems: 'center' }}
           id={`review-${id}`}
         >
           <Avatar sx={{ width: 50, height: 50, fontsize: 30, fontWeight: 700 }}>{user.displayName?.charAt(0)}</Avatar>
@@ -105,7 +105,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpis
                 {user.displayName}
               </Typography>
             </Link>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5, alignItems: 'center', flexWrap: "wrap" }}>
               <Typography fontSize={13}>
                 <Typography fontSize={13} component={'span'} sx={{ fontWeight: 700 }}>
                   {numberOfHelpfulReviews ?? 0}
@@ -139,7 +139,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpis
             {formatDateToDistance(createdAt)}
           </Typography>
           {mediaType.toLowerCase() === 'tv' && (
-            <Typography fontSize={12} fontWeight={'bolder'} sx={{ opacity: 0.6 }}>
+            <Typography fontSize={12} fontWeight={'bolder'} sx={{ opacity: 0.6, display: {xs: "none", md: "flex"} }}>
               <Typography fontSize={12} component={'span'} sx={{ fontWeight: 700 }}>
                 {episodeWatched ?? 0}
               </Typography>

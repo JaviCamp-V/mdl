@@ -10,6 +10,7 @@ import Divider from '@/components/common/Divider';
 import ItemPagination from '@/components/common/ItemPagination';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import GroupedSuggestionCard from '../../cards/GroupedSuggestion';
+import NoRecommendation from '../NoRec';
 
 interface AllRecommendationsProps extends MediaDetailsProps {
   suggestions: Suggestion[];
@@ -33,6 +34,14 @@ const AllRecommendations: React.FC<AllRecommendationsProps> = ({ suggestions, me
         </Button>
       </Box>
       <Divider marginBottom={0} />
+
+      {suggestions.length === 0 && (
+        <NoRecommendation
+          mediaId={mediaId}
+          mediaType={mediaType}
+          containerStyle={{ minHeight: '40vh', paddingTop: 4 }}
+        />
+      )}
       <Grid
         container
         spacing={0}
@@ -49,8 +58,7 @@ const AllRecommendations: React.FC<AllRecommendationsProps> = ({ suggestions, me
           </Grid>
         ))}
       </Grid>
-      <Divider marginTop={0} />
-
+      {suggestions.length > 0 && <Divider marginTop={0} />}
       {suggestions.length > 10 && (
         <Box sx={{ margin: 2 }}>
           <ItemPagination

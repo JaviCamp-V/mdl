@@ -46,7 +46,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
           containerStyle={{
             // backgroundColor: '#242526',
             boxShadow: '0 1px 1px rgba(0,0,0,.1)',
-            border: '1px solid rgba(0, 0, 0, .14)'
+            border: '1px solid rgba(0, 0, 0, .14)',
+            zIndex: "1000"
           }} // custom styles for the popover content container
           content={
             <Paper sx={{ width: 200, maxWidth: '100%' }}>

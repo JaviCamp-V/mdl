@@ -126,9 +126,6 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <AuthContent />
               </Box>
 
-              <Box sx={{ display: { xs: 'flex', md: 'none' } }} whiteSpace="nowrap">
-                <SideBar />
-              </Box>
             </Box>
           </Box>
         </Toolbar>
