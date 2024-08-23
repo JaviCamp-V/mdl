@@ -14,10 +14,11 @@ interface DramaCardProps {
 }
 const DramaCard: React.FC<DramaCardProps> = ({ title, country, src, id }) => {
   const origin = countries.find((c) => c.code === country)?.nationality;
+  //add border color base on break point
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-      <Box sx={{ width: '100%', height: { xs: '45vh', sm: '40vh' } }}>
-        <DramaPoster src={src} id={id} mediaType={MediaType.tv} />
+      <Box sx={{ width: '100%', height: { xs: '20vh', sm: '28vh', md: '25vh', lg: '30vh', xl: '35vh' } }}>
+        <DramaPoster src={src} id={id} mediaType={MediaType.tv} size="w342" />
       </Box>
       <Box sx={{ width: '100%', paddingTop: 1 }}>
         <MediaTitle id={id} title={title} mediaType={MediaType.tv} fontSize={14} />

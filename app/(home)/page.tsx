@@ -29,7 +29,7 @@ const Home: NextPage<PageProps> = () => {
   return (
     <Box
       sx={{
-        padding: { xs: 0, md: 4 },
+        padding: { xs: 2, md: 4 },
         marginX: { xs: 2, lg: 8 },
         marginTop: 4,
         display: 'flex',

@@ -10,7 +10,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <React.Fragment>
-        <IconButton onClick={() => setOpen((prev) => !prev)}>
+        <IconButton>
           <MenuIcon sx={{ color: '#fff', fontSize: 28 }} />
         </IconButton>
         <Drawer

@@ -39,7 +39,7 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
         width: '300'
       }}
     >
-      <Box sx={{ width: '100%', height: { xs: '45vh', sm: '40vh' }, position: 'relative' }}>
+      <Box sx={{ width: '100%', height: { xs: '20vh', sm: '28vh', md: '25vh', lg: '30vh', xl: '35vh' } }}>
         <DramaPoster src={poster_path} id={`${user.username}/reviews/${id}`} mediaType={'profile'} overlay={overlay} />
       </Box>
       <Box sx={{ marginTop: 0.5, width: '100%' }}>
