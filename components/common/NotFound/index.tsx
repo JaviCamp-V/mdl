@@ -1,10 +1,9 @@
 import React from 'react';
-import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import MediaType from '@/types/tmdb/IMediaType';
+import Typography from '@mui/material/Typography';
 
 interface NotFoundProps {
-  type?: MediaType;
+  type?: string;
 }
 
 const NotFound: React.FC<NotFoundProps> = ({ type }) => {

@@ -1,4 +1,4 @@
-import Genre from '@/types/tmdb/IGenre';
+import Genre from '@/features/media/types/interfaces/Genre';
 
 const genres: Genre[] = [
   { id: 28, name: 'Action' },

@@ -1,10 +1,10 @@
 import React from 'react';
+import Genre from '@/features/media/types/interfaces/Genre';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import Genre from '@/types/tmdb/IGenre';
-import MediaType from '@/types/tmdb/IMediaType';
+import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';
@@ -18,7 +18,7 @@ interface MediaCardProps {
   country: string;
   voteAverage: number;
   overview: string;
-  posterPath: string;
+  posterPath: string | null;
   genres: Genre[];
 }
 
@@ -28,20 +28,28 @@ interface MediaCardToolTipProps extends MediaCardProps {
 
 const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip
+    placement="right"
     {...props}
     classes={{ popper: className }}
-    enterTouchDelay={0}
-    placement="right"
+    enterTouchDelay={1000}
+    leaveDelay={0}
+    arrow
     slotProps={{
       popper: {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [20, 0]
-            }
+        sx: {
+          [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]: {
+            marginTop: 2
+          },
+          [`&.${tooltipClasses.popper}[data-popper-placement*="top"] .${tooltipClasses.tooltip}`]: {
+            marginBottom: 2
+          },
+          [`&.${tooltipClasses.popper}[data-popper-placement*="right"] .${tooltipClasses.tooltip}`]: {
+            marginLeft: 2
+          },
+          [`&.${tooltipClasses.popper}[data-popper-placement*="left"] .${tooltipClasses.tooltip}`]: {
+            marginRight: 2
           }
-        ]
+        }
       }
     }}
   />
@@ -72,7 +80,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
       sx={{
         backgroundColor: 'background.paper',
         boxShadow: '0 1px 1px rgba(0,0,0,.1)',
-        border: '1px solid rgba(0, 0, 0, .14)',
+        border: '1px solid #3e4042',
         width: '100%',
         borderRadius: '4px',
         padding: 0,
@@ -83,10 +91,10 @@ const MediaCard: React.FC<MediaCardProps> = ({
       <Grid container spacing={1.5} sx={{ width: '100%', margin: 0, paddingY: 0, paddingX: 0.5 }}>
         <Grid item xs={12} sm={12} sx={{ padding: 0, margin: 0 }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5 }}>
-            <Typography fontSize={20} color="primary">
+            <Typography fontSize={18} color="primary">
               {title}
             </Typography>
-            <Typography fontSize={20}>{year}</Typography>
+            <Typography fontSize={18}>{year}</Typography>
           </Box>
           <Typography fontSize={14}>
             {`${originalTitle} (${countries.find((c) => c.code === country)?.nationality} ${mediaType.toLowerCase() === 'tv' ? 'Drama' : 'Movie'})`}
@@ -94,7 +102,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
         </Grid>
         <Grid item xs={12} sm={3} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
           <Box sx={{ width: '100%', height: '25vh' }}>
-            <DramaPoster src={posterPath} id={id} mediaType={mediaType} size="w300" />
+            <DramaPoster src={posterPath} id={id} mediaType={mediaType} size="w342" />
           </Box>
         </Grid>
         <Grid

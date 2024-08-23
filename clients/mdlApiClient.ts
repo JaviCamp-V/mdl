@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers';
+import RefreshTokenRequest from '@/features/auth/types/interfaces/ResfreshTokenRequest';
 import axios from 'axios';
 import { JWT, getToken } from 'next-auth/jwt';
-import RefreshTokenRequest from '@/types/Auth/IResfreshTokenRequest';
 import getDeviceId from '@/utils/getDevice';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
@@ -79,6 +79,30 @@ const post = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchPar
   const response = await instance.post<T2>(endpoint, request, { params });
   return response.data;
 };
+/**
+ * Sends a PUT request
+ * @param endpoint - The API endpoint.
+ * @param request - The request payload.
+ * @param params - Optional URL search parameters.
+ * @returns A promise that resolves to the response data.
+ * */
+
+const put = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams): Promise<T2> => {
+  const response = await instance.put<T2>(endpoint, request, { params });
+  return response.data;
+};
+
+/**
+ * Sends a PATCH request
+ * @param endpoint - The API endpoint.
+ * @param request - The request payload.
+ * @param params - Optional URL search parameters.
+ * @returns A promise that resolves to the response data.
+ * */
+const patch = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams): Promise<T2> => {
+  const response = await instance.patch<T2>(endpoint, request, { params });
+  return response.data;
+};
 
 /**
  * Sends a GET request
@@ -113,6 +137,6 @@ const refreshToken = async <T>(url: string): Promise<any> => {
   return response;
 };
 // Export the HTTP methods for use in other parts of the application.
-const methods = { get, post, del, refreshAuthToken: refreshToken };
+const methods = { get, post, put, patch, del, refreshAuthToken: refreshToken };
 
 export default methods;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
+import SearchResults from '@/features/media/components/lists/SearchResults';
+import { getDiscoverType } from '@/features/media/service/tmdbService';
+import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/features/media/utils/tmdbQueries';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { getDiscoverType } from '@/server/tmdbActions';
-import SearchResults from '@/components/SearchResults';
 import NotFound from '@/components/common/NotFound';
-import MediaType from '@/types/tmdb/IMediaType';
-import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/utils/tmdbQueries';
+import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 
 interface PageProps {
@@ -40,7 +40,7 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
     slug === 'airing'
       ? `${data.title} in ${countries.find((c) => c.code === country)?.fullName ?? country}`
       : data.title;
-  const response = await getDiscoverType(MediaType.tv, params);
+  const response = await getDiscoverType(MediaType.tv, params, true);
   if (response.total_results === 0) return <NotFound />;
 
   return (

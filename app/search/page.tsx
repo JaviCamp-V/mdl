@@ -1,9 +1,9 @@
 import { Metadata, NextPage } from 'next';
+import SearchResults from '@/features/media/components/lists/SearchResults';
+import { getKeywordDetails, getSearchResults } from '@/features/media/service/tmdbService';
 import { capitalCase } from 'change-case';
-import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { getKeywordDetails, getSearchResults } from '@/server/tmdbActions';
-import SearchResults from '@/components/SearchResults';
+import Typography from '@mui/material/Typography';
 import NotFound from '@/components/common/NotFound';
 import genres from '@/libs/genres';
 

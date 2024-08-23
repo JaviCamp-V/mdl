@@ -1,10 +1,27 @@
+import { RHFElementsType } from '@/types/common/IForm';
+
 interface FieldMap {
   [key: string]: any;
 }
 
+const mapToDefaultValues = (type: RHFElementsType) => {
+  switch (type) {
+    case 'date':
+    case 'media_select':
+      return null;
+    case 'checkbox':
+      return false;
+    case 'number':
+    case 'ratings':
+      return 0;
+
+    default:
+      return '';
+  }
+};
 const getDefaultValues = (fields: FieldMap) =>
   Object.values(fields).reduce(
-    (defaultValues, field) => ({ ...defaultValues, [field?.name]: field?.type === 'date' ? null : '' }),
+    (defaultValues, field) => ({ ...defaultValues, [field?.name]: mapToDefaultValues(field?.type) }),
     {}
   );
 

@@ -1,7 +1,7 @@
 import NextAuth, { User } from 'next-auth';
 import NextAuth from 'next-auth/jwt';
-import AccessLevel from './Auth/AccessLevel';
-import Role from './Auth/Role';
+import AccessLevel from '@/features/auth/types/enums/AccessLevel';
+import Role from '@/features/auth/types/enums/Role'
 declare module 'next-auth' {
   interface Session {
     user: User;
@@ -15,6 +15,7 @@ declare module 'next-auth' {
     accessToken: string | null | undefined;
     refreshToken: string | null | undefined;
     expiresIn: number | null | undefined;
+    authError?: string | null | undefined;
   }
 }
 
@@ -25,6 +26,6 @@ declare module 'next-auth/jwt' {
     refreshToken: string | null | undefined;
     role: Role | null | undefined;
     accessLevels: AccessLevel[] | null | undefined;
-    expiry: number | null | undefined;
+    expiry: number | null | undefined;    
   }
 }

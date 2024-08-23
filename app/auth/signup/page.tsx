@@ -1,8 +1,8 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
+import SignUpForm from '@/features/auth/components/forms/SignUp';
 import { Button, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import SignUpForm from '@/components/Forms/Auth/SignUp';
 import routes from '@/libs/routes';
 
 interface SignUpPageProps {}
@@ -10,6 +10,9 @@ interface SignUpPageProps {}
 export const metadata: Metadata = {
   title: 'Sign Up'
 };
+
+export const dynamic = 'force-dynamic';
+
 const SignUpPage: NextPage<SignUpPageProps> = () => {
   return (
     <Box
