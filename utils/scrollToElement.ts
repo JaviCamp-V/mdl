@@ -13,4 +13,15 @@ const scrollToElementByID = (id: string | number) => {
   }
 };
 
-export { scrollToElementByID };
+const scrollToTop = () => {
+  try {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  } catch (e) {
+    console.error('Error while scrolling to top', e);
+  }
+};
+
+export { scrollToElementByID, scrollToTop };

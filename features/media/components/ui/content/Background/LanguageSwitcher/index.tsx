@@ -4,6 +4,7 @@ import React from 'react';
 import { Translation } from '@/features/media/types/interfaces/Translation';
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Iconify from '@/components/Icon/Iconify';
 import { color } from '@/libs/common';
 
 interface TranslationSwitcherProps {
@@ -14,6 +15,7 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
   const [currentTranslation, setCurrentTranslation] = React.useState<Translation>(
     translations.find((translation) => translation?.iso_639_1 === 'en') || translations[0]
   );
+  const [showAll, setShowAll] = React.useState(false);
   return (
     <Box sx={{ marginBottom: 1 }}>
       <Box>
@@ -35,12 +37,13 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
           marginTop: 1
         }}
       >
-        {translations.slice(0, 6).map((translation) => (
+        {translations.slice(0, showAll ? translations.length - 1 : 3).map((translation) => (
           <Button
             key={translation.iso_639_1}
             variant="outlined"
             onClick={() => setCurrentTranslation(translation)}
             sx={{
+              padding: 0.5,
               color: color,
               borderColor: '#606266',
               textTransform: 'capitalize',
@@ -52,6 +55,26 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
             {translation.name}
           </Button>
         ))}
+        {translations.length > 3 && (
+          <Button
+            variant="outlined"
+            onClick={() => setShowAll(!showAll)}
+            sx={{
+              color: color,
+              borderColor: '#606266',
+              textTransform: 'capitalize',
+              backgroundColor: showAll ? '#1c1c1d' : '#3a3b3c',
+              padding: 0.5
+            }}
+          >
+            <Iconify
+              icon={showAll ? 'mdi:arrow-collapse' : 'mdi:dots-horizontal'}
+              color={color}
+              width={20}
+              height={20}
+            />
+          </Button>
+        )}
       </Box>
     </Box>
   );
