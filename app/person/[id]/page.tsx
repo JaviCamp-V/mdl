@@ -15,7 +15,14 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 const PersonDetailsPage: NextPage<PageProps> = ({ params: { id } }) => {
   return (
-    <Box sx={{ paddingY: { xs: 2, md: 4 },paddingX: { xs: 1, md: 4 }, marginX: { xs: 1, lg: 8 }, backgroundColor: 'background.default', }}>
+    <Box
+      sx={{
+        paddingY: { xs: 2, md: 4 },
+        paddingX: { xs: 1, md: 4 },
+        marginX: { xs: 1, lg: 8 },
+        backgroundColor: 'background.default'
+      }}
+    >
       <PersonContainer personId={id} />
     </Box>
   );

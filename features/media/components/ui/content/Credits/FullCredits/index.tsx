@@ -39,7 +39,7 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
             <Grid container spacing={2} padding={1}>
               {members?.map((member) => (
                 <Grid item key={member.id} xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                  <Box sx={{ width: {xs: '50%', md:'30%'}, height: { xs: '20vh', md: "20vh"} }}>
+                  <Box sx={{ width: { xs: '50%', md: '30%' }, height: { xs: '20vh', md: '20vh' } }}>
                     <DramaPoster src={member.profile_path} id={member.id} mediaType={MediaType.person} size="w185" />
                   </Box>
                   <Box
@@ -47,7 +47,7 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: 0,
-                      width: {xs: '50%', md:'70%'},
+                      width: { xs: '50%', md: '70%' },
                       height: '100%'
                     }}
                   >

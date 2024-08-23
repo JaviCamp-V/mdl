@@ -27,7 +27,15 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug } }) => {
   return (
-    <Box sx={{ paddingY: { xs: 2, md: 4 },paddingX: { xs: 1, md: 4 }, marginX: { xs: 1, lg: 8 }, backgroundColor: 'background.default', marginTop: 2 }}>
+    <Box
+      sx={{
+        paddingY: { xs: 2, md: 4 },
+        paddingX: { xs: 1, md: 4 },
+        marginX: { xs: 1, lg: 8 },
+        backgroundColor: 'background.default',
+        marginTop: 2
+      }}
+    >
       <ContentContainer mediaId={id} mediaType={MediaType.movie} sections={slug} />
     </Box>
   );

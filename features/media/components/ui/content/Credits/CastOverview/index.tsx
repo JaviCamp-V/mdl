@@ -17,10 +17,15 @@ const CastOverview: React.FC<Credits & { type: MediaType }> = ({ id, cast, crew,
       </Typography>
 
       <Divider />
-      <Grid container spacing={2} paddingX={2} sx={{  }}>
+      <Grid container spacing={2} paddingX={2} sx={{}}>
         {cast?.slice(0, 6).map((person) => (
           <Grid item key={person.id} xs={12} sm={6} md={4} sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-            <Box sx={{ width: {xs: "30%", sm: "50%", md: "50%"}, height: { xs: '15vh', sm: '20vh', md: "10vh", lg: "20vh" } }}>
+            <Box
+              sx={{
+                width: { xs: '30%', sm: '50%', md: '50%' },
+                height: { xs: '15vh', sm: '20vh', md: '10vh', lg: '20vh' }
+              }}
+            >
               <DramaPoster src={person.profile_path} id={person.id} mediaType={MediaType.person} size="w185" />
             </Box>
             <Box
@@ -28,7 +33,7 @@ const CastOverview: React.FC<Credits & { type: MediaType }> = ({ id, cast, crew,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 0,
-                width: { xs: '70%', sm: '50%', md: "50%" },
+                width: { xs: '70%', sm: '50%', md: '50%' },
                 height: '100%'
               }}
             >

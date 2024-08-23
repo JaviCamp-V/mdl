@@ -125,7 +125,6 @@ const Navbar: React.FC<NavbarProps> = () => {
               >
                 <AuthContent />
               </Box>
-
             </Box>
           </Box>
         </Toolbar>
