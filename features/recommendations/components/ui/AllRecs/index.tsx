@@ -20,7 +20,7 @@ const AllRecommendations: React.FC<AllRecommendationsProps> = ({ suggestions, me
   const onPageChange = (page: number) => setPage(page);
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <Box
         sx={{ paddingX: 2, display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}
       >

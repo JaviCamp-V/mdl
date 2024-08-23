@@ -11,6 +11,7 @@ import ItemPagination from '@/components/common/ItemPagination';
 import SelectField from '@/components/common/Select';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import { formatStringDate } from '@/utils/formatters';
+import { scrollToTop } from '@/utils/scrollToElement';
 import OverallReviewCard from '../../cards/OverallReview';
 import NoReviews from '../NoReview';
 
@@ -43,7 +44,10 @@ const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, to
     setSortedBy(by);
   };
 
-  const onPageChange = (page: number) => setPage(page);
+  const onPageChange = (page: number) => {
+    setPage(page);
+    scrollToTop();
+  };
 
   if (sortedReviews.length === 0)
     return <NoReviews mediaId={mediaId} mediaType={mediaType} containerStyle={{ minHeight: '40vh' }} />;

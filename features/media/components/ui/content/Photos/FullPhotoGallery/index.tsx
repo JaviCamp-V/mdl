@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import DramaPoster from '@/components/Poster';
 import Divider from '@/components/common/Divider';
 import ItemPagination from '@/components/common/ItemPagination';
-import { scrollToElementByID } from '@/utils/scrollToElement';
+import { scrollToTop } from '@/utils/scrollToElement';
 
 const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops }) => {
   const photos = [...posters, ...backdrops];
@@ -16,15 +16,15 @@ const FullPhotoGallery: React.FC<MediaImagesResponse> = ({ posters, backdrops })
 
   const onPageChange = (page: number) => {
     setPage(page);
-    scrollToElementByID('slide-show');
+    scrollToTop();
   };
   return (
-    <Box sx={{ padding: 2 }}>
-      <Grid container spacing={3} sx={{ width: '100%', marginRight: 2 }} id="slide-show">
+    <Box sx={{ padding: 2, width: '100%' }}>
+      <Grid container spacing={2} sx={{ width: '100%' }} id="slide-show">
         {showing.map((poster) => (
           <Grid item key={poster.file_path} xs={12} sm={6} md={3}>
             <Box sx={{ width: '100%', height: '35vh' }}>
-              <DramaPoster src={poster.file_path} id={poster.file_path} mediaType="photo" size="original" />
+              <DramaPoster src={poster.file_path} id={poster.file_path} mediaType="photo" size="w780" />
             </Box>
           </Grid>
         ))}

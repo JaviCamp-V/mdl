@@ -39,7 +39,7 @@ const ContentScore: React.FC<ScoreProps> = ({
         <Box>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
             <Typography fontSize={14} sx={{ opacity: 0.6 }}>
-              Your Rating:
+              Rating:
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
               <Ratings rating={vote_average} />
