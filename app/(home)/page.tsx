@@ -6,7 +6,6 @@ import TopUpcomingDramas from '@/features/media/components/lists/TopUpcoming';
 import DramaUpdates from '@/features/media/components/ui/discover/DramaUpdates';
 import Box from '@mui/material/Box';
 
-
 type PageProps = {
   searchParams: any;
 };
