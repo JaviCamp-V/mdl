@@ -6,11 +6,12 @@ import TopUpcomingDramas from '@/features/media/components/lists/TopUpcoming';
 import DramaUpdates from '@/features/media/components/ui/discover/DramaUpdates';
 import Box from '@mui/material/Box';
 
+
 type PageProps = {
   searchParams: any;
 };
 
-export const revalidate = 3600; // 1 hour
+export const revalidate = 1800; // 30 minutes
 
 export const metadata: Metadata = {
   title: 'Discover, Rate and Watch the Best Asian Dramas and Movies'

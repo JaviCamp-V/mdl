@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import SearchField from '@/components/RHFElements/SearchField';
+import ResponsiveSearchField from '@/components/RHFElements/ResponsiveSearchField';
 import routes from '@/libs/routes';
 
-interface SearchFormProps {}
+interface SearchFormProps {
+  responsive?: boolean;
+}
 
 const formSchema = yup.object().shape({
   search: yup.string().required('Search is required')
@@ -16,7 +18,7 @@ const formSchema = yup.object().shape({
 
 type FormType = yup.InferType<typeof formSchema>;
 
-const SearchForm: React.FC<SearchFormProps> = () => {
+const SearchForm: React.FC<SearchFormProps> = ({ responsive }) => {
   const router = useRouter();
   const methods = useForm<FormType>({
     mode: 'onChange',
@@ -34,7 +36,14 @@ const SearchForm: React.FC<SearchFormProps> = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <SearchField name="search" placeholder="Find Asian Dramas, Movies, Actors and more..." type="text" fullWidth />
+        <ResponsiveSearchField
+          name="search"
+          placeholder="Find Asian Dramas, Movies, Actors and more..."
+          type="text"
+          responsive={responsive}
+          fullWidth
+          onClick={() => methods.handleSubmit(onSubmit)()}
+        />
       </form>
     </FormProvider>
   );

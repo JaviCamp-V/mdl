@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import { logout } from '@/features/auth/services/authService';
 import { capitalCase } from 'change-case';
 import { signOut } from 'next-auth/react';
-import { Popover } from 'react-tiny-popover';
-import { ClickAwayListener, Divider, ListItemIcon, ListItemText, MenuItem, MenuList, Paper } from '@mui/material';
+import { Divider, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -25,7 +24,11 @@ const icons = {
   logout: 'mdi:logout'
 };
 const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (anchorEl !== event.currentTarget) setAnchorEl(event.currentTarget);
+  };
+
   const router = useRouter();
   const handleSignOut = async () => {
     await logout();
@@ -35,48 +38,61 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
   const handleMenuItemClick = (href: string) => {
     router.push(href?.replace('{username}', username));
   };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box>
-      <ClickAwayListener onClickAway={() => setIsMenuOpen(false)}>
-        <Popover
-          isOpen={isMenuOpen}
-          positions={['bottom']} // preferred positions
-          padding={8} // space between the target and popover content
-          containerStyle={{
-            // backgroundColor: '#242526',
-            boxShadow: '0 1px 1px rgba(0,0,0,.1)',
-            border: '1px solid rgba(0, 0, 0, .14)',
-            zIndex: '1000'
-          }} // custom styles for the popover content container
-          content={
-            <Paper sx={{ width: 200, maxWidth: '100%' }}>
-              <MenuList dense>
-                {Object.entries(userRoutes).map(([key, value]) => (
-                  <MenuItem key={key} onClick={() => handleMenuItemClick(value)}>
-                    <ListItemIcon>
-                      <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'white' }} />
-                    </ListItemIcon>
-                    <ListItemText>{capitalCase(key)}</ListItemText>
-                  </MenuItem>
-                ))}
-                <Divider />
-                <MenuItem onClick={handleSignOut}>
-                  <ListItemIcon>
-                    <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'white' }} />
-                  </ListItemIcon>
-                  <ListItemText>Logout</ListItemText>
-                </MenuItem>
-              </MenuList>
-            </Paper>
+      <IconButton
+        onClick={handleClick}
+        aria-owns={anchorEl ? 'simple-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={anchorEl ? 'true' : undefined}
+        sx={{ margin: 0, padding: 0 }}
+      >
+        <Avatar sx={{ width: 25, height: 25 }}>{username?.charAt(0)?.toUpperCase() || 'U'}</Avatar>
+        <Iconify icon="mdi:arrow-down-drop" fontSize="small" sx={{ color: 'white' }} />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        MenuListProps={{ onMouseLeave: handleClose, dense: true }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              mt: 2,
+              backgroundColor: 'background.paper',
+              boxShadow: '0 1px 1px rgba(0,0,0,.1)',
+              border: '1px solid rgba(0, 0, 0, .14)',
+              width: 200,
+              maxWidth: '100%'
+            }
           }
-        >
-          <IconButton onClick={() => setIsMenuOpen((prev) => !prev)} sx={{ margin: 0, padding: 0 }}>
-            <Avatar sx={{ width: 25, height: 25 }}>{username?.charAt(0)?.toUpperCase() || 'U'}</Avatar>
-            <Iconify icon="mdi:arrow-down-drop" fontSize="small" sx={{ color: 'white' }} />
-          </IconButton>
-        </Popover>
-      </ClickAwayListener>
+        }}
+      >
+        {Object.entries(userRoutes).map(([key, value]) => (
+          <MenuItem key={key} onClick={() => handleMenuItemClick(value)}>
+            <ListItemIcon>
+              <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'white' }} />
+            </ListItemIcon>
+            <ListItemText>{capitalCase(key)}</ListItemText>
+          </MenuItem>
+        ))}
+        <Divider />
+        <MenuItem onClick={handleSignOut}>
+          <ListItemIcon>
+            <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };
