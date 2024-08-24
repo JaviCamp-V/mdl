@@ -6,7 +6,7 @@ import DatePickerField from './DatePickerField';
 import MediaField from './MediaField';
 import PasswordField from './PasswordField';
 import RatingsField from './RatingsField';
-import SearchField from './SearchField';
+import ResponsiveSearchField from './ResponsiveSearchField';
 import SelectField from './SelectField';
 import TextField from './TextField';
 
@@ -14,7 +14,7 @@ const RHFElements = {
   text: TextField,
   email: TextField,
   password: PasswordField,
-  search: SearchField,
+  search: ResponsiveSearchField,
   checkbox: CheckBoxField,
   select: SelectField,
   autocomplete: AutoCompleteField,
@@ -33,4 +33,4 @@ const RHFElementsSelector = (field: Field) => {
 };
 
 export default RHFElementsSelector;
-export { TextField, PasswordField, SearchField, CheckBoxField };
+export { TextField, PasswordField, ResponsiveSearchField as SearchField, CheckBoxField };

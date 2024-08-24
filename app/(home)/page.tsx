@@ -10,7 +10,7 @@ type PageProps = {
   searchParams: any;
 };
 
-export const revalidate = 3600; // 1 hour
+export const revalidate = 1800; // 30 minutes
 
 export const metadata: Metadata = {
   title: 'Discover, Rate and Watch the Best Asian Dramas and Movies'
