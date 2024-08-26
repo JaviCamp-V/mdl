@@ -1,4 +1,5 @@
 import { Metadata, NextPage } from 'next';
+import AdvancedSearchForm from '@/features/media/components/forms/AdvancedSearch';
 import SearchResults from '@/features/media/components/lists/SearchResults';
 import { getKeywordDetails, getSearchResults } from '@/features/media/service/tmdbService';
 import { capitalCase } from 'change-case';
@@ -38,8 +39,9 @@ const SearchPage: NextPage<PageProps> = async ({ searchParams: { genre, keywords
         marginX: 2,
         marginTop: 4,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'Center'
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        gap: 4
       }}
     >
       <Box sx={{ width: { xs: '100%', md: '60%' } }}>
@@ -50,6 +52,9 @@ const SearchPage: NextPage<PageProps> = async ({ searchParams: { genre, keywords
           </Typography>
         </Typography>
         <SearchResults {...response} />
+      </Box>
+      <Box sx={{ width: { xs: '100%', md: '30%' } }}>
+        <AdvancedSearchForm />
       </Box>
     </Box>
   );

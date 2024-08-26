@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import SearchForm from '@/features/media/components/forms/SearchForm';
+import SearchForm from '@/features/media/components/forms/Search';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container/Container';
@@ -11,6 +11,7 @@ import ExpandableMenuItem from '@/components/common/ExpandableMenuItem';
 import model from '../model';
 import SideBar from '../sidebar';
 import AuthContent from './sections/auth_content';
+
 
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {

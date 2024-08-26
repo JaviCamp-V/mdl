@@ -1,30 +1,21 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormControl, FormControlLabel, FormHelperText } from '@mui/material';
+import { Controller, FieldError, useFieldArray, useFormContext } from 'react-hook-form';
+import { Box, FormControl, FormControlLabel, FormHelperText, FormLabel, Grid, Typography } from '@mui/material';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { Field } from '@/types/common/IForm';
 import Iconify from '../Icon/Iconify';
 
-type CheckBoxFieldProps = CheckboxProps &
-  Field & {
-    name: string;
-    type: 'checkbox';
-    label?: string | React.ReactNode;
-    icons?: { checked: string; unchecked: string };
-    showLabel?: boolean;
-  };
+interface CheckboxInputProps {
+  icons?: { checked: string; unchecked: string };
+}
+interface CheckBoxFieldProps extends CheckboxProps, CheckboxInputProps, Field {
+  name: string;
+  label?: string | React.ReactNode;
+  showLabel?: boolean;
+}
 
-const CheckBoxField: React.FC<CheckBoxFieldProps> = ({
-  name,
-  label,
-  icons,
-  showLabel = true,
-  type,
-  errorMessages,
-  ...rest
-}) => {
+const CheckboxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, showLabel, label, ...rest }) => {
   const { control } = useFormContext();
-
   return (
     <Controller
       name={name}
@@ -33,16 +24,20 @@ const CheckBoxField: React.FC<CheckBoxFieldProps> = ({
         <FormControl component="fieldset" variant="standard" error={Boolean(error)}>
           <FormControlLabel
             label={showLabel ? label : ''}
-            componentsProps={{ typography: { fontSize: '14px!important', color: 'info.contrastText' } }}
+            componentsProps={{
+              typography: { fontSize: '14px!important', color: 'info.contrastText', whiteSpace: 'nowrap' }
+            }}
             sx={{}}
             control={
-              <Checkbox
-                sx={{ paddingY: 0 }}
-                icon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
-                checkedIcon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
-                {...field}
-                {...rest}
-              />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Checkbox
+                  sx={{ paddingY: 0 }}
+                  icon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
+                  checkedIcon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
+                  {...field}
+                  {...rest}
+                />
+              </Box>
             }
           />
           {error && <FormHelperText>{error.message}</FormHelperText>}
@@ -50,6 +45,38 @@ const CheckBoxField: React.FC<CheckBoxFieldProps> = ({
       )}
     />
   );
+};
+
+const MultipleCheckBoxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, showLabel, label, options, ...rest }) => {
+  const { control } = useFormContext();
+  const { fields } = useFieldArray({ name, control });
+
+  return (
+    <Grid container spacing={0.5}>
+      {label && (
+        <Grid item xs={12}>
+          <FormLabel> {label}</FormLabel>
+        </Grid>
+      )}
+      {fields.map((field, index) => (
+        <Grid item key={field.id} xs={6}>
+          <CheckboxInput
+            {...rest}
+            label={options![index].label}
+            showLabel
+            icons={icons}
+            name={`${name}[${index}][checked]`}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+const CheckBoxField: React.FC<CheckBoxFieldProps> = ({ multiple, options, ...props }) => {
+  if (multiple && options?.length) return <MultipleCheckBoxInput {...props} options={options} multiple />;
+
+  return <CheckboxInput {...props} />;
 };
 
 export default CheckBoxField;

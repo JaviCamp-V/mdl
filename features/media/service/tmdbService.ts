@@ -11,6 +11,7 @@ import { without_genres } from '@/libs/genres';
 import ContentRatingResponse, { ContentRating } from '../types/interfaces/ContentRating';
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
+import Network, { NetworksSearchResponse } from '../types/interfaces/Network';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
 import SearchResponse, {
   MediaSearchResult,
@@ -23,7 +24,7 @@ import SearchResponse, {
 } from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
-import TagsResponse, { Tags } from '../types/interfaces/Tags';
+import TagsResponse, { Tags, TagsSearchResponse } from '../types/interfaces/Tags';
 import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
@@ -32,6 +33,9 @@ import WatchProviderResponse from '../types/interfaces/WatchProvider';
 const endpoints = {
   search_person: 'search/person',
   search: 'search',
+  search_multi: 'search/multi',
+  search_keyword: 'search/keyword',
+  search_company: 'search/company',
   discover: 'discover/:mediaType',
   details: ':id',
   credits: 'credits',
@@ -651,6 +655,28 @@ const getSearchResults = async (options: SearchParams): Promise<SearchResponse> 
   }
 };
 
+const getSearchKeyword = async (query: string): Promise<Tags[]> => {
+  try {
+    const params = new URLSearchParams({ query });
+    const response = await tmdbClient.get<TagsSearchResponse>(endpoints.search_keyword, params);
+    return response.results;
+  } catch (error: any) {
+    logger.error(error?.message);
+    return [];
+  }
+};
+
+const getSearchNetwork = async (query: string): Promise<Network[]> => {
+  try {
+    const params = new URLSearchParams({ query });
+    const response = await tmdbClient.get<NetworksSearchResponse>(endpoints.search_company, params);
+    return response?.results;
+  } catch (error: any) {
+    logger.error(error?.message);
+    return [];
+  }
+};
+
 export {
   getImages,
   getTitles,
@@ -672,5 +698,7 @@ export {
   getSearchResults,
   getContentDetails,
   getSearchType,
-  getSearchContent
+  getSearchContent,
+  getSearchKeyword,
+  getSearchNetwork
 };

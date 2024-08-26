@@ -15,12 +15,6 @@ const SelectField: React.FC<SelectFieldProps> = ({ name, options, errorMessages,
       {...rest}
       name={name}
       select
-      id="demo-simple-select"
-      sx={
-        {
-          // zIndex: 30000
-        }
-      }
     >
       {!isRequired && (
         <MenuItem value="" color="disabled" sx={{ fontSize: '14px!important' }}>{`Select ${rest.label}`}</MenuItem>

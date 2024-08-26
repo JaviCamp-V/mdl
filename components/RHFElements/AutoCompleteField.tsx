@@ -5,6 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Field } from '@/types/common/IForm';
+import { textFieldStyles } from './sxProps';
 
 interface AutoCompleteFieldProps extends Field {
   options: { value: any; label: string; disabled: boolean }[];
@@ -20,16 +21,11 @@ const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({ name, errorMessag
         <Autocomplete
           {...rest}
           {...field}
-          // inputValue={inputValue}
-          // onInputChange={(event, newInputValue) => {
-          //   setInputValue(newInputValue);
-          // }}
-          id="controllable-states-demo"
           options={options}
-          sx={{ width: 300 }}
           renderInput={(params) => (
-            <TextField {...params} label="Controllable" error={Boolean(error)} helperText={error?.message} />
+            <TextField {...params} error={Boolean(error)} helperText={error?.message} sx={{ ...textFieldStyles }} />
           )}
+          fullWidth
         />
       )}
     />
