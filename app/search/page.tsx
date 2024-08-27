@@ -2,10 +2,11 @@ import { Metadata, NextPage } from 'next';
 import AdvancedSearchForm from '@/features/media/components/forms/AdvancedSearch';
 import SearchResults from '@/features/media/components/lists/SearchResults';
 import { advancedSearch } from '@/features/media/service/tmdbService';
-import { getAllValidParams } from '@/features/media/utils/tmdbAdaancedSearch';
+import { getAllValidParams } from '@/features/media/utils/tmdbAdvancedSearch';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
 
 type PageProps = {
   searchParams: { [key: string]: string };

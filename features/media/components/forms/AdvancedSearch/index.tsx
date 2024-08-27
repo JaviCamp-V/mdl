@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { formToParams, paramsToForm } from '@/features/media/utils/tmdbAdaancedSearch';
+import { formToParams, paramsToForm } from '@/features/media/utils/tmdbAdvancedSearch';
 import '@/features/watchlist/components/forms/AddWatchlistRecord/model';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
