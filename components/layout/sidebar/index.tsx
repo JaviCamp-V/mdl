@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import SearchForm from '@/features/media/components/forms/SearchForm';
+import SearchForm from '@/features/media/components/forms/Search';
 import Close from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, ClickAwayListener, IconButton, Toolbar, Typography } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import Link from '@/components/common/Link';
 import model from '../model';
+
 
 interface SideBarProps {}
 const drawerWidth = 240;

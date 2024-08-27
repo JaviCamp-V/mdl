@@ -4,34 +4,33 @@ import { getWatchlist } from '@/features/watchlist/service/watchlistService';
 import GeneralWatchlistRecord from '@/features/watchlist/types/interfaces/GeneralWatchlistRecord';
 import Search from '@mui/icons-material/Search';
 import tmdbClient from '@/clients/TMDBClient';
+import Values from '@/types/common/Values';
 import MediaType from '@/types/enums/IMediaType';
 import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
+import SortType from '../types/enums/SortType';
 import ContentRatingResponse, { ContentRating } from '../types/interfaces/ContentRating';
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
+import Network, { NetworksSearchResponse } from '../types/interfaces/Network';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, {
-  MediaSearchResult,
-  MovieSearchResponse,
-  MovieSearchResult,
-  PersonSearchResponse,
-  PersonSearchResult,
-  TVSearchResponse,
-  TVSearchResult
-} from '../types/interfaces/SearchResponse';
+import SearchResponse, { MediaSearchResult, MovieSearchResponse, MovieSearchResult, PersonSearchResponse, PersonSearchResult, TVSearchResponse, TVSearchResult } from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
-import TagsResponse, { Tags } from '../types/interfaces/Tags';
+import TagsResponse, { Tags, TagsSearchResponse } from '../types/interfaces/Tags';
 import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
 import WatchProviderResponse from '../types/interfaces/WatchProvider';
 
+
 const endpoints = {
   search_person: 'search/person',
   search: 'search',
+  search_multi: 'search/multi',
+  search_keyword: 'search/keyword',
+  search_company: 'search/company',
   discover: 'discover/:mediaType',
   details: ':id',
   credits: 'credits',
@@ -502,14 +501,14 @@ const getSearchType = async <T extends MediaType>(
   type: T,
   query: string,
   page?: string,
-  includeTrailer?: false
+  includeTrailer?: boolean
 ): Promise<SearchTypeMap[T]> => {
   try {
     logger.info(`Fetching search for ${type} with query ${query}`);
     const endpoint = `${endpoints.search}/${type}`;
     const params = new URLSearchParams({ query, page: page ?? '1' });
     const response = await tmdbClient.get<SearchTypeMap[T]>(endpoint, params);
-    response.results = response.results.map((result) => ({ ...result, media_type: type })) as any[];
+    response.results = response.results.map((result) => ({ ...result, media_type: result?.media_type ?? type })) as any[];
     if (!isMediaSearchResult(response)) return response;
     const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
     const filtered = response.results.filter((media) => isAsianMedia(media)) as any[];
@@ -600,12 +599,91 @@ const getSearchContent = async (
 };
 
 interface SearchParams {
+  type?: string; // tv , movie, person, multi
   query?: string;
   keywords?: string;
   genre?: string;
+  network?: string;
+  min_release_date?: string;
+  max_release_date?: string;
+  sort_by?: string;
+  country?: string;
+  nationality?: string;
+  gender?: string;
+  min_ratings?: string;
+  max_ratings?: string;
   page?: number | string;
 }
 
+const mapSortyBy = (sort_by: string, type: string) => {
+  switch (sort_by.toUpperCase() as SortType) {
+    case SortType.MOST_POPULAR:
+      return 'popularity.desc';
+    case SortType.NAME:
+      return type === 'tv' ? 'name.asc' : 'title.asc';
+    case SortType.RELEASE_DATE:
+      return type === 'tv' ? 'first_air_date.desc' : 'release_date.desc';
+    case SortType.TOP_RATED:
+      return 'vote_average.desc';
+    default:
+      return 'vote_average.desc';
+  }
+};
+const mapToSearchParams = (options: SearchParams) => {
+  return Object.entries(options)
+    .filter(([key, value]) => value)
+    .reduce(
+      (acc, [key, value]) => {
+        switch (key) {
+          case 'genre':
+            return { ...acc, with_genres: value };
+
+          case 'keywords':
+            return { ...acc, with_keywords: value };
+
+          case 'network':
+            return { ...acc, with_companies: value };
+
+          case 'country':
+            return { ...acc, with_origin_country: value };
+
+          case 'min_release_date':
+            return options?.type === 'tv' ? { ...acc, first_air_date_gte: value } : { ...acc, release_date_gte: value };
+
+          case 'max_release_date':
+            return options?.type === 'tv' ? { ...acc, first_air_date_lte: value } : { ...acc, release_date_lte: value };
+
+          case 'min_ratings':
+            return { ...acc, vote_average_gte: value };
+
+          case 'max_ratings':
+            return { ...acc, vote_average_lte: value };
+
+          case 'sort_by':
+            return { ...acc, sort_by: mapSortyBy(value, options?.type ?? 'tv') };
+
+          default:
+            return acc;
+        }
+      },
+      { include_adult: false } as Values
+    );
+};
+
+const getSearchResults2 = async (options: any) => {
+  const filters = Object.entries(options).filter(([key, value]) => value);
+  if (filters.length === 0) {
+    return { page: 0, results: [], total_pages: 0, total_results: 0 };
+  }
+  const { query, type, page } = options;
+  if (query && type) {
+    const response = await getSearchType(type as MediaType, query, page?.toString(), true);
+    //apply filters
+    return response;
+  }
+  const response = await getDiscoverType(options?.type as any, new URLSearchParams(options), true);
+  return response;
+};
 /**
  * Fetches search results based on the options.
  * @param options SearchParams
@@ -651,6 +729,44 @@ const getSearchResults = async (options: SearchParams): Promise<SearchResponse> 
   }
 };
 
+const getSearchKeyword = async (query: string): Promise<Tags[]> => {
+  try {
+    const params = new URLSearchParams({ query });
+    const response = await tmdbClient.get<TagsSearchResponse>(endpoints.search_keyword, params);
+    return response.results;
+  } catch (error: any) {
+    logger.error(error?.message);
+    return [];
+  }
+};
+
+const getSearchNetwork = async (query: string): Promise<Network[]> => {
+  try {
+    const params = new URLSearchParams({ query });
+    const response = await tmdbClient.get<NetworksSearchResponse>(endpoints.search_company, params);
+    return response?.results;
+  } catch (error: any) {
+    logger.error(error?.message);
+    return [];
+  }
+};
+
+//TODO: apply filters to search and person
+const advancedSearch = async (options: Values): Promise<SearchResponse> => {
+  try {
+    const { query, type, page, actual_page, ...rest } = options;
+    if (query && type) {
+      const response = await getSearchType(type as MediaType, query, page?.toString(), true);
+      return response;
+    }
+    const response = await getDiscoverType(type, new URLSearchParams({ ...rest, page }), true);
+
+    return response;
+  } catch (error: any) {
+    logger.error(error.message);
+    return { page: 0, results: [], total_pages: 0, total_results: 0 };
+  }
+};
 export {
   getImages,
   getTitles,
@@ -672,5 +788,9 @@ export {
   getSearchResults,
   getContentDetails,
   getSearchType,
-  getSearchContent
+  getSearchContent,
+  getSearchKeyword,
+  getSearchNetwork,
+  getSearchResults2,
+  advancedSearch
 };
