@@ -62,13 +62,12 @@ const AsyncSearchField = <T,>({
   const [inputValue, setInputValue] = React.useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500);
 
-  const wrapper = async () => {
+  const wrapper = () => {
     if (!debouncedInputValue) return Promise.resolve(defaultResults);
-    return await searchFunction(debouncedInputValue);
+    return searchFunction(debouncedInputValue);
   };
 
   const { data: options } = useAsync(wrapper, defaultResults, [debouncedInputValue]);
-  console.log('rendering');
   return (
     <Autocomplete
       autoComplete={false}

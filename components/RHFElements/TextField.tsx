@@ -77,10 +77,6 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, 
             }}
             error={Boolean(!hideError && !!error)}
             helperText={getHelperText(error)}
-            onChange={(e) => {
-              console.log('e', e);
-              field.onChange(e.target.value);
-            }}
           />
         </FormControl>
       )}

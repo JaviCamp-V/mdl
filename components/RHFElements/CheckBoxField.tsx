@@ -54,7 +54,6 @@ const MultipleCheckBoxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, show
   const { control } = useFormContext();
   const { fields } = useFieldArray({ name, control });
 
-  console.log('fields', fields);
   return (
     <Grid container spacing={0.5}>
       {label && (

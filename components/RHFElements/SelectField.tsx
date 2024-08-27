@@ -5,12 +5,12 @@ import { MenuItem } from '@mui/material';
 import { Field } from '@/types/common/IForm';
 import TextField from './TextField';
 
+
 interface SelectFieldProps extends Field {
   options: { value: any; label: string; disabled: boolean }[];
 }
 const SelectField: React.FC<SelectFieldProps> = ({ name, placeholder, options, errorMessages, ...rest }) => {
   const isRequired = !!errorMessages?.required;
-  console.log('rest', name);
   return (
     <TextField {...rest} name={name} select>
       {!isRequired && (

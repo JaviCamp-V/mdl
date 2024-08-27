@@ -91,7 +91,6 @@ const formToParams = (form: AdvancedSearchFormType): Values => {
       return { ...acc, [param!]: formattedValue };
     }
     if (['tags', 'network'].includes(formKey)) {
-      console.log(value);
       const formattedValue = (value as any)?.map((v: any) => `${v.id}_${v.name}`).join('|');
       return { ...acc, [param!]: formattedValue };
     }
