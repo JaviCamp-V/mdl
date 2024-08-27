@@ -1,10 +1,11 @@
 import { Field, RHFElementsType } from '@/types/common/IForm';
+import Values from '@/types/common/Values';
 
 interface FieldMap {
   [key: string]: any;
 }
 
-const mapToDefaultValues = ({ type, multiple, options, fields }: Field) => {
+const mapToDefaultValues = ({ type, multiple, options, fields }: Field): any => {
   switch (type) {
     case 'date':
     case 'media_select':
@@ -27,7 +28,7 @@ const mapToDefaultValues = ({ type, multiple, options, fields }: Field) => {
       return '';
   }
 };
-const getDefaultValues = (fields: FieldMap) =>
+const getDefaultValues = (fields: FieldMap): Values =>
   Object.values(fields).reduce(
     (defaultValues, field) => ({ ...defaultValues, [field?.name]: mapToDefaultValues(field) }),
     {}
