@@ -9,6 +9,7 @@ import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
 import Ratings from '@/components/common/Ratings';
 
+
 interface SearchItemProps {
   details: MediaSearchResult | PersonSearchResult;
 }
@@ -30,7 +31,7 @@ const SearchItemCard: React.FC<SearchItemProps> = ({ details }) => {
         gap: 2.5
       }}
     >
-      <Box sx={{ width: '25%', height: '100%' }}>
+      <Box sx={{ width:   {xs: '35%', md:'25%'}, height: '100%' }}>
         <Box sx={{ width: '100%', height: '35vh' }}>
           <DramaPoster
             src={media_type === 'person' ? details.profile_path : details.poster_path}
@@ -42,7 +43,7 @@ const SearchItemCard: React.FC<SearchItemProps> = ({ details }) => {
       </Box>
       <Box
         sx={{
-          width: '75%',
+          width: {xs: "65%", md:'75%'},
           paddingRight: 4,
           display: 'flex',
           flexDirection: 'column',

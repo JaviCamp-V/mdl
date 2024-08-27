@@ -7,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { Field } from '@/types/common/IForm';
 import { textFieldStyles } from './sxProps';
 
+
 interface AutoCompleteFieldProps extends Field {
   options: { value: any; label: string; disabled: boolean }[];
 }
@@ -21,7 +22,12 @@ const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({ name, errorMessag
         <Autocomplete
           {...rest}
           {...field}
+          multiple={false}
+          value={options.find((option) => option.value === field.value) ?? null}
           options={options}
+          getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange={(e, newValue) => field.onChange(newValue ? newValue.value : null)}
           renderInput={(params) => (
             <TextField {...params} error={Boolean(error)} helperText={error?.message} sx={{ ...textFieldStyles }} />
           )}

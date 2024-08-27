@@ -1,54 +1,72 @@
 'use client';
 
 import React from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { formToParams, paramsToForm } from '@/features/media/utils/tmdbAdaancedSearch';
 import '@/features/watchlist/components/forms/AddWatchlistRecord/model';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Button, Grid, IconButton, Typography } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Iconify from '@/components/Icon/Iconify';
-import RHFElementsSelector, { TextField } from '@/components/RHFElements';
-import RHFForm from '@/components/RHFElements/RHFForm';
+import { TextField } from '@/components/RHFElements';
+import RHFAccordionWrapper from '@/components/RHFElements/RHFAccordionWrapper';
 import Divider from '@/components/common/Divider';
 import MediaType from '@/types/enums/IMediaType';
-import { FormType, defaultValues, formFields, formSchema } from './model';
+import { AdvancedSearchFormType, contentFormFields, defaultValues, formSchema, personFormFields, queryField } from './model';
+
 
 interface AdvancedSearchFormProps {}
-const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = ({}) => {
-  const methods = useForm<FormType>({
+
+const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // query params and default values combined
+  const formDefaultValues = React.useMemo(() => paramsToForm(searchParams), [searchParams]);
+
+  const methods = useForm<AdvancedSearchFormType>({
     mode: 'onChange',
     resolver: yupResolver(formSchema),
-    defaultValues: defaultValues,
+    defaultValues: formDefaultValues,
     shouldFocusError: true,
     criteriaMode: 'all'
   });
 
-  console.log('methods', methods.getValues('country'));
   const watchedType = methods.watch('type');
-  const { query, type, country, genres, tags, network, releaseYear, ratings, nationality } = formFields;
-
   const currentFormFields = React.useMemo(() => {
-    if (watchedType === MediaType.person) return { nationality };
-    return { country, genres, tags, network, releaseYear, ratings };
+    if (watchedType === MediaType.person) return personFormFields;
+    return contentFormFields;
   }, [watchedType]);
+
+  const onSubmit: SubmitHandler<AdvancedSearchFormType> = async (formData) => {
+    const values = formToParams(formData);
+    const filteredValues = Object.entries(values)
+      .filter(([, value]) => value)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+    const params = new URLSearchParams(filteredValues);
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const onWatchedTypeChange = (type: MediaType) => {
+    if (watchedType === type) return;
+    const isBetweenPersonAndContent = type === MediaType.person || watchedType === MediaType.person;
+    if (isBetweenPersonAndContent) return methods.reset({ ...defaultValues, type });
+    methods.setValue('type', type);
+  };
 
   return (
     <Box
       sx={{
         borderRadius: 2,
-
+        marginTop: 4.5,
         backgroundColor: 'background.paper',
         boxShadow: '0 1px 1px rgba(0,0,0,.1)',
         border: '1px solid rgba(0, 0, 0, .14)'
       }}
     >
       <FormProvider {...methods}>
-        <form>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Box sx={{ paddingY: 2 }}>
             <Typography fontSize={18} fontWeight={700} paddingX={2}>
               Advanced Search
@@ -57,7 +75,7 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = ({}) => {
             <Divider />
 
             <Box paddingX={2}>
-              <TextField {...query} size="small" />
+              <TextField {...(queryField as any)} size="small" />
             </Box>
           </Box>
           <Box>
@@ -82,7 +100,7 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = ({}) => {
                   <Button
                     key={value}
                     variant={watchedType === value ? 'outlined' : 'text'}
-                    onClick={() => methods.setValue('type', value)}
+                    onClick={() => onWatchedTypeChange(value)}
                     sx={{
                       margin: 0,
                       marginBottom: -0.1,
@@ -110,22 +128,9 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = ({}) => {
             </Box>
             {watchedType && (
               <Grid container spacing={0}>
-                {Object.values(currentFormFields).map(({ label, ...field }, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Accordion
-                      sx={{ boxShadow: 'none', borderBottom: '1px solid hsla(210, 8%, 51%, .13)' }}
-                      disableGutters
-                      square
-                    >
-                      <AccordionSummary
-                        expandIcon={<Iconify icon="gridicons:dropdown" width={25} color={'text.primary'} />}
-                      >
-                        <Typography>{label}</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <RHFElementsSelector {...field} />
-                      </AccordionDetails>
-                    </Accordion>
+                {Object.values(currentFormFields).map((field) => (
+                  <Grid item xs={12} key={field.name}>
+                    <RHFAccordionWrapper field={field} />
                   </Grid>
                 ))}
               </Grid>
@@ -142,14 +147,14 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = ({}) => {
               <Button
                 color="primary"
                 variant="contained"
-                onClick={methods.handleSubmit((data) => console.log(data))}
+                onClick={methods.handleSubmit(onSubmit)}
                 sx={{
                   textTransform: 'capitalize'
                 }}
               >
                 Search
               </Button>
-              <Button color="info" variant="contained" onClick={() => methods.reset()}>
+              <Button color="info" variant="contained" onClick={() => methods.reset(defaultValues)}>
                 Reset
               </Button>
             </Box>

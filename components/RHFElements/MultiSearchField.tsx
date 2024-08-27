@@ -4,6 +4,7 @@ import { Box, Chip, FormHelperText, FormLabel } from '@mui/material';
 import { Field } from '@/types/common/IForm';
 import AsyncSearchField from './AsyncSearchField';
 
+
 export interface MultiSearchFieldProps<T> extends Field {
   searchFunction: (query: string) => Promise<T[]>;
   defaultResults: T[];
@@ -18,7 +19,8 @@ const MultiSearchField: React.FC<MultiSearchFieldProps<any>> = ({
   renderResult,
   getOptionLabel,
   isEquals,
-  label
+  label,
+  placeholder
 }) => {
   const methods = useFormContext();
   const [value, setValue] = React.useState<any>(null);
@@ -59,7 +61,7 @@ const MultiSearchField: React.FC<MultiSearchFieldProps<any>> = ({
         isEquals={isEquals}
         value={value}
         onChange={onChange}
-        placeholder={`Search for ${label}`}
+        placeholder={placeholder}
       />
     </Box>
   );

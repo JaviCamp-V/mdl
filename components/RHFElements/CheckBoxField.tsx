@@ -5,6 +5,7 @@ import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { Field } from '@/types/common/IForm';
 import Iconify from '../Icon/Iconify';
 
+
 interface CheckboxInputProps {
   icons?: { checked: string; unchecked: string };
 }
@@ -12,6 +13,7 @@ interface CheckBoxFieldProps extends CheckboxProps, CheckboxInputProps, Field {
   name: string;
   label?: string | React.ReactNode;
   showLabel?: boolean;
+  control?: any;
 }
 
 const CheckboxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, showLabel, label, ...rest }) => {
@@ -35,6 +37,7 @@ const CheckboxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, showLabel, l
                   icon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
                   checkedIcon={icons ? <Iconify icon={icons.checked} fontSize={'inherit'} /> : undefined}
                   {...field}
+                  checked={field.value}
                   {...rest}
                 />
               </Box>
@@ -51,6 +54,7 @@ const MultipleCheckBoxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, show
   const { control } = useFormContext();
   const { fields } = useFieldArray({ name, control });
 
+  console.log('fields', fields);
   return (
     <Grid container spacing={0.5}>
       {label && (
@@ -65,7 +69,7 @@ const MultipleCheckBoxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, show
             label={options![index].label}
             showLabel
             icons={icons}
-            name={`${name}[${index}][checked]`}
+            name={`${name}.${index}.checked`}
           />
         </Grid>
       ))}

@@ -4,7 +4,7 @@ interface FieldMap {
   [key: string]: any;
 }
 
-const mapToDefaultValues = ({ type, multiple, options }: Field) => {
+const mapToDefaultValues = ({ type, multiple, options, fields }: Field) => {
   switch (type) {
     case 'date':
     case 'media_select':
@@ -19,6 +19,9 @@ const mapToDefaultValues = ({ type, multiple, options }: Field) => {
 
     case 'slider':
       return [0, 0];
+
+    case 'group':
+      return fields ? getDefaultValues(fields) : {};
 
     default:
       return '';

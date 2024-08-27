@@ -1,5 +1,6 @@
 import WatchStatus from '@/types/enums/WatchStatus';
 import TVShowStatus from '../enums/TVShowStatus';
+import TvShowType from '../enums/TvShowType';
 import BaseShowDetails from './BaseShowDetails';
 import ExternalID from './ExternalID';
 import Genre from './Genre';
@@ -33,7 +34,7 @@ export default interface TVDetails extends BaseShowDetails {
   spoken_languages: Language[];
   status: TVShowStatus;
   tagline: string;
-  type: string;
+  type: TvShowType;
   external_ids: ExternalID;
   watchStatus: WatchStatus | null;
 }

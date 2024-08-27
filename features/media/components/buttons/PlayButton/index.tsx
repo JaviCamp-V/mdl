@@ -20,6 +20,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ video }) => {
           backgroundColor: 'info.main',
           color: 'info.contrastText',
           textTransform: 'capitalize',
+          whiteSpace: "nowrap",
           gap: 0.5,
           '&:hover': { backgroundColor: 'info.dark' },
           '&:active': { backgroundColor: 'info.dark' }

@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchResponse from '@/features/media/types/interfaces/SearchResponse';
 import Box from '@mui/material/Box';
 import ItemPagination from '@/components/common/ItemPagination';
+import NoSearchResults from '../../cards/NoSearchResults';
 import SearchItemCard from '../../cards/SearchItem';
 
 const SearchResults: React.FC<SearchResponse> = ({ results, total_pages, page }) => {
@@ -26,11 +27,12 @@ const SearchResults: React.FC<SearchResponse> = ({ results, total_pages, page })
           minHeight: '60vh'
         }}
       >
+        {results.length === 0 && <NoSearchResults />}
         {results.map((result) => (
           <SearchItemCard key={result.id} details={result} />
         ))}
       </Box>
-      <ItemPagination totalItems={total_pages * 90} itemsPerPage={90} currentPage={page} onPageChange={onPageChange} />
+      <ItemPagination totalItems={total_pages} itemsPerPage={20} currentPage={page} onPageChange={onPageChange} />
     </Box>
   );
 };
