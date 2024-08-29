@@ -1,18 +1,21 @@
 import React from 'react';
 import CommentType from '@/features/comments/types/enums/CommentType';
-import { Box, Grid, SxProps, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Divider from '@/components/common/Divider';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import AddCommentForm from '../../forms/AddComment';
 import AllComments from '../AllComments';
 import CommentCount from '../CommentCount';
 
+
 interface CommentsSectionProps {
   commentType: CommentType;
   parentId: number;
+  page?: number;
+  baseUrl: string;
 }
 
-const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId }) => {
+const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId, page, baseUrl }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
       <Typography paddingX={2} fontSize={16} fontWeight={700} lineHeight={1}>
@@ -28,7 +31,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId
       </Box>
       <Divider />
       <React.Suspense fallback={<LoadingSkeleton height="40vh" />}>
-        <AllComments commentType={commentType} parentId={parentId} />
+        <AllComments commentType={commentType} parentId={parentId} page={page} baseUrl={baseUrl} />
       </React.Suspense>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComments, refreshCommentsCache } from '@/features/comments/services/commentService';
+import { getComments } from '@/features/comments/services/commentService';
 import CommentType from '@/features/comments/types/enums/CommentType';
 import Comment from '@/features/comments/types/interfaces/Comments';
 import { Box, Grid, Typography } from '@mui/material';
@@ -9,7 +9,7 @@ import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import { formatDateToDistance } from '@/utils/formatters';
 import { isErrorResponse } from '@/utils/handleError';
 import routes from '@/libs/routes';
-import CommentButtons from '../../buttons/ActionButtons';
+import ViewOtherRepliesButton from '../../buttons/ViewMoreButton';
 import CommentBody from './CommentBody';
 
 interface CommentCardProps {
@@ -19,10 +19,43 @@ interface CommentCardProps {
 interface CommentRepliesProps {
   commentId: number;
 }
+
+interface OtherCommentRepliesProps {
+  numberOfPages: number;
+  commentId: number;
+}
+
+const OtherCommentReplies: React.FC<OtherCommentRepliesProps> = async ({ commentId, numberOfPages }) => {
+  if (numberOfPages <= 1) return;
+  //start from page 2
+  const pages = await Promise.all(
+    [...Array(numberOfPages - 1)].map(async (_, page) => {
+      const response = await getComments(CommentType.COMMENT, commentId, page + 1);
+      if (isErrorResponse(response)) return null;
+      return response;
+    })
+  );
+  const filteredPages = pages.filter((page) => page != null);
+
+  return (
+    <ViewOtherRepliesButton
+      commentId={commentId}
+      comments={filteredPages
+        .map((page) => page.results)
+        .flat()
+        .map((comment) => (
+          <Grid item key={comment.id} xs={12} sx={{}}>
+            <CommentCard key={comment.id} comment={comment} />
+          </Grid>
+        ))}
+    />
+  );
+};
+
 const CommentReplies: React.FC<CommentRepliesProps> = async ({ commentId }) => {
   const response = await getComments(CommentType.COMMENT, commentId, 0);
   if (isErrorResponse(response)) return <Typography color={'error'}>Error loading replies</Typography>;
-  const { results, total } = response;
+  const { results, numberOfPages } = response;
 
   return (
     <Grid container spacing={1} sx={{}}>
@@ -31,6 +64,9 @@ const CommentReplies: React.FC<CommentRepliesProps> = async ({ commentId }) => {
           <CommentCard comment={comment} />
         </Grid>
       ))}
+      <React.Suspense fallback={<LoadingSkeleton height={'40vh'} />}>
+        <OtherCommentReplies commentId={commentId} numberOfPages={numberOfPages} />
+      </React.Suspense>
     </Grid>
   );
 };

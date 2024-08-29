@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import AuthRequired from '@/features/auth/components/ui/AuthRequired';
 import { createReview } from '@/features/reviews/services/reviewService';
 import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -43,29 +44,12 @@ const WriteReviewForm: React.FC<WriteReviewFormProps> = ({ mediaId, mediaType })
     router.push(`/${mediaType}/${mediaId}/reviews`);
     methods.reset();
   };
+
+  if (!session?.user) return <AuthRequired action="write a review" />;
+
   return (
     <Box sx={{ paddingY: 2, paddingX: 4 }}>
-      {!session?.user && (
-        <Box sx={{ marginBottom: 3, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography fontSize={14} fontWeight={700}>
-            You need to be logged in to write a review. Please sign in here to continue.
-            <Link href={`${routes.login}?callbackUrl=${pathname}`} style={{ textDecoration: 'none' }}>
-              <Typography component={'span'} fontSize={14} fontWeight={700} color="primary" paddingLeft={0.5}>
-                Sign In
-              </Typography>
-            </Link>
-          </Typography>
-          <Typography fontSize={14} fontWeight={700}>
-            {"Don't have an account?   Sign up for MyDramaList here"}
-            <Link href={`${routes.register}?callbackUrl=${pathname}`} style={{ textDecoration: 'none' }}>
-              <Typography component={'span'} fontSize={14} fontWeight={700} color="primary" paddingLeft={0.5}>
-                Sign Up
-              </Typography>
-            </Link>
-          </Typography>
-        </Box>
-      )}
-      <RHFForm fields={formFields} methods={methods} />
+      <RHFForm fields={formFields} methods={methods} onSubmit={onSubmit} />
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 2, gap: 2 }}>
         <Button
           variant="contained"

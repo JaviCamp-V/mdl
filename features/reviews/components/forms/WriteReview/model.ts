@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 
+
 const formFields: FieldModel = {
   headline: {
     name: 'headline',
@@ -16,12 +17,14 @@ const formFields: FieldModel = {
     name: 'hasSpoilers',
     type: 'checkbox',
     label: 'This review contains spoilers',
+    showLabel: true,
     breakpoints: { xs: 12 }
   },
   hasCompleted: {
     name: 'hasCompleted',
     type: 'checkbox',
     label: 'I have finished watching this title',
+    showLabel: true,
     breakpoints: { xs: 12 }
   },
   storyRating: {

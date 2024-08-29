@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import { getContentDetails } from '@/features/media/service/tmdbService';
 import { getTitle } from '@/features/media/utils/tmdbUtils';
@@ -13,12 +13,12 @@ import { getSession } from '@/utils/authUtils';
 import { formatStringDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
-import { userRoutes } from '@/libs/routes';
 import ReviewType from '../types/enums/ReviewType';
 import { ExtendOverallReviewWithMedia } from '../types/interfaces/ExtendReviewResponse';
 import ReviewHelpfulData from '../types/interfaces/ReviewHelpfulData';
 import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/ReviewRequest';
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
+
 
 const endpoints = {
   user: {
@@ -49,12 +49,14 @@ const createReview = async <T extends ReviewType>(
       body
     );
     const session = await getSession();
-    if (session?.user?.username) {
-      revalidatePath(`${userRoutes.profile.replace(':username', session?.user?.username)}/reviews?type=${reviewType}`);
+    if (session?.user?.username) revalidateTag(`user-reviews-${session.user.username}-${reviewType}`);
+    revalidateTag('recent-reviews');
+    if (reviewType === ReviewType.OVERALL) {
+      revalidateTag(`overall-reviews-${request.mediaType}-${request.mediaId}`);
+    } else {
+      const episodeReview = request as CreateEpisodeReview;
+      revalidateTag(`episode-reviews-${request.mediaId}-${episodeReview.season}-${episodeReview.episode}`);
     }
-    revalidatePath('/');
-    revalidatePath(`/${request.mediaType.toLowerCase()}/${request.mediaId}`);
-    revalidatePath(`/${request.mediaType.toLowerCase()}/${request.mediaId}/reviews`);
 
     return response;
   } catch (error: any) {
@@ -68,14 +70,18 @@ const createReview = async <T extends ReviewType>(
 const deleteReview = async (
   mediaType: MediaType,
   mediaId: number,
+  reviewType: ReviewType,
   id: number
 ): Promise<GenericResponse | ErrorResponse> => {
   try {
     logger.info('Deleting review with : ', id);
     const endpoint = endpoints.user.deleteReview.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}`);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}/reviews`);
+    revalidateTag('recent-reviews');
+    if (reviewType === ReviewType.OVERALL) {
+      revalidateTag(`overall-reviews-${mediaType}-${mediaId}`);
+    }
+    // TODO: revalidate episode reviews and user reviews
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -85,19 +91,14 @@ const deleteReview = async (
   }
 };
 
-const markReviewHelpful = async (
-  mediaType: MediaType,
-  mediaId: number,
-  id: number,
-  isHelpful: boolean
-): Promise<GenericResponse | ErrorResponse> => {
+const markReviewHelpful = async (id: number, isHelpful: boolean): Promise<GenericResponse | ErrorResponse> => {
   try {
     logger.info('Marking review helpful with : ', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const params = new URLSearchParams({ isHelpful: Boolean(isHelpful)?.toString() });
+    const session = await getSession();
     const response = await mdlApiClient.post<null, GenericResponse>(endpoint, null, params);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}`);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}/reviews`);
+    revalidateTag(`review-helpful-${id}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -107,17 +108,12 @@ const markReviewHelpful = async (
   }
 };
 
-const removedHelpfulRating = async (
-  mediaType: MediaType,
-  mediaId: number,
-  id: number
-): Promise<GenericResponse | ErrorResponse> => {
+const removedHelpfulRating = async (id: number): Promise<GenericResponse | ErrorResponse> => {
   try {
     logger.info('Removing helpful rating with : ', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}`);
-    revalidatePath(`/${mediaType.toLowerCase()}/${mediaId}/reviews`);
+    revalidateTag(`review-helpful-${id}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -184,12 +180,11 @@ const getReview = async (id: number): Promise<EpisodeReview | OverallReview | Er
   }
 };
 
-const getReviewHelpful = async (id: number): Promise<ReviewHelpfulData> => {
+const getReviewHelpful = async (id: number, userId?: number | null): Promise<ReviewHelpfulData> => {
   try {
     logger.info('Fetching helpful rating with id: ', id);
     const endpoint = endpoints.public.getReviewHelpful.replace(':id', id.toString());
-    const session = await getSession();
-    const params = new URLSearchParams(session?.user?.userId ? { userId: session.user.userId?.toString() } : {});
+    const params = new URLSearchParams(userId ? { userId: userId?.toString() } : {});
     return await mdlApiClient.get<ReviewHelpfulData>(endpoint, params);
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -236,15 +231,90 @@ const getUserReviews = async (username: string, reviewType: ReviewType): Promise
   }
 };
 
+const cacheGetMediaOverallReviews = async (mediaType: MediaType.tv | MediaType.movie, mediaId: number) => {
+  try {
+    const getCached = unstable_cache(getMediaOverallReviews, [], {
+      tags: [`overall-reviews-${mediaType}-${mediaId}`]
+    });
+
+    return await getCached(mediaType, mediaId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return [];
+  }
+};
+
+const cacheGetMediaEpisodeReviews = async (mediaId: number, season: number, episode: number) => {
+  try {
+    const getCached = unstable_cache(getMediaEpisodeReviews, [], {
+      tags: [`episode-reviews-${mediaId}-${season}-${episode}`]
+    });
+    return await getCached(mediaId, season, episode);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
+const cacheGetReview = async (id: number) => {
+  try {
+    const getCached = unstable_cache(getReview, [], {
+      tags: [`review-${id}`]
+    });
+    return await getCached(id);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
+const cacheGetReviewHelpful = async (id: number) => {
+  try {
+    const getCached = unstable_cache(getReviewHelpful, [], {
+      tags: [`review-helpful-${id}`]
+    });
+    const session = await getSession();
+    const userId = session?.user?.userId;
+    return await getCached(id, userId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return { numberOfHelpfulReviews: 0, numberOfUnhelpfulReviews: 0, isHelpful: null };
+  }
+};
+
+const cacheGetRecentReviews = async () => {
+  try {
+    const getCached = unstable_cache(getRecentReviews, [], {
+      tags: ['recent-reviews']
+    });
+    return await getCached();
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
+const cacheGetUserReviews = async (username: string, reviewType: ReviewType) => {
+  try {
+    const getCached = unstable_cache(getUserReviews, [], {
+      tags: [`user-reviews-${username}-${reviewType}`]
+    });
+    return await getCached(username, reviewType);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
 export {
   authCreateReview as createReview,
   authDeleteReview as deleteReview,
   authMarkReviewHelpful as markReviewHelpful,
   authRemoveHelpfulRating as removedHelpfulRating,
-  getMediaOverallReviews,
-  getMediaEpisodeReviews,
-  getReview,
-  getReviewHelpful,
-  getRecentReviews,
-  getUserReviews
+  cacheGetMediaOverallReviews as getMediaOverallReviews,
+  cacheGetMediaEpisodeReviews as getMediaEpisodeReviews,
+  cacheGetReview as getReview,
+  cacheGetReviewHelpful as getReviewHelpful,
+  cacheGetRecentReviews as getRecentReviews,
+  cacheGetUserReviews as getUserReviews
 };

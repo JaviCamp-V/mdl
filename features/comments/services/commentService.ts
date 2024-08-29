@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
@@ -13,6 +13,7 @@ import logger from '@/utils/logger';
 import CommentType from '../types/enums/CommentType';
 import AddComment, { CommentBody } from '../types/interfaces/AddComment';
 import { CommentMeta, CommentPage } from '../types/interfaces/Comments';
+
 
 const endpoints = {
   user: {
@@ -121,7 +122,7 @@ const getComments = async (
     const endpoint = endpoints.public.getComments
       .replace(':commentType', commentType)
       .replace(':parentId', parentId.toString());
-    const response = await mdlApiClient.get<CommentPage>(endpoint, { params });
+    const response = await mdlApiClient.get<CommentPage>(endpoint, params);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -152,7 +153,7 @@ const getUserComments = async (userId: number, page?: number): Promise<CommentPa
     logger.info('Fetching comments for user with id: %s', userId);
     const params = new URLSearchParams({ page: page ? page.toString() : '0' });
     const endpoint = endpoints.public.getUserComments.replace(':userId', userId.toString());
-    const response = await mdlApiClient.get<CommentPage>(endpoint, { params });
+    const response = await mdlApiClient.get<CommentPage>(endpoint, params);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;

@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import { getContentDetails } from '@/features/media/service/tmdbService';
 import MovieDetails from '@/features/media/types/interfaces/MovieDetails';
@@ -11,12 +11,14 @@ import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import MediaType from '@/types/enums/IMediaType';
+import { getSession } from '@/utils/authUtils';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 import GeneralWatchlistRecord from '../types/interfaces/GeneralWatchlistRecord';
 import UpdateWatchlistRequest from '../types/interfaces/UpdateWatchlistRequest';
 import WatchlistItems from '../types/interfaces/WatchlistItem';
 import WatchlistRecord from '../types/interfaces/WatchlistRecord';
+
 
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
@@ -37,7 +39,10 @@ const updateWatchlistRecord = async (request: UpdateWatchlistRequest): Promise<G
   try {
     logger.info('Updating watchlist record with : ', request.mediaType, request.mediaId);
     const response = await mdlApiClient.post<UpdateWatchlistRequest, GenericResponse>(endpoints.userWatchlist, request);
-    revalidatePath('/', 'layout');
+    const session = await getSession();
+    if (session?.user?.username) {
+      revalidateTag(`watchlist-${session.user.username}`);
+    }
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -52,7 +57,7 @@ const updateWatchlistRecord = async (request: UpdateWatchlistRequest): Promise<G
  * @returns response<GeneralWatchlistRecord[]>
  * @description Fetch watchlist data, if error return empty array
  */
-const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
+const getLegacyWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
   try {
     logger.info('Fetching watchlist');
     return await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoints.userWatchlist);
@@ -119,7 +124,10 @@ const deleteWatchlistRecord = async (id: number): Promise<GenericResponse | Erro
     logger.info('Deleting watchlist record with id: ', id);
     const endpoint = endpoints.userWatchlistRecordById.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
-    revalidatePath('/', 'layout');
+    const session = await getSession();
+    if (session?.user?.username) {
+      revalidateTag(`watchlist-${session.user.username}`);
+    }
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -203,11 +211,32 @@ const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Prom
  * if error return empty array
  * public access
  */
-const getUserWatchlist = async (username: string): Promise<WatchlistItems[]> => {
+
+const getWatchListByUsername = async (username: string): Promise<GeneralWatchlistRecord[]> => {
   try {
     logger.info(`Fetching watchlist for user with  ${username}`);
     const endpoint = endpoints.watchlistByUsername.replace('{username}', username);
-    const watchlist = await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoint);
+    return await mdlApiClient.get<GeneralWatchlistRecord[]>(endpoint);
+  } catch (error: any) {
+    logger.error(`Error fetching watchlist for user: ${error?.message}, ${error?.response?.data?.message}`);
+    return [];
+  }
+};
+
+const cacheGetWatchlistByUsername = async (username: string): Promise<GeneralWatchlistRecord[]> => {
+  try {
+    const getCached = unstable_cache(getWatchListByUsername, [], {
+      tags: [`watchlist-${username}`]
+    });
+    return await getCached(username);
+  } catch (error: any) {
+    logger.error('Error fetching watchlist for user: ', error?.message);
+    return [];
+  }
+};
+const getUserWatchlist = async (username: string): Promise<WatchlistItems[]> => {
+  try {
+    const watchlist = await cacheGetWatchlistByUsername(username);
     const watchlistWithDetails = await Promise.all(watchlist.map(addAddDetailsToWatchlist));
     return watchlistWithDetails;
   } catch (error: any) {
@@ -216,16 +245,44 @@ const getUserWatchlist = async (username: string): Promise<WatchlistItems[]> => 
   }
 };
 
-const authGetWatchlist = withAuthMiddleware(getWatchlist, AccessLevel.MEMBER, []);
 const authUpdateWatchlistRecord = withAuthMiddleware(updateWatchlistRecord, AccessLevel.MEMBER);
 const authDeleteWatchlistRecord = withAuthMiddleware(deleteWatchlistRecord, AccessLevel.MEMBER);
 const authGetWatchlistRecord = withAuthMiddleware(getWatchlistRecord, AccessLevel.MEMBER, null);
 const authGetWatchlistRecordByMedia = withAuthMiddleware(getWatchlistRecordByMedia, AccessLevel.MEMBER, null);
 
+const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
+  try {
+    const session = await getSession();
+    if (!session?.user?.username) return [];
+    return await cacheGetWatchlistByUsername(session.user.username);
+  } catch (error: any) {
+    logger.error('Error fetching watchlist: ', error?.message);
+    return [];
+  }
+};
+
+const cacheGetWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | ErrorResponse> => {
+  try {
+    const session = await getSession();
+    if (!session?.user?.username) return generateErrorResponse(401, 'Unauthorized');
+    const record = await getWatchlistRecord(id);
+    const loader = async (id: number) => {
+      logger.info('Fetching watchlist record with id form cache: ', id);
+      return record;
+    };
+    const getCached = unstable_cache(loader, [session.user.username], {
+      tags: [`watchlist-${session?.user?.username}`]
+    });
+    return await getCached(id);
+  } catch (error: any) {
+    logger.error('Error fetching watchlist record: ', error?.message);
+    return null;
+  }
+};
 export {
   authUpdateWatchlistRecord as updateWatchlistRecord,
-  authGetWatchlist as getWatchlist,
-  authGetWatchlistRecord as getWatchlistRecord,
+  getWatchlist,
+  cacheGetWatchlistRecord as getWatchlistRecord,
   authGetWatchlistRecordByMedia as getWatchlistRecordByMedia,
   authDeleteWatchlistRecord as deleteWatchlistRecord,
   getUserWatchlist

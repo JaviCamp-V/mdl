@@ -21,11 +21,12 @@ import { getContentDetails } from '../../service/tmdbService';
 
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];
+  searchParams?: { [key: string]: string };
 }
 
-const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, mediaId, sections }) => {
+const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, mediaId, sections, searchParams }) => {
   const tab = sections ? sections[0] : '';
-
+  const { comments } = searchParams ?? {};
   const tabs = [
     { label: 'Details', href: '' },
     { label: 'Episode Guide', href: 'episodes' },
@@ -137,6 +138,7 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
             mediaType={mediaType}
             mediaId={mediaId}
             cardStyle={cardStyle}
+            commentPage={comments}
           />
         )}
       </Grid>

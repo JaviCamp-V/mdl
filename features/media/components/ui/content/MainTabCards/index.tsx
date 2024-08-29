@@ -21,6 +21,7 @@ interface ContentCardsProps extends MediaDetailsProps {
   number_of_episodes: number;
   next_episode_to_air: Episode | null | undefined;
   cardStyle?: SxProps;
+  commentPage?: string;
 }
 
 const view = 'overview';
@@ -31,7 +32,8 @@ const ContentCards: React.FC<ContentCardsProps> = ({
   title,
   external_ids,
   next_episode_to_air,
-  cardStyle
+  cardStyle,
+  commentPage
 }) => {
   const cards = {
     cast_overview: <Credits mediaId={mediaId} mediaType={mediaType} view={view} />,
@@ -40,7 +42,14 @@ const ContentCards: React.FC<ContentCardsProps> = ({
       <ReviewDetails mediaType={mediaType} mediaId={mediaId} section={view} totalEpisodes={number_of_episodes} />
     ),
     recommendations: <RecommendationDetails mediaId={mediaId} mediaType={mediaType} section={view} />,
-    comments: <CommentsSection commentType={mapMediaTypeToCommentType(mediaType)} parentId={mediaId} />
+    comments: (
+      <CommentsSection
+        commentType={mapMediaTypeToCommentType(mediaType)}
+        parentId={mediaId}
+        baseUrl={`${mediaType}/${mediaId}`}
+        page={commentPage ? Number(commentPage) : 1}
+      />
+    )
   };
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>

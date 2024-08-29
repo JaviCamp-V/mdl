@@ -40,7 +40,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ mediaId, mediaType, c
       <Grid container spacing={2} sx={{ marginRight: 2 }}>
         {uniqueProviders
           .sort((a, b) => a.display_priority - b.display_priority)
-          .slice(0, 6)
+          .slice(0, 9)
           .map((provider) => (
             <Grid
               item
