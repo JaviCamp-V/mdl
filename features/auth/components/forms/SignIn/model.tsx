@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 
-
 const formModel: FieldModel = {
   username: {
     name: 'username',

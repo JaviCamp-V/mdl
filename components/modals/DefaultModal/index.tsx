@@ -32,9 +32,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ open, onClose, content, act
           gap: 1
         }}
       >
-        {actions ? (
-          actions
-        ) : (
+        {actions ?? (
           <Button variant="outlined" onClick={onClose} sx={{ textTransform: 'capitalize' }}>
             Close
           </Button>

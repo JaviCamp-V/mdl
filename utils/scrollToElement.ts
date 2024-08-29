@@ -27,14 +27,14 @@ const scrollToTop = () => {
 const scrollToTopById = (id: string | number) => {
   const htmlElement = document.querySelector(`[id='${id}']`);
   if (htmlElement) {
-      const elementPosition = htmlElement?.getBoundingClientRect().top + window.scrollY - 70;
+    const elementPosition = htmlElement?.getBoundingClientRect().top + window.scrollY - 70;
 
-       setTimeout(() => {
+    setTimeout(() => {
       window.scrollTo({
         top: elementPosition,
         behavior: 'smooth'
       });
-       }, 0);
+    }, 0);
   } else {
     console.error(`Element with ID '${id}' not found.`);
   }

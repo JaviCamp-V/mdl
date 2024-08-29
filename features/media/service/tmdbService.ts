@@ -15,7 +15,15 @@ import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/I
 import MovieDetails from '../types/interfaces/MovieDetails';
 import Network, { NetworksSearchResponse } from '../types/interfaces/Network';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, { MediaSearchResult, MovieSearchResponse, MovieSearchResult, PersonSearchResponse, PersonSearchResult, TVSearchResponse, TVSearchResult } from '../types/interfaces/SearchResponse';
+import SearchResponse, {
+  MediaSearchResult,
+  MovieSearchResponse,
+  MovieSearchResult,
+  PersonSearchResponse,
+  PersonSearchResult,
+  TVSearchResponse,
+  TVSearchResult
+} from '../types/interfaces/SearchResponse';
 import SeasonDetails from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags, TagsSearchResponse } from '../types/interfaces/Tags';
@@ -23,7 +31,6 @@ import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
 import WatchProviderResponse from '../types/interfaces/WatchProvider';
-
 
 const endpoints = {
   search_person: 'search/person',
@@ -508,7 +515,10 @@ const getSearchType = async <T extends MediaType>(
     const endpoint = `${endpoints.search}/${type}`;
     const params = new URLSearchParams({ query, page: page ?? '1' });
     const response = await tmdbClient.get<SearchTypeMap[T]>(endpoint, params);
-    response.results = response.results.map((result) => ({ ...result, media_type: result?.media_type ?? type })) as any[];
+    response.results = response.results.map((result) => ({
+      ...result,
+      media_type: result?.media_type ?? type
+    })) as any[];
     if (!isMediaSearchResult(response)) return response;
     const watchlist = (await getWatchlist()) as GeneralWatchlistRecord[];
     const filtered = response.results.filter((media) => isAsianMedia(media)) as any[];

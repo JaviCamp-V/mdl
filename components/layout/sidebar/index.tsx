@@ -9,7 +9,6 @@ import Drawer from '@mui/material/Drawer';
 import Link from '@/components/common/Link';
 import model from '../model';
 
-
 interface SideBarProps {}
 const drawerWidth = 240;
 

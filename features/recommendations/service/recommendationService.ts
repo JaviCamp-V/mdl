@@ -19,7 +19,6 @@ import Recommendation from '../types/interface/Recommendation';
 import { Suggestion } from '../types/interface/Suggestion';
 import UpdateReason from '../types/interface/UpdateReson';
 
-
 const endpoints = {
   user: {
     addRec: 'user/recommendations',

@@ -5,7 +5,6 @@ import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 import routes from '@/libs/routes';
 
-
 const formModel: FieldModel = {
   username: {
     name: 'username',
