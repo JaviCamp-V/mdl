@@ -19,7 +19,6 @@ import UpdateWatchlistRequest from '../types/interfaces/UpdateWatchlistRequest';
 import WatchlistItems from '../types/interfaces/WatchlistItem';
 import WatchlistRecord from '../types/interfaces/WatchlistRecord';
 
-
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',

@@ -9,7 +9,9 @@ interface AuthRequiredProps {
 
 const AuthRequired: React.FC<AuthRequiredProps> = ({ action }) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 0.5, paddingX: 2, minHeight: '20vh' }}>
+    <Box
+      sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 0.5, paddingX: 2, minHeight: '20vh' }}
+    >
       <Link href={routes.login} sx={{ fontSize: 14 }}>
         Login
       </Link>

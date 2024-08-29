@@ -10,7 +10,6 @@ import PersonMainDetails from '../../components/ui/person/MainDeatils';
 import PersonDetailsSidePanel from '../../components/ui/person/SidePanel';
 import { getPersonDetails } from '../../service/tmdbService';
 
-
 interface PersonContainerProps {
   personId: number;
   searchParams?: { [key: string]: string };

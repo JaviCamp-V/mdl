@@ -7,7 +7,6 @@ import AddCommentForm from '../../forms/AddComment';
 import AllComments from '../AllComments';
 import CommentCount from '../CommentCount';
 
-
 interface CommentsSectionProps {
   commentType: CommentType;
   parentId: number;

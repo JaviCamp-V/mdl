@@ -14,7 +14,6 @@ import CommentType from '../types/enums/CommentType';
 import AddComment, { CommentBody } from '../types/interfaces/AddComment';
 import { CommentMeta, CommentPage } from '../types/interfaces/Comments';
 
-
 const endpoints = {
   user: {
     addComment: 'user/comments',

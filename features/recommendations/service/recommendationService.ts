@@ -357,7 +357,6 @@ const getMediaSuggestions = async (
   }
 };
 
-
 const authMakeRecommendation = withAuthMiddleware(makeRecommendation, AccessLevel.MEMBER);
 const authUpdateReason = withAuthMiddleware(updateReason, AccessLevel.MEMBER);
 const authDeleteRecommendation = withAuthMiddleware(deleteRecommendation, AccessLevel.MEMBER);
