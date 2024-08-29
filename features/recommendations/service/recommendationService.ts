@@ -8,7 +8,7 @@ import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import LikeData from '@/types/common/LikeData';
-import TotalResponse from '@/types/common/TotalResposne';
+import TotalResponse from '@/types/common/TotalResponse';
 import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
 import { generateErrorResponse } from '@/utils/handleError';
@@ -18,6 +18,7 @@ import MakeRecommendation from '../types/interface/MakeRecommendation';
 import Recommendation from '../types/interface/Recommendation';
 import { Suggestion } from '../types/interface/Suggestion';
 import UpdateReason from '../types/interface/UpdateReson';
+
 
 const endpoints = {
   user: {

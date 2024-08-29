@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 
+
 const formModel: FieldModel = {
   username: {
     name: 'username',
@@ -27,6 +28,7 @@ const formModel: FieldModel = {
     name: 'rememberMe',
     label: 'Remember Me',
     type: 'checkbox',
+    showLabel: true,
     breakpoints: { xs: 12 }
   }
 };

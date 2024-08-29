@@ -49,7 +49,7 @@ const LikeAction: React.FC<LikeActionProps> = ({
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 0.5 }}>
       <Typography fontSize={14}>{numberOfLikes}</Typography>
       <IconButton sx={{ margin: 0, padding: 0 }} onClick={onClick}>
-        <Iconify icon="mdi:heart-outline" color={hasUserLiked ? '#FF007F' : 'text.primary'} width={14} height={14} />
+        <Iconify icon="mdi:heart-outline" color={hasUserLiked ? '#f44455' : 'text.primary'} width={14} height={14} />
       </IconButton>
     </Box>
   );

@@ -9,6 +9,10 @@ const formatErrorsAsString = (errors: ValidationError[]) => {
   return errors?.map((error) => error.message).join(', ');
 };
 
+const isErrorResponse = (response: any): response is ErrorResponse => {
+  return response && 'errors' in response;
+};
+
 const defaultResponse = {
   400: 'Bad Request, invalid parameters',
   401: 'Unauthorized',
@@ -25,4 +29,4 @@ const generateErrorResponse = (status: number, message?: string): ErrorResponse 
   };
 };
 
-export { formatErrorsAsObject, formatErrorsAsString, generateErrorResponse };
+export { formatErrorsAsObject, formatErrorsAsString, generateErrorResponse, isErrorResponse };

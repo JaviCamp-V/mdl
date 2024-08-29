@@ -1,5 +1,6 @@
 import React from 'react';
 import MuiAvatar, { AvatarProps } from '@mui/material/Avatar';
+import Iconify from '@/components/Icon/Iconify';
 
 const stringToColor = (string: string): string => {
   /* eslint-disable no-bitwise */
@@ -15,9 +16,18 @@ const stringToColor = (string: string): string => {
 
 interface CustomAvatarProps extends AvatarProps {
   username: string;
+  isDeleted?: boolean;
 }
-const Avatar: React.FC<CustomAvatarProps> = ({ username, sx, ...props }) => {
-  return <MuiAvatar sx={{ bgcolor: stringToColor(username), ...sx }} {...props} />;
+const Avatar: React.FC<CustomAvatarProps> = ({ username, children, isDeleted, sx, ...props }) => {
+  return (
+    <MuiAvatar
+      sx={{ bgcolor: !isDeleted ? stringToColor(username) : 'disabled', ...sx }}
+      {...props}
+      src={isDeleted ? undefined : props?.src}
+    >
+      {isDeleted ? <Iconify icon="mdi:user-outline" fontSize={'inherit'} /> : username?.charAt(0)?.toUpperCase()}
+    </MuiAvatar>
+  );
 };
 
 export default Avatar;
