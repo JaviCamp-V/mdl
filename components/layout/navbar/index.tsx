@@ -12,7 +12,6 @@ import model from '../model';
 import SideBar from '../sidebar';
 import AuthContent from './sections/auth_content';
 
-
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
   return (

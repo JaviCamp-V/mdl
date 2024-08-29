@@ -16,12 +16,14 @@ const formFields: FieldModel = {
     name: 'hasSpoilers',
     type: 'checkbox',
     label: 'This review contains spoilers',
+    showLabel: true,
     breakpoints: { xs: 12 }
   },
   hasCompleted: {
     name: 'hasCompleted',
     type: 'checkbox',
     label: 'I have finished watching this title',
+    showLabel: true,
     breakpoints: { xs: 12 }
   },
   storyRating: {

@@ -44,6 +44,7 @@ const formModel: FieldModel = {
   },
   hasAgreeToTerms: {
     name: 'hasAgreeToTerms',
+    showLabel: true,
     label: (
       <Typography fontSize={14} sx={{ display: 'flex', gap: 0.5 }}>
         {`I agree to the `}

@@ -7,7 +7,6 @@ import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-
 type PageProps = {
   searchParams: { [key: string]: string };
 };

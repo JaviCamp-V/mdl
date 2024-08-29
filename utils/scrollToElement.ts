@@ -4,10 +4,10 @@ const scrollToElementByID = (id: string | number) => {
     setTimeout(() => {
       htmlElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'center',
         inline: 'nearest'
       });
-    }, 10);
+    }, 0);
   } else {
     console.error(`Element with ID '${id}' not found.`);
   }
@@ -24,4 +24,20 @@ const scrollToTop = () => {
   }
 };
 
-export { scrollToElementByID, scrollToTop };
+const scrollToTopById = (id: string | number) => {
+  const htmlElement = document.querySelector(`[id='${id}']`);
+  if (htmlElement) {
+    const elementPosition = htmlElement?.getBoundingClientRect().top + window.scrollY - 70;
+
+    setTimeout(() => {
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }, 0);
+  } else {
+    console.error(`Element with ID '${id}' not found.`);
+  }
+};
+
+export { scrollToElementByID, scrollToTop, scrollToTopById };

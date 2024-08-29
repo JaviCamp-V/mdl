@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import { getContentDetails } from '@/features/media/service/tmdbService';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
@@ -8,12 +8,11 @@ import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import LikeData from '@/types/common/LikeData';
-import TotalResponse from '@/types/common/TotalResposne';
+import TotalResponse from '@/types/common/TotalResponse';
 import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
-import routes from '@/libs/routes';
 import MakeRecommendation from '../types/interface/MakeRecommendation';
 import Recommendation from '../types/interface/Recommendation';
 import { Suggestion } from '../types/interface/Suggestion';
@@ -42,11 +41,11 @@ const makeRecommendation = async (request: MakeRecommendation): Promise<GenericR
     const response = await mdlApiClient.post<MakeRecommendation, GenericResponse>(endpoint, request);
     const session = await getSession();
     if (session?.user?.username) {
-      revalidatePath(`${routes.user.profile.replace(':username', session?.user?.username)}/recommendations`);
+      revalidateTag(`recommendations-${session?.user?.username}`);
+      revalidateTag(`recommendations-count-${session?.user?.username}`);
     }
-    revalidatePath('/');
-    revalidatePath(`/${request.source.mediaType.toLowerCase()}/${request.source.mediaId}`);
-    revalidatePath(`/${request.source.mediaType.toLowerCase()}/${request.source.mediaId}/recommendations`);
+    revalidateTag(`recommendations-${request.source.mediaType?.toLowerCase()}-${request.source.mediaId}`);
+    revalidateTag(`suggestions-${request.source.mediaType?.toLowerCase()}-${request.source.mediaId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -67,9 +66,11 @@ const updateReason = async (
     const response = await mdlApiClient.patch<UpdateReason, GenericResponse>(endpoint, { reason });
     const session = await getSession();
     if (session?.user?.username) {
-      revalidatePath(`${routes.user.profile.replace(':username', session?.user?.username)}/recommendations`);
+      revalidateTag(`recommendations-${session?.user?.username}`);
     }
-    revalidatePath(`/${mediaType}/${mediaId}/recommendations`);
+    revalidateTag(`recommendations-${mediaType?.toLowerCase()}-${mediaId}`);
+    revalidateTag(`suggestions-${mediaType?.toLowerCase()}-${mediaId}`);
+    revalidateTag(`recommendations-${recommendationId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -89,10 +90,11 @@ const deleteRecommendation = async (
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
     const session = await getSession();
     if (session?.user?.username) {
-      revalidatePath(`${routes.user.profile.replace(':username', session?.user?.username)}/recommendations`);
+      revalidateTag(`recommendations-${session?.user?.username}`);
+      revalidateTag(`recommendations-count-${session?.user?.username}`);
     }
-    revalidatePath(`/${mediaType}/${mediaId}`);
-    revalidatePath(`/${mediaType}/${mediaId}/recommendations`);
+    revalidateTag(`recommendations-${mediaType?.toLowerCase()}-${mediaId}`);
+    revalidateTag(`suggestions-${mediaType?.toLowerCase()}-${mediaId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -114,11 +116,10 @@ const updateRecommendationLike = async (
     const response = like
       ? await mdlApiClient.post<null, GenericResponse>(endpoint, null)
       : await mdlApiClient.del<GenericResponse>(endpoint);
-    const session = await getSession();
-    if (session?.user?.username) {
-      revalidatePath(`${routes.user.profile.replace(':username', session?.user?.username)}/recommendations`);
-    }
-    revalidatePath(`/${mediaType}/${mediaId}/recommendations`);
+    revalidateTag(`recommendations-${mediaType?.toLowerCase()}-${mediaId}`);
+    revalidateTag(`suggestions-${mediaType?.toLowerCase()}-${mediaId}`);
+    revalidateTag(`recommendations-${recommendationId}`);
+    revalidateTag(`recommendation-likes-${recommendationId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -128,14 +129,16 @@ const updateRecommendationLike = async (
   }
 };
 
-const getUserRecommendations = async (username: string): Promise<Recommendation[] | ErrorResponse> => {
+const getUserRecommendations = async (
+  username: string,
+  userId?: number | null
+): Promise<Recommendation[] | ErrorResponse> => {
   try {
     logger.info(`Getting recommendations for ${username}`);
     const endpoint = endpoints.public.getUserRecs;
     const params = new URLSearchParams({ username });
-    const session = await getSession();
-    if (session?.user?.userId) {
-      params.append('userId', session.user.userId.toString());
+    if (userId) {
+      params.append('userId', userId.toString());
     }
     const response = await mdlApiClient.get<Recommendation[]>(endpoint, params);
     return response;
@@ -191,13 +194,12 @@ const getRecommendation = async (id: number): Promise<Recommendation | ErrorResp
   }
 };
 
-const getRecommendationLikes = async (id: number): Promise<LikeData> => {
+const getRecommendationLikes = async (id: number, userId?: number | null): Promise<LikeData> => {
   try {
     logger.info(`Getting likes for recommendation ${id}`);
-    const session = await getSession();
     const params = new URLSearchParams();
-    if (session?.user?.userId) {
-      params.append('userId', session.user.userId.toString());
+    if (userId) {
+      params.append('userId', userId.toString());
     }
     const endpoint = endpoints.public.getRecLikes.replace(':id', id.toString());
     const response = await mdlApiClient.get<LikeData>(endpoint, params);
@@ -208,13 +210,80 @@ const getRecommendationLikes = async (id: number): Promise<LikeData> => {
   }
 };
 
+const cacheGetUserRecommendations = async (username: string): Promise<Recommendation[] | ErrorResponse> => {
+  try {
+    const getCached = unstable_cache(getUserRecommendations, [], {
+      tags: [`recommendations-${username}`]
+    });
+    const session = await getSession();
+    const userId = session?.user?.userId;
+    return await getCached(username, userId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
+const cacheGetUserRecommendationsCount = async (username: string): Promise<TotalResponse> => {
+  try {
+    const getCached = unstable_cache(getUserRecommendationsCount, [], {
+      tags: [`recommendations-count-${username}`]
+    });
+    return await getCached(username);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return { total: 0 };
+  }
+};
+
+const cacheGetMediaRecommendations = async (
+  mediaType: MediaType.movie | MediaType.tv,
+  mediaId: number
+): Promise<Recommendation[]> => {
+  try {
+    const getCached = unstable_cache(getMediaRecommendations, [], {
+      tags: [`recommendations-${mediaType?.toLowerCase()}-${mediaId}`]
+    });
+    return await getCached(mediaType, mediaId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return [];
+  }
+};
+
+const cacheGetRecommendation = async (id: number): Promise<Recommendation | ErrorResponse> => {
+  try {
+    const getCached = unstable_cache(getRecommendation, [], {
+      tags: [`recommendation-${id}`]
+    });
+    return await getCached(id);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return generateErrorResponse(500, error.message);
+  }
+};
+
+const cacheGetRecommendationLikes = async (id: number): Promise<LikeData> => {
+  try {
+    const getCached = unstable_cache(getRecommendationLikes, [], {
+      tags: [`recommendation-likes-${id}`]
+    });
+    const session = await getSession();
+    const userId = session?.user?.userId;
+    return await getCached(id, userId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return { likeCount: 0, hasUserLiked: false };
+  }
+};
+
 const getMediaSuggestions = async (
   mediaType: MediaType.movie | MediaType.tv,
   mediaId: number
 ): Promise<Suggestion[]> => {
   try {
     logger.info(`Getting suggestions for ${mediaType} ${mediaId}`);
-    const recommendations = await getMediaRecommendations(mediaType, mediaId);
+    const recommendations = await cacheGetMediaRecommendations(mediaType, mediaId);
     const groupBySuggestions = recommendations.reduce(
       (acc, rec) => {
         const index = acc.findIndex(
@@ -298,10 +367,10 @@ export {
   authUpdateReason as updateReason,
   authDeleteRecommendation as deleteRecommendation,
   authUpdateRecommendationLike as updateRecommendationLike,
-  getUserRecommendations,
-  getUserRecommendationsCount,
-  getMediaRecommendations,
-  getRecommendation,
-  getRecommendationLikes,
+  cacheGetUserRecommendations as getUserRecommendations,
+  cacheGetUserRecommendationsCount as getUserRecommendationsCount,
+  cacheGetMediaRecommendations as getMediaRecommendations,
+  cacheGetRecommendation as getRecommendation,
+  cacheGetRecommendationLikes as getRecommendationLikes,
   getMediaSuggestions
 };

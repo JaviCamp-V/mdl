@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormProvider, UseFormReturn } from 'react-hook-form';
+import { FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import { FieldModel } from '@/types/common/IForm';
 import Values from '@/types/common/Values';
@@ -8,12 +8,13 @@ import RHFElementsSelector from '.';
 interface RHFFormProps {
   fields: FieldModel;
   methods: UseFormReturn<any>;
+  onSubmit: SubmitHandler<any>;
   spacing?: number;
 }
-const RHFForm: React.FC<RHFFormProps> = ({ fields, methods, spacing }) => {
+const RHFForm: React.FC<RHFFormProps> = ({ fields, methods, spacing, onSubmit }) => {
   return (
     <FormProvider {...methods}>
-      <form>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Grid container spacing={spacing ?? 2}>
           {Object.values(fields).map((field) => (
             <Grid key={field.name} item {...field?.breakpoints}>

@@ -1,4 +1,4 @@
-export default interface GenericResponse {
+export default interface GenericResponse<T = any> {
   message: string;
-  data: any;
+  data: T;
 }

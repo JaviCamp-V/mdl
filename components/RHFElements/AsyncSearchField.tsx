@@ -5,7 +5,6 @@ import Paper, { PaperProps } from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import useAsync from '@/hooks/useAsync';
 import useDebounce from '@/hooks/useDebounce';
-import SearchIcon from '../Icon/SearchIcon';
 
 export interface AsyncSearchFieldProps<T> {
   placeholder: any;
@@ -81,7 +80,6 @@ const AsyncSearchField = <T,>({
       PaperComponent={Wrapper}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={isEquals}
-      popupIcon={<Box sx={{ pointerEvents: 'none', cursor: 'not-allowed' }}>{<SearchIcon />}</Box>}
       renderOption={(props, option) => <React.Fragment key={props.key}>{renderResult(option, props)}</React.Fragment>}
       sx={{
         '& .MuiAutocomplete-popupIndicator': {

@@ -5,7 +5,6 @@ import { MenuItem } from '@mui/material';
 import { Field } from '@/types/common/IForm';
 import TextField from './TextField';
 
-
 interface SelectFieldProps extends Field {
   options: { value: any; label: string; disabled: boolean }[];
 }

@@ -59,6 +59,8 @@ instance.interceptors.request.use(async (config) => {
   if (!config?.url?.startsWith('user') && !config?.url?.startsWith('admin')) {
     // Add API Key and Device ID for /auth/ endpoints
     config.headers[X_API_KEY] = process.env.MDL_API_KEY;
+  }
+  if (config?.url?.startsWith('auth/')) {
     config.headers[X_Device_ID] = getDeviceId();
   }
   if (config?.url?.startsWith('user/') || config?.url?.startsWith('admin') || config?.url?.startsWith('auth/logout')) {

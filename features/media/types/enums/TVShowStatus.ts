@@ -7,8 +7,4 @@ enum TVShowStatus {
   Canceled = 5
 }
 
-
-
-
-
 export default TVShowStatus;

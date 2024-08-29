@@ -4,7 +4,6 @@ import { Box, Chip, FormHelperText, FormLabel } from '@mui/material';
 import { Field } from '@/types/common/IForm';
 import AsyncSearchField from './AsyncSearchField';
 
-
 export interface MultiSearchFieldProps<T> extends Field {
   searchFunction: (query: string) => Promise<T[]>;
   defaultResults: T[];

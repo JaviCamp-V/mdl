@@ -5,7 +5,6 @@ import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { Field } from '@/types/common/IForm';
 import Iconify from '../Icon/Iconify';
 
-
 interface CheckboxInputProps {
   icons?: { checked: string; unchecked: string };
 }

@@ -65,6 +65,7 @@ export interface Field extends CheckboxField, RatingsField, DateField, Optionabl
   showInput?: boolean;
   InputLabelProps?: any;
   InputProps?: any;
+  showLabel?: boolean;
   fields?: { [key: string]: Field };
 }
 
