@@ -25,7 +25,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     description: response?.overview ?? ''
   };
 };
-const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug } }) => {
+const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams }) => {
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug } }) =
         marginTop: 2
       }}
     >
-      <ContentContainer mediaId={id} mediaType={MediaType.movie} sections={slug} />
+      <ContentContainer mediaId={id} mediaType={MediaType.movie} sections={slug} searchParams={searchParams} />
     </Box>
   );
 };

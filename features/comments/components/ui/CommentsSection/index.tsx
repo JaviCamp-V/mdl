@@ -12,10 +12,9 @@ interface CommentsSectionProps {
   commentType: CommentType;
   parentId: number;
   page?: number;
-  baseUrl: string;
 }
 
-const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId, page, baseUrl }) => {
+const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId, page }) => {
   return (
     <Box sx={{ paddingY: 2 }}>
       <Typography paddingX={2} fontSize={16} fontWeight={700} lineHeight={1}>
@@ -31,7 +30,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ commentType, parentId
       </Box>
       <Divider />
       <React.Suspense fallback={<LoadingSkeleton height="40vh" />}>
-        <AllComments commentType={commentType} parentId={parentId} page={page} baseUrl={baseUrl} />
+        <AllComments commentType={commentType} parentId={parentId} page={page} />
       </React.Suspense>
     </Box>
   );

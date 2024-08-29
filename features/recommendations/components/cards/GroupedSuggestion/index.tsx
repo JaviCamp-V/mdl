@@ -5,6 +5,7 @@ import { updateRecommendationLike } from '@/features/recommendations/service/rec
 import Recommendation from '@/features/recommendations/types/interface/Recommendation';
 import { Suggestion } from '@/features/recommendations/types/interface/Suggestion';
 import EditWatchlistButton from '@/features/watchlist/components/buttons/EditWatchlistButton';
+import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
@@ -34,7 +35,13 @@ const LikeAction: React.FC<LikeActionProps> = ({
   mediaType,
   recommendationID
 }) => {
+  const { data: session } = useSession();
+
   const onClick = async () => {
+    if (!session?.user) {
+      enqueueSnackbar('Please login to like a recommendation', { variant: 'default' });
+      return;
+    }
     const response = await updateRecommendationLike(mediaType, mediaId, recommendationID, !hasUserLiked);
     if (response && 'errors' in response) {
       response.errors.forEach((error) => {

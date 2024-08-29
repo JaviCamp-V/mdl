@@ -15,6 +15,7 @@ import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import MediaType from '@/types/enums/IMediaType';
 import WhereToWatch from '../WhereToWatch';
 
+
 interface ContentCardsProps extends MediaDetailsProps {
   title: string;
   external_ids: ExternalID;
@@ -46,7 +47,6 @@ const ContentCards: React.FC<ContentCardsProps> = ({
       <CommentsSection
         commentType={mapMediaTypeToCommentType(mediaType)}
         parentId={mediaId}
-        baseUrl={`${mediaType}/${mediaId}`}
         page={commentPage ? Number(commentPage) : 1}
       />
     )
