@@ -13,6 +13,7 @@ import { TextField } from '@/components/RHFElements';
 import RHFAccordionWrapper from '@/components/RHFElements/RHFAccordionWrapper';
 import Divider from '@/components/common/Divider';
 import MediaType from '@/types/enums/IMediaType';
+import routes from '@/libs/routes';
 import {
   AdvancedSearchFormType,
   contentFormFields,
@@ -26,7 +27,6 @@ interface AdvancedSearchFormProps {}
 
 const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   // query params and default values combined
   const formDefaultValues = React.useMemo(() => paramsToForm(searchParams), [searchParams]);
@@ -51,7 +51,7 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
       .filter(([, value]) => value)
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
     const params = new URLSearchParams(filteredValues);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${routes.search}?${params.toString()}`);
   };
 
   const onWatchedTypeChange = (type: MediaType) => {
@@ -65,7 +65,6 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
     <Box
       sx={{
         borderRadius: 2,
-        marginTop: 4.5,
         backgroundColor: 'background.paper',
         boxShadow: '0 1px 1px rgba(0,0,0,.1)',
         border: '1px solid rgba(0, 0, 0, .14)'
@@ -136,7 +135,7 @@ const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
               <Grid container spacing={0}>
                 {Object.values(currentFormFields).map((field) => (
                   <Grid item xs={12} key={field.name}>
-                    <RHFAccordionWrapper field={field} />
+                    <RHFAccordionWrapper field={field} defaultValue={(defaultValues as any)[field.name]} />
                   </Grid>
                 ))}
               </Grid>

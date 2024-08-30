@@ -153,7 +153,7 @@ const paramsToForm = (searchParams: URLSearchParams): AdvancedSearchFormType => 
 
     if (params && formKey === 'ratings') {
       const minRating = Number(searchParams.get(params.min!)) || 0;
-      const maxRating = Number(searchParams.get(params.max!)) || 10;
+      const maxRating = Number(searchParams.get(params.max!)) || 0;
       acc[formKey] = [minRating, maxRating];
       return acc;
     }

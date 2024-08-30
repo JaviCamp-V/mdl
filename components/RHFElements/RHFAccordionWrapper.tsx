@@ -10,12 +10,13 @@ import Iconify from '../Icon/Iconify';
 
 interface RHFAccordionWrapperProps {
   field: Field;
+  defaultValue: any;
 }
-const RHFAccordionWrapper: React.FC<RHFAccordionWrapperProps> = ({ field }) => {
+const RHFAccordionWrapper: React.FC<RHFAccordionWrapperProps> = ({ field, defaultValue }) => {
   const { getValues } = useFormContext();
   const { label, ...rest } = field;
   const value = getValues(field.name);
-  const [expanded, setExpanded] = React.useState<boolean>(Boolean(value));
+  const [expanded, setExpanded] = React.useState<boolean>(value !== defaultValue);
   return (
     <Accordion
       expanded={expanded}

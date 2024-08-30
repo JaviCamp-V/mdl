@@ -42,10 +42,9 @@ const WriteReviewForm: React.FC<WriteReviewFormProps> = ({ mediaId, mediaType })
     }
     enqueueSnackbar(response.message, { variant: 'success' });
     router.push(`/${mediaType}/${mediaId}/reviews`);
-    methods.reset();
   };
 
-  if (!session?.user) return <AuthRequired action="write a review" />;
+  if (!session?.user) return <AuthRequired action="write a review" sx={{ minHeight: '20vh' }} />;
 
   return (
     <Box sx={{ paddingY: 2, paddingX: 4 }}>

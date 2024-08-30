@@ -13,7 +13,7 @@ const ViewOtherRepliesButton: React.FC<ViewCommentButtonProps> = ({ comments, co
   const [viewOtherReplies, setViewOtherReplies] = React.useState(false);
   const toggleViewReplies = async () => {
     setViewOtherReplies((prev) => !prev);
-    scrollToTopById(`comment-${commentId}`);
+    if (!viewOtherReplies) scrollToTopById(`comment-${commentId}`);
   };
   return (
     <React.Fragment>

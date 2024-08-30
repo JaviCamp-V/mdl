@@ -17,21 +17,21 @@ const NoSearchResults: React.FC<NoSearchResultsProps> = () => {
         paddingX: { xs: 2, md: 4 },
         display: 'flex',
         flexDirection: 'column',
-        gap: 2.5
+        gap: 1
       }}
     >
       <Typography fontSize={16} paddingBottom={2}>
-        {`There were no result matching the .query or filters`}
+        {`No results matched your search or filters`}
       </Typography>
       <Typography fontSize={16} fontWeight={700} color="primary.main">
-        {'Search Suggestions: '}
+        {'Here are some tips: '}
       </Typography>
-      <Box component={'ul'} sx={{ marginTop: 1 }}>
+      <Box component={'ul'} sx={{ marginTop: -1 }}>
         <Typography component={'li'} fontSize={16}>
-          Make sure all words are spelled correctly and apply the correct filters
+          Double-check your spelling and filters
         </Typography>
         <Typography component={'li'} fontSize={16}>
-          Try more general keywords or update the filters
+          Try broader keywords or adjust your filters
         </Typography>
       </Box>
     </Box>

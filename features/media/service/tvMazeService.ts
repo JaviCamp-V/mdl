@@ -1,5 +1,6 @@
 'use server';
 
+import { unstable_cache } from 'next/cache';
 import tvMazeClient from '@/clients/tvMazeClient';
 import logger from '@/utils/logger';
 import TvMazeDetails from '../types/interfaces/TvMazeDetails';
@@ -22,4 +23,5 @@ const lookupShow = async (
   }
 };
 
-export { lookupShow };
+const lookupShowCached = unstable_cache(lookupShow, [], { revalidate: 3600 });
+export { lookupShowCached as lookupShow };

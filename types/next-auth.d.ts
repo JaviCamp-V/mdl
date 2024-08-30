@@ -16,6 +16,7 @@ declare module 'next-auth' {
     refreshToken: string | null | undefined;
     expiresIn: number | null | undefined;
     authError?: string | null | undefined;
+    rememberMe: boolean | null | undefined;
   }
 }
 

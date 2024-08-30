@@ -91,7 +91,10 @@ const gender = {
   label: 'Gender',
   type: 'select',
   placeholder: 'Select Gender',
-  options: Object.entries(Gender).map(([value, label]) => ({ value: parseInt(value), label })),
+  options: [
+    { value: '0', label: 'Male' },
+    { value: '1', label: 'Female' }
+  ],
   errorMessages: { invalid: 'must be a valid a gender ' }
 };
 
@@ -308,7 +311,7 @@ const personSchema = yup
       )
       .optional(),
     gender: yup
-      .number()
+      .string()
       .transform((x) => (x ? x : undefined))
       .oneOf(gender.options.map(({ value }) => value) as any[])
       .optional(),
@@ -322,7 +325,14 @@ const personSchema = yup
       )
       .optional()
   })
-  .concat(commonSchema);
+  .concat(commonSchema)
+  .test('query-required', 'query is required', (value, context) => {
+    if (!value.type) return true;
+    if (value.type !== MediaType.person) return true;
+    const isValid = Boolean(value.query?.trim());
+    if (isValid) return true;
+    return context.createError({ message: 'Search query is required', path: 'query' });
+  });
 
 const formSchema = contentSchema.concat(personSchema);
 

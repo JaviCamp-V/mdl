@@ -29,13 +29,13 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2 }}>
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2, width: '100%' }}>
       {Object.entries(sections)
         .filter(([_, arr]) => arr.length)
         .map(([job, members]) => (
           <Box key={job}>
             <Typography sx={{ fontSize: '1.25rem', fontWeight: 700 }}>{capitalCase(job)}</Typography>
-            <Box sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', marginY: 2 }} />
+            <Box sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', marginY: 1 }} />
             <Grid container spacing={2} padding={1}>
               {members?.map((member) => (
                 <Grid item key={member.id} xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

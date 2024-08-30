@@ -1,11 +1,10 @@
+import React from 'react';
 import { Metadata, NextPage } from 'next';
 import AdvancedSearchForm from '@/features/media/components/forms/AdvancedSearch';
-import SearchResults from '@/features/media/components/lists/SearchResults';
-import { advancedSearch } from '@/features/media/service/tmdbService';
-import { getAllValidParams } from '@/features/media/utils/tmdbAdvancedSearch';
+import SearchContainer from '@/features/media/containers/Search';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Loading from '@/components/common/Loading';
 
 type PageProps = {
   searchParams: { [key: string]: string };
@@ -19,14 +18,7 @@ export const generateMetadata = async ({ searchParams }: PageProps): Promise<Met
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 
-const SearchPage: NextPage<PageProps> = async ({ searchParams: { page, query, ...rest } }) => {
-  const params = getAllValidParams(rest);
-  const response = await advancedSearch({
-    ...params,
-    page: page ?? 1,
-    query,
-    type: rest?.type ?? 'multi'
-  });
+const SearchPage: NextPage<PageProps> = async ({ searchParams }) => {
   return (
     <Box
       sx={{
@@ -41,20 +33,9 @@ const SearchPage: NextPage<PageProps> = async ({ searchParams: { page, query, ..
       }}
     >
       <Box sx={{ width: { xs: '100%', md: '70%' }, order: { xs: 2, md: 1 } }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-          <Typography>
-            {`Search results`}
-            {query && (
-              <Typography component={'span'} fontWeight={700}>
-                {` found for ${capitalCase(query ?? 'N/A')}`}
-              </Typography>
-            )}
-          </Typography>
-          <Typography fontWeight={700}>
-            {response.total_results} {response.total_results > 1 ? 'results' : 'result'}
-          </Typography>
-        </Box>
-        <SearchResults {...response} />
+        <React.Suspense fallback={<Loading />}>
+          <SearchContainer searchParams={searchParams} />
+        </React.Suspense>
       </Box>
       <Box sx={{ width: { xs: '100%', md: '25%' }, order: { xs: 1, md: 2 } }}>
         <AdvancedSearchForm />

@@ -34,7 +34,8 @@ const formModel: FieldModel = {
 
 const formSchema = yup.object().shape({
   username: yup.string().required(formModel.username.errorMessages!.required),
-  password: yup.string().required(formModel.password.errorMessages!.required)
+  password: yup.string().required(formModel.password.errorMessages!.required),
+  rememberMe: yup.boolean().optional()
   //
 });
 

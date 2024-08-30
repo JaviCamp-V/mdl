@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
+import AdvancedSearchForm from '@/features/media/components/forms/AdvancedSearch';
 import SearchResults from '@/features/media/components/lists/SearchResults';
 import { getDiscoverType } from '@/features/media/service/tmdbService';
 import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/features/media/utils/tmdbQueries';
@@ -41,7 +42,6 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
       ? `${data.title} in ${countries.find((c) => c.code === country)?.fullName ?? country}`
       : data.title;
   const response = await getDiscoverType(MediaType.tv, params, true);
-  if (response.total_results === 0) return <NotFound />;
 
   return (
     <Box
@@ -50,17 +50,22 @@ const DiscoverMediaPage: NextPage<PageProps> = async ({ params: { slug }, search
         marginX: 2,
         marginTop: 4,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'Center'
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        gap: 4
       }}
     >
-      <Box sx={{ width: { xs: '100%', md: '60%' } }}>
+      <Box sx={{ width: { xs: '100%', md: '70%' }, order: { xs: 2, md: 1 } }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
           <Typography fontWeight={700}>{title}</Typography>
           <Typography>{`${response.total_results} results`}</Typography>
         </Box>
 
         <SearchResults {...response} />
+      </Box>
+      <Box sx={{ width: { xs: '100%', md: '25%' }, order: { xs: 1, md: 2 } }}>
+        <AdvancedSearchForm />
       </Box>
     </Box>
   );

@@ -36,6 +36,7 @@ export interface PersonSearchResult extends PersonBase {
 }
 export interface BaseSearchResponse<T> {
   page: number;
+  pagingMethod?: 'normal' | 'custom';
   results: T[];
   total_results: number;
   total_pages: number;
