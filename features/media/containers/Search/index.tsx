@@ -19,7 +19,7 @@ const SearchContainer: React.FC<SearchContainerProps> = async ({ searchParams: {
   });
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+      <Box id='search-results' sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
         <Typography>
           {`Search results`}
           {query && (

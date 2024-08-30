@@ -9,6 +9,8 @@ import { scrollToTopById } from '@/utils/scrollToElement';
 import NoSearchResults from '../../cards/NoSearchResults';
 import SearchItemCard from '../../cards/SearchItem';
 
+
+// Note: add id search-results to start of parent Box
 const SearchResults: React.FC<SearchResponse> = ({ results, total_pages, page, pagingMethod }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -39,7 +41,7 @@ const SearchResults: React.FC<SearchResponse> = ({ results, total_pages, page, p
   const totalItems = pagingMethod === 'custom' ? results.length : total_pages;
   const currentPage = pagingMethod === 'custom' ? customPage : page;
   return (
-    <Box id={'search-results'}>
+    <Box >
       <Box
         sx={{
           display: 'flex',
