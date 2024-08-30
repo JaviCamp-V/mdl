@@ -16,7 +16,8 @@ const AuthContent: React.FC = () => {
 
   if (status === 'loading' || !session?.user) {
     const host = window.location.origin;
-    const callbackUrl = encodeURI(`${host}${pathname}${params.toString()?.trim() ? '?' + params.toString() : ''}`);
+    const query = params.toString()?.trim() ? `?${params.toString()}` : '';
+    const callbackUrl = encodeURI(`${host}${pathname}${query}`);
     return (
       <React.Fragment>
         <Link

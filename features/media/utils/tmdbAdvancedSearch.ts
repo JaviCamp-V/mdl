@@ -3,7 +3,6 @@ import MediaType from '@/types/enums/IMediaType';
 import { AdvancedSearchFormType, defaultValues } from '../components/forms/AdvancedSearch/model';
 import SortType from '../types/enums/SortType';
 
-
 const keys = [
   { form: 'type', param: 'type' },
   { form: 'query', param: 'query' },

@@ -19,7 +19,6 @@ import ReviewHelpfulData from '../types/interfaces/ReviewHelpfulData';
 import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/ReviewRequest';
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
 
-
 const endpoints = {
   user: {
     addReview: 'user/reviews',

@@ -53,7 +53,7 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
 
   const watchFields = methods.watch('suggested');
 
-  if (!session?.user) return <AuthRequired action="make recommendation" sx={{minHeight: "20vh"}}/>;
+  if (!session?.user) return <AuthRequired action="make recommendation" sx={{ minHeight: '20vh' }} />;
   return (
     <Box sx={{ paddingY: 2, paddingX: 4, width: '100%' }}>
       <Box

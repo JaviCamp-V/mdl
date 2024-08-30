@@ -9,7 +9,6 @@ import { scrollToTopById } from '@/utils/scrollToElement';
 import NoSearchResults from '../../cards/NoSearchResults';
 import SearchItemCard from '../../cards/SearchItem';
 
-
 const SearchResults: React.FC<SearchResponse> = ({ results, total_pages, page, pagingMethod }) => {
   const router = useRouter();
   const pathname = usePathname();

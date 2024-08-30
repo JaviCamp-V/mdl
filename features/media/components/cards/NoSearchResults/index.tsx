@@ -31,7 +31,7 @@ const NoSearchResults: React.FC<NoSearchResultsProps> = () => {
           Double-check your spelling and filters
         </Typography>
         <Typography component={'li'} fontSize={16}>
-         Try broader keywords or adjust your filters
+          Try broader keywords or adjust your filters
         </Typography>
       </Box>
     </Box>

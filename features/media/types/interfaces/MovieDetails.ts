@@ -6,7 +6,6 @@ import Network from './Network';
 import ProductionCountry from './ProductionCountry';
 import { Language } from './Translation';
 
-
 export default interface MovieDetails extends BaseShowDetails {
   belongs_to_collection: any;
   budget: number;

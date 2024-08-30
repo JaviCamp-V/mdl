@@ -29,7 +29,7 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2, width: "100%" }}>
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2, width: '100%' }}>
       {Object.entries(sections)
         .filter(([_, arr]) => arr.length)
         .map(([job, members]) => (

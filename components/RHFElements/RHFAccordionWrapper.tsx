@@ -8,7 +8,6 @@ import { Field } from '@/types/common/IForm';
 import RHFElementsSelector from '.';
 import Iconify from '../Icon/Iconify';
 
-
 interface RHFAccordionWrapperProps {
   field: Field;
   defaultValue: any;

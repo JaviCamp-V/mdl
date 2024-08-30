@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import Iconify from '@/components/Icon/Iconify';
 import { scrollToTopById } from '@/utils/scrollToElement';
 
-
 interface ViewCommentButtonProps {
   comments: React.ReactNode;
   commentId: number;
