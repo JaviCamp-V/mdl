@@ -14,16 +14,17 @@ const providers: Provider[] = [
       username: { label: 'Username', type: 'text' },
       email: { label: 'Email', type: 'text' },
       password: { label: 'Password', type: 'password' },
-      isNewUser: { label: 'New User', type: 'checkbox' }
+      isNewUser: { label: 'New User', type: 'checkbox' },
+      rememberMe: { label: 'Remember Me', type: 'checkbox' }
     },
     async authorize(credentials: any) {
-      const { email, password, username, isNewUser } = credentials;
+      const { email, password, username, isNewUser, rememberMe } = credentials;
 
       const response =
         isNewUser === 'true' ? await signUp({ email, password, username }) : await login({ username, password });
       if ('errors' in response) throw new Error(JSON.stringify(response));
 
-      return response as any as User;
+      return { ...response, rememberMe: rememberMe && rememberMe === 'true' ? true : false } as any as User;
     }
   })
 ];
@@ -34,12 +35,13 @@ const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user, account }: { token: JWT; user: User; account: Account | null }) {
       if (user) {
         token.accessToken = account?.access_token;
-        token.refreshToken = account?.refresh_token;
+        token.refreshToken = user?.rememberMe ? account?.refresh_token : null;
         token.user = user;
         token.expiry = Date.now() + Number(user?.expiresIn);
       }
 
-      if (token.expiry && Date.now() < token.expiry - 300000) {
+      //  if user has not checked remember me or has no refresh token or token is not expired skip refresh
+      if (!token.user?.rememberMe || !token?.refreshToken || (token.expiry && Date.now() < token.expiry - 300000)) {
         return token;
       }
 
@@ -49,7 +51,7 @@ const nextAuthOptions: NextAuthOptions = {
         token.accessToken = accessToken;
         token.refreshToken = refreshToken;
         token.expiry = Date.now() + Number(rest?.expiresIn);
-        token.user = rest as any;
+        token.user = { ...rest, rememberMe: true } as any;
       } catch (error: any) {
         const message = error?.response?.data?.message ?? error?.message;
         logger.error(`Error refreshing token: ${message}`);

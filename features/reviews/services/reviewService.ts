@@ -19,6 +19,7 @@ import ReviewHelpfulData from '../types/interfaces/ReviewHelpfulData';
 import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/ReviewRequest';
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
 
+
 const endpoints = {
   user: {
     addReview: 'user/reviews',
@@ -40,7 +41,7 @@ const createReview = async <T extends ReviewType>(
   request: T extends ReviewType.EPISODE ? CreateEpisodeReview : CreateOverallReview
 ): Promise<GenericResponse | ErrorResponse> => {
   try {
-    logger.info('Creating review with : ', request.mediaType, request.mediaId);
+    logger.info('Creating review with: %s %s', request.mediaType, request.mediaId);
     const endpoint = endpoints.user.addReview;
     const body = { ...request, reviewType, mediaType: request.mediaType.toUpperCase() };
     const response = await mdlApiClient.post<CreateEpisodeReview | CreateOverallReview, GenericResponse>(
@@ -73,7 +74,7 @@ const deleteReview = async (
   id: number
 ): Promise<GenericResponse | ErrorResponse> => {
   try {
-    logger.info('Deleting review with : ', id);
+    logger.info('Deleting review with: %s', id);
     const endpoint = endpoints.user.deleteReview.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
     revalidateTag('recent-reviews');
@@ -92,7 +93,7 @@ const deleteReview = async (
 
 const markReviewHelpful = async (id: number, isHelpful: boolean): Promise<GenericResponse | ErrorResponse> => {
   try {
-    logger.info('Marking review helpful with : ', id);
+    logger.info('Marking review helpful with: %s', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const params = new URLSearchParams({ isHelpful: Boolean(isHelpful)?.toString() });
     const session = await getSession();
@@ -109,7 +110,7 @@ const markReviewHelpful = async (id: number, isHelpful: boolean): Promise<Generi
 
 const removedHelpfulRating = async (id: number): Promise<GenericResponse | ErrorResponse> => {
   try {
-    logger.info('Removing helpful rating with : ', id);
+    logger.info('Removing helpful rating with: %s', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
     revalidateTag(`review-helpful-${id}`);
@@ -132,7 +133,7 @@ const getMediaOverallReviews = async (
   mediaId: number
 ): Promise<OverallReview[]> => {
   try {
-    logger.info('Fetching overall reviews with mediaType: ', mediaType, ' mediaId: ', mediaId);
+    logger.info('Fetching overall reviews with mediaType: %s %s', mediaType, mediaId);
 
     const endpoint = endpoints.public.getMediaOverallReviews
       .replace(':mediaType', mediaType.toString().toUpperCase())
@@ -151,7 +152,7 @@ const getMediaEpisodeReviews = async (
   episode: number
 ): Promise<EpisodeReview[] | ErrorResponse> => {
   try {
-    logger.info('Fetching episode reviews with mediaId: ', mediaId, ' season: ', season, ' episode: ', episode);
+    logger.info('Fetching episode reviews with mediaId: %s season: %s episode %s', mediaId, season, episode);
     const endpoint = endpoints.public.getMediaEpisodeReviews
       .replace(':mediaId', mediaId.toString())
       .replace(':season', season.toString())
@@ -168,7 +169,7 @@ const getMediaEpisodeReviews = async (
 //not cached
 const getReview = async (id: number): Promise<EpisodeReview | OverallReview | ErrorResponse> => {
   try {
-    logger.info('Fetching review with id: ', id);
+    logger.info('Fetching review with id: %s', id);
     const endpoint = endpoints.public.getReview.replace(':id', id.toString());
     return await mdlApiClient.get<EpisodeReview | OverallReview>(endpoint);
   } catch (error: any) {
@@ -181,7 +182,7 @@ const getReview = async (id: number): Promise<EpisodeReview | OverallReview | Er
 
 const getReviewHelpful = async (id: number, userId?: number | null): Promise<ReviewHelpfulData> => {
   try {
-    logger.info('Fetching helpful rating with id: ', id);
+    logger.info('Fetching helpful rating with id: %s', id);
     const endpoint = endpoints.public.getReviewHelpful.replace(':id', id.toString());
     const params = new URLSearchParams(userId ? { userId: userId?.toString() } : {});
     return await mdlApiClient.get<ReviewHelpfulData>(endpoint, params);
@@ -218,7 +219,7 @@ const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[]> => {
 
 const getUserReviews = async (username: string, reviewType: ReviewType): Promise<OverallReview[] | ErrorResponse> => {
   try {
-    logger.info('Fetching user reviews with username: ', username, ' reviewType: ', reviewType);
+    logger.info('Fetching user reviews with username: %s reviewType: %s', username, reviewType);
     const endpoint = endpoints.public.getUserReviews;
     const params = new URLSearchParams({ username, reviewType: reviewType.toString() });
     return await mdlApiClient.get<OverallReview[]>(endpoint, params);
@@ -281,18 +282,10 @@ const cacheGetReviewHelpful = async (id: number) => {
   }
 };
 
-const cacheGetRecentReviews = async () => {
-  try {
-    const getCached = unstable_cache(getRecentReviews, [], {
-      tags: ['recent-reviews']
-    });
-    return await getCached();
-  } catch (error: any) {
-    logger.error('Error fetching comments: %s', error.message);
-    return generateErrorResponse(500, error.message);
-  }
-};
-
+const cacheGetRecentReviews = unstable_cache(getRecentReviews, [], {
+  tags: ['recent-reviews'],
+  revalidate: 60
+});
 const cacheGetUserReviews = async (username: string, reviewType: ReviewType) => {
   try {
     const getCached = unstable_cache(getUserReviews, [], {

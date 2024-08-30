@@ -27,12 +27,15 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, 
         <FormControl fullWidth>
           <MuiTextField
             sx={{
+              
               '& .MuiInputBase-root': {
                 backgroundColor: 'info.main',
                 color: 'info.contrastText',
-                fontSize: '14px'
+                fontSize: '14px',
+                
               },
               '& input': {
+                paddingX: '10px',
                 '&:-webkit-autofill': {
                   WebkitBoxShadow: `0 0 0 1000px info.main inset`,
                   WebkitTextFillColor: 'info.contrastText'
@@ -65,6 +68,7 @@ const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, 
                 }
               },
               ...sx,
+            
               fontSize: '14px'
             }}
             label={label}

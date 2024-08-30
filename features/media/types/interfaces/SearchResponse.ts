@@ -3,6 +3,7 @@ import BaseShowDetails from './BaseShowDetails';
 import { PersonBase } from './People';
 import { Video } from './VideosResponse';
 
+
 export interface MovieSearchResult extends BaseShowDetails {
   media_type: MediaType.movie;
   title: string;
@@ -36,6 +37,7 @@ export interface PersonSearchResult extends PersonBase {
 }
 export interface BaseSearchResponse<T> {
   page: number;
+  pagingMethod?: 'normal' | 'custom';
   results: T[];
   total_results: number;
   total_pages: number;

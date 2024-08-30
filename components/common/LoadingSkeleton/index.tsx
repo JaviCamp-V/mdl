@@ -6,7 +6,7 @@ type Props = {
   height?: string | number | React.CSSProperties;
 };
 const LoadingSkeleton: React.FC<Props> = ({ width = '100%', height = '100%' }) => {
-  return <Skeleton sx={{ height, width }} variant="rounded" />;
+  return <Skeleton sx={{ height, width, backgroundColor: 'paper' }} variant="rounded"  />;
 };
 
 export default LoadingSkeleton;

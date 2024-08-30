@@ -3,6 +3,7 @@ import MediaType from '@/types/enums/IMediaType';
 import { AdvancedSearchFormType, defaultValues } from '../components/forms/AdvancedSearch/model';
 import SortType from '../types/enums/SortType';
 
+
 const keys = [
   { form: 'type', param: 'type' },
   { form: 'query', param: 'query' },
@@ -153,7 +154,7 @@ const paramsToForm = (searchParams: URLSearchParams): AdvancedSearchFormType => 
 
     if (params && formKey === 'ratings') {
       const minRating = Number(searchParams.get(params.min!)) || 0;
-      const maxRating = Number(searchParams.get(params.max!)) || 10;
+      const maxRating = Number(searchParams.get(params.max!)) || 0;
       acc[formKey] = [minRating, maxRating];
       return acc;
     }

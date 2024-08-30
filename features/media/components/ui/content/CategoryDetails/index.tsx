@@ -16,8 +16,14 @@ interface ContentCategoryDetailProps extends MediaDetailsProps {
 const ContentCategoryDetail: React.FC<ContentCategoryDetailProps> = async ({ mediaId, mediaType, genres }) => {
   const tags = await getTags(mediaType, mediaId);
 
-  const tagLinks = tags?.map((tag) => ({ label: tag.name, href: `${routes.search}?keywords=${tag.id}` }));
-  const genreLinks = genres?.map((genre) => ({ label: genre.name, href: `${routes.search}?genre=${genre.id}` }));
+  const tagLinks = tags?.map((tag) => ({
+    label: tag.name,
+    href: `${routes.search}?type=${mediaType}&with_keywords=${tag.id}_${tag.name}`
+  }));
+  const genreLinks = genres?.map((genre) => ({
+    label: genre.name,
+    href: `${routes.search}?type=${mediaType}&with_genres=${genre.id}`
+  }));
   const categories = { genres: genreLinks, tags: tagLinks };
 
   return (

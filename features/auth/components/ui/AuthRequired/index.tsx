@@ -1,17 +1,16 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, SxProps, Typography } from '@mui/material';
 import Link from '@/components/common/Link';
 import routes from '@/libs/routes';
 
 interface AuthRequiredProps {
   action?: string;
+  sx?: SxProps;
 }
 
-const AuthRequired: React.FC<AuthRequiredProps> = ({ action }) => {
+const AuthRequired: React.FC<AuthRequiredProps> = ({ action, sx }) => {
   return (
-    <Box
-      sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 0.5, paddingX: 2, minHeight: '20vh' }}
-    >
+    <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 0.5, paddingX: 2, ...sx }}>
       <Link href={routes.login} sx={{ fontSize: 14 }}>
         Login
       </Link>
