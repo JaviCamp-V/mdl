@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 
 type PageProps = {
   params: { id: number };
+  searchParams: { [key: string]: string };
 };
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
@@ -13,10 +14,17 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   const response = await getPersonDetails(id);
   return { title: response?.name ?? `Person ${id} Details` };
 };
-const PersonDetailsPage: NextPage<PageProps> = ({ params: { id } }) => {
+const PersonDetailsPage: NextPage<PageProps> = ({ params: { id }, searchParams }) => {
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 } }}>
-      <PersonContainer personId={id} />
+    <Box
+      sx={{
+        paddingY: { xs: 2, md: 4 },
+        paddingX: { xs: 1, md: 4 },
+        marginX: { xs: 1, lg: 8 },
+        backgroundColor: 'background.default'
+      }}
+    >
+      <PersonContainer personId={id} searchParams={searchParams} />
     </Box>
   );
 };

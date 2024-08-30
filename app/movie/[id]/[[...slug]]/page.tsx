@@ -25,10 +25,18 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     description: response?.overview ?? ''
   };
 };
-const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug } }) => {
+const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams }) => {
   return (
-    <Box sx={{ padding: { xs: 0, md: 4 }, marginX: { xs: 2, lg: 8 }, backgroundColor: 'background.default' }}>
-      <ContentContainer mediaId={id} mediaType={MediaType.movie} sections={slug} />
+    <Box
+      sx={{
+        paddingY: { xs: 2, md: 4 },
+        paddingX: { xs: 1, md: 4 },
+        marginX: { xs: 1, lg: 8 },
+        backgroundColor: 'background.default',
+        marginTop: 2
+      }}
+    >
+      <ContentContainer mediaId={id} mediaType={MediaType.movie} sections={slug} searchParams={searchParams} />
     </Box>
   );
 };

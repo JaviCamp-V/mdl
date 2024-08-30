@@ -34,8 +34,9 @@ export interface PersonSearchResult extends PersonBase {
   biography: string;
   place_of_birth: string;
 }
-interface BaseSearchResponse<T> {
+export interface BaseSearchResponse<T> {
   page: number;
+  pagingMethod?: 'normal' | 'custom';
   results: T[];
   total_results: number;
   total_pages: number;

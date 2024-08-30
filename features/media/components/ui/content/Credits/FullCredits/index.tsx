@@ -29,17 +29,17 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2 }}>
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', paddingX: 2, width: '100%' }}>
       {Object.entries(sections)
         .filter(([_, arr]) => arr.length)
         .map(([job, members]) => (
           <Box key={job}>
             <Typography sx={{ fontSize: '1.25rem', fontWeight: 700 }}>{capitalCase(job)}</Typography>
-            <Box sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', marginY: 2 }} />
+            <Box sx={{ borderTop: '1px solid hsla(210, 8%, 51%, .13)', marginY: 1 }} />
             <Grid container spacing={2} padding={1}>
               {members?.map((member) => (
                 <Grid item key={member.id} xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                  <Box sx={{ width: '30%', height: { xs: '30vh', sm: '25vh' } }}>
+                  <Box sx={{ width: { xs: '50%', md: '30%' }, height: { xs: '20vh', md: '20vh' } }}>
                     <DramaPoster src={member.profile_path} id={member.id} mediaType={MediaType.person} size="w185" />
                   </Box>
                   <Box
@@ -47,7 +47,7 @@ const FullCredits: React.FC<Credits> = ({ cast, crew }) => {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: 0,
-                      width: '60%',
+                      width: { xs: '50%', md: '70%' },
                       height: '100%'
                     }}
                   >

@@ -10,7 +10,7 @@ type PageProps = {
   searchParams: any;
 };
 
-export const revalidate = 3600; // 1 hour
+export const revalidate = 1800; // 30 minutes
 
 export const metadata: Metadata = {
   title: 'Discover, Rate and Watch the Best Asian Dramas and Movies'
@@ -29,7 +29,7 @@ const Home: NextPage<PageProps> = () => {
   return (
     <Box
       sx={{
-        padding: { xs: 0, md: 4 },
+        padding: { xs: 2, md: 4 },
         marginX: { xs: 2, lg: 8 },
         marginTop: 4,
         display: 'flex',

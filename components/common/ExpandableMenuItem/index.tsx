@@ -8,28 +8,36 @@ interface ExpandableMenuItemProps {
   items: { label: string; href: string }[];
 }
 const ExpandableMenuItem: React.FC<ExpandableMenuItemProps> = ({ label, items }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (anchorEl !== event.currentTarget) setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
-    <Box onMouseLeave={handleClose}>
-      <Box
+    <Box>
+      <Typography
         aria-owns={anchorEl ? 'simple-menu' : undefined}
         aria-haspopup="true"
+        aria-expanded={anchorEl ? 'true' : undefined}
         onClick={handleClick}
-        onMouseOver={handleClick}
-        sx={anchorEl ? { borderBottom: '2px solid white' } : {}}
+        fontSize={13}
+        fontWeight={500}
+        textTransform="uppercase"
+        sx={{
+          color: 'white',
+          whiteSpace: 'nowrap',
+          cursor: 'pointer',
+          pointerEvents: 'auto',
+          borderBottom: anchorEl ? '1.5px solid white' : 'none'
+        }}
       >
-        <Typography fontSize={13} fontWeight={500} textTransform="uppercase" sx={{ color: 'white' }}>
-          {label}
-        </Typography>
-      </Box>
+        {label}
+      </Typography>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -53,7 +61,7 @@ const ExpandableMenuItem: React.FC<ExpandableMenuItemProps> = ({ label, items })
         }}
       >
         {items.map((item) => (
-          <MenuItem key={item.label} href={item.href} sx={{ color: '#fff', fontSize: 13 }}>
+          <MenuItem key={item.label} href={item.href} sx={{ color: 'text.primary', fontSize: 13 }}>
             {item.label}
           </MenuItem>
         ))}

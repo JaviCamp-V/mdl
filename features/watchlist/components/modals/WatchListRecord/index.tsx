@@ -225,7 +225,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
                   runtime={mediaType === 'movie' ? runtime : null}
                 />
               ) : (
-                <RHFForm fields={formFields} methods={methods} />
+                <RHFForm fields={formFields} methods={methods} onSubmit={onSubmit} />
               )}
             </Box>
           </Grid>

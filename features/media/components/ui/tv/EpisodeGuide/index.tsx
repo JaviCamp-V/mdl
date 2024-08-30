@@ -41,7 +41,7 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, season_numb
                   })
             }}
           >
-            <Box sx={{ width: '100%', height: '25vh' }}>
+            <Box sx={{ width: '100%', height: '35vh' }}>
               <DramaPoster
                 src={episode.still_path}
                 id={`${season_number}/${episode.id}`}

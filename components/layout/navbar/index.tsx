@@ -1,13 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import SearchForm from '@/features/media/components/forms/SearchForm';
-import { Session } from 'next-auth';
-import { Typography } from '@mui/material';
+import SearchForm from '@/features/media/components/forms/Search';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container/Container';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import ExpandableMenuItem from '@/components/common/ExpandableMenuItem';
 import model from '../model';
 import SideBar from '../sidebar';
@@ -17,7 +16,7 @@ interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
   return (
     <AppBar sx={{ backgroundColor: '#00568C', zIndex: 100 }}>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ paddingX: { xs: 0, md: 2 } }}>
         <Toolbar disableGutters>
           <Box
             sx={{
@@ -90,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                gap: 2,
+                gap: 1.5,
                 paddingY: 1
               }}
             >
@@ -120,13 +119,12 @@ const Navbar: React.FC<NavbarProps> = () => {
                   flexDirection: 'row',
                   justifyContent: 'left',
                   alignItems: 'center',
-                  gap: 1
+                  gap: 1.5
                 }}
               >
                 <AuthContent />
               </Box>
-
-              <Box sx={{ display: { xs: 'flex', md: 'none' } }} whiteSpace="nowrap">
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                 <SideBar />
               </Box>
             </Box>

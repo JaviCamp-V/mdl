@@ -3,5 +3,5 @@ export default interface UserSummary {
   username: string;
   displayName: string;
   avatarUrl: string;
-  isEnabled: boolean;
+  enabled: boolean;
 }

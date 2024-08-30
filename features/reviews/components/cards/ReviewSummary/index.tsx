@@ -22,9 +22,7 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
         style={{ textDecoration: 'none' }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, paddingX: 0.5 }}>
-          <Avatar src={user.avatarUrl} sx={{ width: 15, height: 15, fontSize: 12 }} username={user.username}>
-            {user.username.charAt(0).toUpperCase()}
-          </Avatar>
+          <Avatar src={user.avatarUrl} sx={{ width: 15, height: 15, fontSize: 12 }} username={user.username} />
           <Typography fontSize={14} fontWeight={'bolder'} color={'hsl(0deg 0% 100% / 87%)'}>
             {user.displayName}
           </Typography>
@@ -39,7 +37,7 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
         width: '300'
       }}
     >
-      <Box sx={{ width: '100%', height: { xs: '45vh', sm: '40vh' }, position: 'relative' }}>
+      <Box sx={{ width: '100%', height: { xs: '20vh', sm: '28vh', md: '25vh', lg: '30vh', xl: '35vh' } }}>
         <DramaPoster src={poster_path} id={`${user.username}/reviews/${id}`} mediaType={'profile'} overlay={overlay} />
       </Box>
       <Box sx={{ marginTop: 0.5, width: '100%' }}>

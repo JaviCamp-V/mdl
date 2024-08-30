@@ -6,11 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signIn } from 'next-auth/react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, FormHelperText, Grid } from '@mui/material';
-import { revalidateAll } from '@/server/utilActions';
 import RHFElementsSelector from '@/components/RHFElements';
 import ValidationError from '@/types/common/ValidationError';
-import { formatErrorsAsObject } from '@/utils/handleError';
-import routes from '@/libs/routes';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
 
 interface AuthFormProps {}
@@ -54,8 +51,6 @@ const SignUpForm: React.FC<AuthFormProps> = () => {
         ];
         const callbackUrl = decodeURIComponent(matches[1].replace(/\+/g, ' '));
         const callbackParsedUrl = new URL(callbackUrl);
-        await revalidateAll();
-
         router.push(callbackParsedUrl.hostname === window.location.hostname ? callbackUrl : window.location.origin);
       }
     } catch (error) {

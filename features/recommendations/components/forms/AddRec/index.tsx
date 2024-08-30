@@ -3,10 +3,12 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import AuthRequired from '@/features/auth/components/ui/AuthRequired';
 import { getImagePath } from '@/features/media/utils/tmdbUtils';
 import { makeRecommendation } from '@/features/recommendations/service/recommendationService';
 import MakeRecommendation from '@/features/recommendations/types/interface/MakeRecommendation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -29,6 +31,7 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
   });
 
   const router = useRouter();
+  const { data: session } = useSession();
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
     const { suggested, reason } = formData;
     const request: MakeRecommendation = {
@@ -49,19 +52,21 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
   };
 
   const watchFields = methods.watch('suggested');
+
+  if (!session?.user) return <AuthRequired action="make recommendation" sx={{ minHeight: '20vh' }} />;
   return (
     <Box sx={{ paddingY: 2, paddingX: 4, width: '100%' }}>
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column-reverse', sm: 'row' },
+          flexDirection: { xs: 'column-reverse', md: 'row' },
           justifyContent: 'space-between',
-          alignItems: { xs: 'center', sm: 'baseline' },
+          alignItems: { xs: 'center', md: 'baseline' },
           gap: 4
         }}
       >
         <Box sx={{ width: { xs: '100%', md: '70%' } }}>
-          <RHFForm fields={formFields} methods={methods} spacing={4} />
+          <RHFForm fields={formFields} methods={methods} spacing={4} onSubmit={onSubmit} />
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 2, gap: 2 }}>
             <Button
               variant="contained"

@@ -26,4 +26,5 @@ export default interface MovieDetails extends BaseShowDetails {
   video: boolean;
   external_ids: ExternalID;
   watchStatus: WatchStatus | null;
+  recordRating: number | null;
 }

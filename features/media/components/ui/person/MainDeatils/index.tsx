@@ -1,8 +1,9 @@
 import React from 'react';
 import PersonDetails from '@/features/media/types/interfaces/People';
-import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Divider from '@/components/common/Divider';
+import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import BioData from '../BioData';
 import PersonLinks from '../PersonLinks';
 import Roles from '../Roles';
@@ -64,7 +65,9 @@ const PersonMainDetails: React.FC<PersonMainDetailsProps> = ({ person }) => {
           </Box>
         </Box>
         <Box sx={{ paddingLeft: 2 }}>
-          <Roles personId={id} />
+          <React.Suspense fallback={<LoadingSkeleton height="40vh" />}>
+            <Roles personId={id} />
+          </React.Suspense>
         </Box>
       </Box>
     </Box>

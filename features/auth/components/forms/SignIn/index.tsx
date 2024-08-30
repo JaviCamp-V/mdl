@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signIn } from 'next-auth/react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, Grid } from '@mui/material';
-import { revalidateAll } from '@/server/utilActions';
 import RHFElementsSelector from '@/components/RHFElements';
 import ValidationError from '@/types/common/ValidationError';
 import { FormType, formDefaultValues, formModel, formSchema } from './model';
@@ -27,10 +26,11 @@ const SignInForm: React.FC<AuthFormProps> = () => {
   const [error, setError] = React.useState<string | null>(null);
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
     try {
-      const { username, password } = formData;
+      const { username, password, rememberMe } = formData;
       const response = (await signIn('credentials', {
         username,
         password,
+        rememberMe,
         isNewUser: false,
         redirect: false
       })) as any;
@@ -45,13 +45,8 @@ const SignInForm: React.FC<AuthFormProps> = () => {
         }
         setError(isObject ? parsed.message : parsed);
       } else {
-        const matches: RegExpMatchArray = searchParams.get('callbackUrl')?.match(/callbackUrl=([^&]*)/) ?? [
-          `callbackUrl=${window.location.origin}`,
-          window.location.origin
-        ];
-        const callbackUrl = decodeURIComponent(matches[1].replace(/\+/g, ' '));
+        const callbackUrl = decodeURIComponent(searchParams.get('callbackUrl') ?? window.location.origin);
         const callbackParsedUrl = new URL(callbackUrl);
-        await revalidateAll();
         router.replace(callbackParsedUrl.hostname === window.location.hostname ? callbackUrl : window.location.origin);
       }
     } catch (error) {

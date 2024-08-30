@@ -1,10 +1,10 @@
 enum TVShowStatus {
-  Ended = 'Ended',
-  ReturningSeries = 'Returning Series',
-  Planned = 'Planned',
-  InProduction = 'In Production',
-  Canceled = 'Canceled',
-  Pilot = 'Pilot'
+  ReturningSeries = 0,
+  Planned = 1,
+  Pilot = 2,
+  InProduction = 3,
+  Ended = 4,
+  Canceled = 5
 }
 
 export default TVShowStatus;

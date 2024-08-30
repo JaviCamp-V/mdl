@@ -19,7 +19,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const isLaptop = useMediaQuery(theme.breakpoints.up('lg'));
   const getSlidesPerView = () => {
-    if (isMobile) return 2;
+    if (isMobile) return 3;
     if (isTablet) return 3;
     return 4;
   };
