@@ -41,6 +41,7 @@ const OtherCommentReplies: React.FC<OtherCommentRepliesProps> = async ({ comment
     <ViewOtherRepliesButton
       commentId={commentId}
       comments={filteredPages
+        .filter((page) => page != null)
         .map((page) => page.results)
         .flat()
         .map((comment) => (
