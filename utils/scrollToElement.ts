@@ -32,7 +32,7 @@ const scrollToTopById = (id: string | number) => {
     setTimeout(() => {
       window.scrollTo({
         top: elementPosition,
-        behavior: 'smooth'
+        behavior: 'instant'
       });
     }, 0);
   } else {
