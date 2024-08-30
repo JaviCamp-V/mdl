@@ -1,7 +1,7 @@
 import React from 'react';
 import { getComments } from '@/features/comments/services/commentService';
 import CommentType from '@/features/comments/types/enums/CommentType';
-import Comment from '@/features/comments/types/interfaces/Comments';
+import Comment, { CommentPage } from '@/features/comments/types/interfaces/Comments';
 import { Box, Grid, Typography } from '@mui/material';
 import Avatar from '@/components/common/Avatar';
 import Link from '@/components/common/Link';
@@ -31,11 +31,10 @@ const OtherCommentReplies: React.FC<OtherCommentRepliesProps> = async ({ comment
   const pages = await Promise.all(
     [...Array(numberOfPages - 1)].map(async (_, page) => {
       const response = await getComments(CommentType.COMMENT, commentId, page + 1);
-      if (isErrorResponse(response)) return null;
       return response;
     })
   );
-  const filteredPages = pages.filter((page) => page != null);
+  const filteredPages = pages.filter((page) => !isErrorResponse(page)) as unknown as CommentPage[];
 
   return (
     <ViewOtherRepliesButton
