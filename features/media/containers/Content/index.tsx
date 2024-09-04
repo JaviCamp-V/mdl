@@ -85,11 +85,12 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
       external_ids={details.external_ids}
       origin_country={details.origin_country}
       last_air_date={anyDetails?.last_air_date}
-      networks={anyDetails?.networks ?? []}
+      networks={details?.production_companies ?? []}
       runtime={mediaType === MediaType.movie ? anyDetails.runtime : anyDetails.episode_run_time}
       overview={details.overview}
       vote_average={details.vote_average}
       vote_count={details.vote_count}
+      recordRating={details.recordRating}
       original_title={mediaType === MediaType.movie ? anyDetails.original_title : anyDetails.original_name}
     />
   );

@@ -37,4 +37,5 @@ export default interface TVDetails extends BaseShowDetails {
   type: TvShowType;
   external_ids: ExternalID;
   watchStatus: WatchStatus | null;
+  recordRating: number | null;
 }

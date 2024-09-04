@@ -42,7 +42,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion }) => {
           sx={{
             position: 'relative',
             width: { xs: '100%', md: '100%' },
-            height: { xs: '30vh', sm: '45vh', lg: '25vh' }
+             height: { xs: '15vh', sm: '25vh' }
           }}
         >
           <DramaPoster src={poster_path} mediaType={mediaType} id={mediaId} size="w342" />

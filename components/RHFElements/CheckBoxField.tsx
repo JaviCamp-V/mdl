@@ -26,7 +26,7 @@ const CheckboxInput: React.FC<CheckBoxFieldProps> = ({ icons, name, showLabel, l
           <FormControlLabel
             label={showLabel ? label : ''}
             componentsProps={{
-              typography: { fontSize: '14px!important', color: 'info.contrastText', whiteSpace: 'nowrap' }
+              typography: { fontSize: '14px!important', color: 'info.contrastText',textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' },
             }}
             sx={{}}
             control={

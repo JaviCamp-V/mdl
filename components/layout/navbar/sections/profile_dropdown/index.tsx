@@ -80,7 +80,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
         {Object.entries(userRoutes).map(([key, value]) => (
           <MenuItem key={key} onClick={() => handleMenuItemClick(value)}>
             <ListItemIcon>
-              <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'white' }} />
+              <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'text.primary' }} />
             </ListItemIcon>
             <ListItemText>{capitalCase(key)}</ListItemText>
           </MenuItem>
@@ -88,7 +88,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
         <Divider />
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
-            <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'white' }} />
+            <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'text.primary' }} />
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>
         </MenuItem>

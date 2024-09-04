@@ -256,6 +256,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
                 backgroundColor: '#f56c6c',
                 color: '#fff',
                 borderColor: '#f56c6c'
+                
               }
             }}
           >

@@ -10,6 +10,7 @@ declare module 'next-auth' {
   interface User {
     userId: number | null | undefined;
     username?: string | null | undefined;
+    avatarUrl?: string | null | undefined;
     role: Role | null | undefined;
     accessLevels: AccessLevel[] | null | undefined;
     accessToken: string | null | undefined;

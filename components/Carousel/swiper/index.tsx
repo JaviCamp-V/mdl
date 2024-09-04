@@ -15,11 +15,13 @@ interface CarouselProps {
 }
 const Carousel: React.FC<CarouselProps> = ({ children }) => {
   const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('xs'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const isLaptop = useMediaQuery(theme.breakpoints.up('lg'));
   const getSlidesPerView = () => {
-    if (isMobile) return 3;
+    if (isSmall) return 2;
+    if (isMobile) return 2;
     if (isTablet) return 3;
     return 4;
   };

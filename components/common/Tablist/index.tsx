@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Tabs, Typography } from '@mui/material';
+import { Box, SxProps, Tabs, Typography } from '@mui/material';
 import Link from '../Link';
 import LinkTab from '../NavTab';
 
 interface TabsListProps {
   baseUrl: string;
   activeTab: string | undefined;
-  tabs: { label: string; href: string }[];
+  tabs: { label: string; href: string; sx?: SxProps; absolute?: boolean }[];
 }
 const TabsList: React.FC<TabsListProps> = ({ tabs, activeTab, baseUrl }) => {
   return (

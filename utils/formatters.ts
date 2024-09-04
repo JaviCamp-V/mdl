@@ -1,4 +1,5 @@
 import { addHours, format, formatDistance, parse } from 'date-fns';
+import Values from '@/types/common/Values';
 
 /**
  *
@@ -51,6 +52,21 @@ const formatRuntime = (minutes: number): string => {
   const remainingMinutes = minutes % 60;
   return hours > 0 ? `${hours} hr. ${remainingMinutes} mins` : `${remainingMinutes} mins`;
 };
+
+const formDataToValues = (formData: FormData): Values => {
+  const values: Values = {};
+  formData.forEach((value, key) => {
+    values[key] = value;
+  });
+  return values;
+};
+const valuesToFormData = (values: Values): FormData => {
+  const formData = new FormData();
+  Object.entries(values).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  return formData;
+};
 export {
   formatDate,
   formatTime,
@@ -58,5 +74,7 @@ export {
   formatRuntime,
   formatShortDate,
   formatStringDate,
-  formatDateToDistance
+  formatDateToDistance,
+  formDataToValues,
+  valuesToFormData
 };

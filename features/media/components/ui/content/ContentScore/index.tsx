@@ -7,6 +7,7 @@ import Ratings from '@/components/common/Ratings';
 interface ScoreProps {
   vote_average: number;
   vote_count: number;
+  recordRating: number;
   number_of_watchers?: number;
   number_of_reviews?: number;
 }
@@ -14,7 +15,8 @@ const ContentScore: React.FC<ScoreProps> = ({
   vote_average,
   vote_count,
   number_of_reviews = 0,
-  number_of_watchers = 0
+  number_of_watchers = 0,
+  recordRating = 0
 }) => {
   return (
     <Box>
@@ -37,13 +39,12 @@ const ContentScore: React.FC<ScoreProps> = ({
           </Typography>
         </Box>
         <Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0 }}>
             <Typography fontSize={14} sx={{ opacity: 0.6 }}>
-              Rating:
+              Your Rating:
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-              <Ratings rating={vote_average} />
-              <Typography fontSize={13}>{vote_average.toFixed(1)}/10</Typography>
+              <Ratings rating={recordRating} showText />
             </Box>
           </Box>
           {Boolean(vote_count) && (

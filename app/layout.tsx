@@ -9,7 +9,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import MainLayout from '@/components/layout';
 import NextAuthSessionProvider from '@/components/wrapper/NextAuthSessionProvider';
 import NonStickSnackbarProvider from '@/components/wrapper/NonStickSnackbarProvider';
-import { getSession } from '@/utils/authUtils';
+import { getServerActionSession, getSession } from '@/utils/authUtils';
 
 // TODO: Find another theme solution/ there is a lag when looading the page
 const MuiThemeProvider = dynamic(() => import('@/components/wrapper/MuiThemeProvider'), { ssr: false });
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 type Props = { children: React.ReactNode };
 const RootLayout: React.FC<Props> = async ({ children }) => {
-  const session = await getSession();
+  const session = await getServerActionSession();
   return (
     <html lang="en" suppressHydrationWarning>
       <body style={{ margin: 0, padding: 0 }}>

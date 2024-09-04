@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
 
+
 type PageProps = {
   params: { id: number; slug?: string[] };
   searchParams: { [key: string]: string };
@@ -25,7 +26,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     description: response?.overview ?? ''
   };
 };
-const MovieDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams }) => {
+const MovieDetailsPage: NextPage<PageProps> = ({ params: { id, slug }, searchParams }) => {
   return (
     <Box
       sx={{

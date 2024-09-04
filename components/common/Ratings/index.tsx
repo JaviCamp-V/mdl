@@ -37,7 +37,6 @@ const Ratings: React.FC<RatingsProps> = ({ rating, showText, sx }) => {
       {showText && (
         <Typography
           fontSize={'14px'}
-          sx={{ color: 'hsl(0deg 0% 100% / 87%)!important' }}
         >{`${rating.toFixed(1)}/10`}</Typography>
       )}
     </Box>

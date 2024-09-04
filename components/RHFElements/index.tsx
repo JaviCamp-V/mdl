@@ -2,7 +2,9 @@ import { Field } from '@/types/common/IForm';
 import AutoCompleteField from './AutoCompleteField';
 import CheckBoxField from './CheckBoxField';
 import DatePickerField from './DatePickerField';
+import FileUpload from './FIleUpload';
 import GroupField from './GroupField';
+import ImageUpload from './ImageUpload';
 import MediaField from './MediaField';
 import MultiSearchField from './MultiSearchField';
 import PasswordField from './PasswordField';
@@ -26,7 +28,9 @@ const RHFElements = {
   media_select: MediaField,
   multi_search: MultiSearchField,
   group: GroupField,
-  slider: SliderField
+  slider: SliderField,
+  file: FileUpload,
+  image: ImageUpload
 };
 
 export type RHFElementsType = keyof typeof RHFElements;

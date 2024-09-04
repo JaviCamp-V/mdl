@@ -23,6 +23,9 @@ const DramaPoster: React.FC<PosterProps> = ({
   noRadius
 }) => {
   const path = src ? `https://image.tmdb.org/t/p/${size}${src}` : '/static/images/no_poster.jpg';
+  const blurUrl = src
+    ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsa2yqBwAFCAICLICSyQAAAABJRU5ErkJggg=='
+    : undefined;
   return (
     <Link href={`/${mediaType}/${id}`} passHref>
       <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -37,6 +40,8 @@ const DramaPoster: React.FC<PosterProps> = ({
             objectFit: 'cover'
           }}
           fill
+          placeholder="blur"
+          blurDataURL={blurUrl}
           priority={priority}
           unoptimized
         />

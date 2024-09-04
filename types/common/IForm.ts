@@ -1,5 +1,6 @@
 import { TextFieldProps } from '@mui/material/TextField';
 
+
 export type RHFElementsType =
   | 'text'
   | 'password'
@@ -15,7 +16,9 @@ export type RHFElementsType =
   | 'slider'
   | 'group'
   | 'radio'
-  | 'multi_search';
+  | 'multi_search'
+  | 'file'
+  | 'image';
 
 interface Optionable {
   options?: { value: any; label: string; disabled?: boolean }[];
@@ -67,6 +70,7 @@ export interface Field extends CheckboxField, RatingsField, DateField, Optionabl
   InputProps?: any;
   showLabel?: boolean;
   fields?: { [key: string]: Field };
+  [key: string]: any;
 }
 
 export interface FieldGroup extends Field {

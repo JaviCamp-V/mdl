@@ -17,7 +17,6 @@ const SidePanel: React.FC<SidePanelProps> = ({ details, notDetails, mediaId, med
   const title = mediaType === MediaType.movie ? anyDetails.title : anyDetails.name;
   const year = mediaType === MediaType.movie ? anyDetails.release_date : anyDetails.first_air_date;
   const runtime = mediaType === MediaType.movie ? anyDetails.runtime : anyDetails.episode_run_time;
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
       {notDetails && (
@@ -45,7 +44,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ details, notDetails, mediaId, med
         origin_country={details.origin_country}
         release_date={year}
         last_air_date={anyDetails?.last_air_date}
-        networks={anyDetails?.networks}
+        networks={details.production_companies}
         runtime={0}
         genres={details.genres}
         mediaType={mediaType}

@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
+import { blur_url } from '@/libs/common';
 
 interface WhereToWatchProps extends MediaDetailsProps {
   containerStyle?: any;
@@ -57,10 +58,11 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ mediaId, mediaType, c
             >
               <Image
                 src={`https://image.tmdb.org/t/p/original/${provider.logo_path}`}
+                blurDataURL={blur_url}
                 width={60}
                 height={60}
                 alt={provider.provider_name}
-                style={{ borderRadius: '50%' }}
+                style={{ borderRadius: '50%', border: '1px solid rgba(0, 0, 0, .14)' }}
                 priority
               />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
