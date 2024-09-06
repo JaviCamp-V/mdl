@@ -4,13 +4,11 @@ import { redirect } from 'next/navigation';
 import ProfileSettingsForm from '@/features/profile/components/forms/settings';
 import { getAuthUserProfile } from '@/features/profile/service/userProfileService';
 import Box from '@mui/material/Box';
-import urlToFile from '@/utils/urlToFile';
 
 interface PageProps {}
 const ProfileSettings: NextPage<PageProps> = async () => {
   const profile = await getAuthUserProfile();
   if (!profile) redirect('/');
-  const avatarFile = profile.avatarUrl ? await urlToFile(profile.avatarUrl, `avatar-${profile.id}`) : null;
   return (
     <Box
       sx={{
@@ -34,7 +32,7 @@ const ProfileSettings: NextPage<PageProps> = async () => {
           width: { xs: '100%', sm: '80%', md: '60%' }
         }}
       >
-        <ProfileSettingsForm profile={profile} avatarFile={avatarFile} />
+        <ProfileSettingsForm profile={profile ?? undefined} />
       </Box>
     </Box>
   );

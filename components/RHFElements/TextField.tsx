@@ -4,6 +4,7 @@ import { Box, FormControl, FormLabel } from '@mui/material';
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 import { Field } from '@/types/common/IForm';
 
+
 export type TextFieldProps = MuiTextFieldProps &
   Field & {
     name: string;
@@ -12,7 +13,17 @@ export type TextFieldProps = MuiTextFieldProps &
     hideError?: boolean;
   };
 
-const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, max, inputProps, ...props }) => {
+const TextField: React.FC<TextFieldProps> = ({
+  name,
+  hideError,
+  label,
+  sx,
+  min,
+  max,
+  inputProps,
+  errorMessages,
+  ...props
+}) => {
   const { control } = useFormContext();
   const getHelperText = (error: any) => {
     if (error && !hideError) return error.message;

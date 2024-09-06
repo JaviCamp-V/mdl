@@ -1,6 +1,9 @@
 import React from 'react';
+import Image from 'next/image';
 import MuiAvatar, { AvatarProps } from '@mui/material/Avatar';
 import Iconify from '@/components/Icon/Iconify';
+import { blur_url } from '@/libs/common';
+
 
 const stringToColor = (string: string): string => {
   /* eslint-disable no-bitwise */
@@ -18,14 +21,36 @@ interface CustomAvatarProps extends AvatarProps {
   username: string;
   isDeleted?: boolean;
 }
-const Avatar: React.FC<CustomAvatarProps> = ({ username, children, isDeleted, sx, ...props }) => {
+const Avatar: React.FC<CustomAvatarProps> = ({ username, children, isDeleted, src, sx, ...props }) => {
+  if (isDeleted) {
+    return (
+      <MuiAvatar sx={{ bgcolor: 'disabled', ...sx }} {...props}>
+        <Iconify icon="mdi:user-outline" fontSize={'inherit'} />
+      </MuiAvatar>
+    );
+  }
+
   return (
-    <MuiAvatar
-      sx={{ bgcolor: !isDeleted ? stringToColor(username) : 'disabled', ...sx }}
-      {...props}
-      src={isDeleted ? undefined : props?.src}
-    >
-      {isDeleted ? <Iconify icon="mdi:user-outline" fontSize={'inherit'} /> : username?.charAt(0)?.toUpperCase()}
+    <MuiAvatar sx={{ bgcolor: stringToColor(username), ...sx }} {...props}>
+      {src ? (
+        <Image
+          src={src}
+          alt={username}
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'var(--muted-color)',
+            objectFit: 'cover'
+          }}
+          fill
+          placeholder="blur"
+          blurDataURL={blur_url}
+          priority
+          unoptimized
+        />
+      ) : (
+        username?.charAt(0)?.toUpperCase()
+      )}
     </MuiAvatar>
   );
 };

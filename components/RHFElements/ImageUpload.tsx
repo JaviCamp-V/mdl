@@ -15,7 +15,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ name }) => {
 
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
-      setValue(name, acceptedFiles.length ? acceptedFiles[0] : undefined, { shouldValidate: true });
+      setValue(name, acceptedFiles.length ? acceptedFiles[0] : undefined, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
     },
     [name]
   );
@@ -101,7 +105,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ name }) => {
             variant="outlined"
             color="secondary"
             startIcon={<Iconify icon="mdi:delete" sx={{ color: '#f56c6c!important' }} />}
-            onClick={() => setValue(name, undefined)}
+            onClick={() => setValue(name, undefined, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
           >
             Remove Image
           </Button>

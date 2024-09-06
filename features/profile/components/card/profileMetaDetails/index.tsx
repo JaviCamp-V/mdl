@@ -4,17 +4,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatDateToDistance, formatShortDate, formatStringDate } from '@/utils/formatters';
 
+
 interface PersonDetailsProps {
   lastOnlineAt: string;
   joinedAt: string;
-  birthday: string;
-  location?: string;
+  birthday?: string | null | undefined;
+  location?: string | null | undefined;
 }
 const PersonDetails: React.FC<PersonDetailsProps> = ({ lastOnlineAt, joinedAt, birthday, location }) => {
   const birthDate = birthday ? formatStringDate(birthday) : null;
   const data = {
     lastOnlineAt: formatDateToDistance(lastOnlineAt),
-    location: location,
+    location: location ?? 'Unknown',
     birthDate: birthDate ? formatShortDate(formatStringDate(birthDate)) : 'Unknown',
     joinDate: formatShortDate(formatStringDate(joinedAt))
   };
@@ -50,8 +51,8 @@ const PersonDetails: React.FC<PersonDetailsProps> = ({ lastOnlineAt, joinedAt, b
         }}
       >
         {Object.entries(data).map(([key, value]) => (
-          <Box sx={{}} key={key}>
-            <Typography fontWeight="bolder" paddingRight={1} display={'inline'} fontSize={14}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 0.5 }} key={key}>
+            <Typography fontWeight="bolder" display={'inline'} fontSize={14}>
               {capitalCase(key)}:
             </Typography>
             <Typography display={'inline'} fontSize={14}>

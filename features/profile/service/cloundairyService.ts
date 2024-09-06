@@ -2,6 +2,7 @@ import { UploadApiOptions, UploadApiResponse, v2 as cloudinary } from 'cloudinar
 import 'server-only';
 import logger from '@/utils/logger';
 
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -18,13 +19,17 @@ const deleteImage = async (userId: number): Promise<boolean> => {
   }
 };
 
-const uploadConfig: UploadApiOptions = { resource_type: 'image', folder: 'profile' };
+const uploadConfig: UploadApiOptions = {
+  resource_type: 'image',
+  folder: 'profile',
+  timeout: +(process.env.CLOUDINARY_TIMEOUT ?? 3000)
+};
 
-const uploadImageV2 = async (userId: number, file: File): Promise<UploadApiResponse | null> => {
+const uploadImageV2 = async (userId: number, file: File): Promise<string | null> => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
   logger.info('Uploading image to cloudinary...');
-  return new Promise<UploadApiResponse | null>((resolve, reject) => {
+  const results = await new Promise<UploadApiResponse | null>((resolve, reject) => {
     cloudinary.uploader
       .upload_stream({ ...uploadConfig, public_id: `avatar-${userId}` }, (error, response) => {
         if (error || response === undefined) {
@@ -37,5 +42,6 @@ const uploadImageV2 = async (userId: number, file: File): Promise<UploadApiRespo
       })
       .end(buffer);
   });
+  return results ? results.secure_url : null;
 };
 export { uploadImageV2, deleteImage };

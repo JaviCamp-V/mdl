@@ -66,7 +66,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
       >
         <Avatar
           sx={{ width: 50, height: 50, fontsize: 30, fontWeight: 700 }}
-          src={user.avatarUrl}
+          src={user.avatarUrl!}
           username={user.username}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, marginLeft: 1 }}>
@@ -83,7 +83,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
               </Typography>
               {' people found this review helpful'}
             </Typography>
-            {isHelpful !== null && (
+            {(isHelpful !== null && isHelpful !== undefined) && (
               <Iconify
                 icon={`mdi:${isHelpful ? 'check' : 'close'}-circle-outline`}
                 color={isHelpful ? 'success' : 'error'}

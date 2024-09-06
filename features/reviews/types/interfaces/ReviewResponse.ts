@@ -9,10 +9,8 @@ export interface BaseReviewResponse extends ReviewBase {
   updatedAt: string;
   createdBy: string;
   updatedBy: string;
-  user: UserSummary;
+  userId: number;
   commentCount: number;
-  watchStatus: WatchStatus | null;
-  episodeWatched: number | null;
 }
 
 export interface EpisodeReview extends BaseReviewResponse {

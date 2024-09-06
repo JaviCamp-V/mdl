@@ -1,8 +1,14 @@
 'use server';
 
 import React from 'react';
-import { getMediaOverallReviews, getReviewHelpful } from '@/features/reviews/services/reviewService';
+import { getUserSummary } from '@/features/profile/service/userProfileService';
+import {
+  getMediaOverallReviews,
+  getReviewHelpful,
+  getUserReviewHelpfulRating
+} from '@/features/reviews/services/reviewService';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import { getUserWatchRecord } from '@/features/watchlist/service/watchlistService';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import WriteReviewForm from '../../forms/WriteReview';
 import AllReviews from '../AllReviews';
@@ -20,7 +26,16 @@ const ReviewDetails: React.FC<ReviewDetailsProps> = async ({ section, mediaId, m
   const extendedReviews: ExtendOverallReview[] = await Promise.all(
     reviews.map(async (review) => {
       const helpfulData = await getReviewHelpful(review.id);
-      return { ...review, helpful: helpfulData };
+      const helpfulRating = await getUserReviewHelpfulRating(review.id);
+      const user = await getUserSummary(review.userId);
+      const watchRecord = await getUserWatchRecord(user.username, mediaType, mediaId);
+      return {
+        ...review,
+        user,
+        helpful: { ...helpfulData, isHelpful: helpfulRating?.helpful },
+        watchStatus: watchRecord?.watchStatus ?? null,
+        episodeWatched: watchRecord?.episodeWatched ?? null
+      };
     })
   );
   const sorted = extendedReviews.sort((a, b) => b.helpful.numberOfHelpfulReviews - a.helpful.numberOfHelpfulReviews);

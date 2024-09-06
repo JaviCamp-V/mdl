@@ -1,4 +1,5 @@
 import React from 'react';
+import WatchlistOverview from '@/features/watchlist/components/ui/WatchlistOverview';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,6 +8,7 @@ import TabsList from '@/components/common/Tablist';
 import routes from '@/libs/routes';
 import ProfileCard from '../../components/card/profile';
 import PersonDetails from '../../components/card/profileMetaDetails';
+import ProfileBio from '../../components/typography/Bio';
 import { getUserProfile } from '../../service/userProfileService';
 
 interface UserProfileContainerProps {
@@ -32,6 +34,13 @@ const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ usern
   const profileData = await getUserProfile(username);
   if (!profileData) return <NotFound type={'profile'} />;
 
+  const TabPanel = {
+    reviews: <React.Fragment>Reviews</React.Fragment>,
+    recommendations: <React.Fragment>Recommendations</React.Fragment>,
+    lists: <React.Fragment>Lists</React.Fragment>,
+    stats: <React.Fragment>Stats</React.Fragment>
+  }[tab] || <ProfileBio bio={profileData.bio} />;
+
   return (
     <Box
       sx={{
@@ -48,17 +57,49 @@ const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ usern
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          width: { xs: '100%', md: '75%' },
-          backgroundColor: 'background.paper',
-          borderRadius: 2,
-          overflow: 'hidden',
-          paddingY: 2
+          width: { xs: '100%', md: '75%' }
         }}
       >
-        <Typography fontSize={24} fontWeight={700} paddingLeft={2}>
-          {capitalCase(profileData.displayName)}
-        </Typography>
-        <TabsList tabs={tabs} activeTab={tab} baseUrl={`profile/${username}`} />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            backgroundColor: 'background.paper',
+            borderRadius: 2,
+            overflow: 'hidden',
+            paddingY: 2
+          }}
+        >
+          <Typography fontSize={24} fontWeight={700} paddingLeft={2}>
+            {capitalCase(profileData.displayName)}
+          </Typography>
+          <TabsList tabs={tabs} activeTab={tab} baseUrl={`profile/${username}`} />
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: 0,
+              paddingY: 2
+            }}
+          >
+            {TabPanel}
+          </Box>
+        </Box>
+
+        {!tab && (
+          <WatchlistOverview
+            username={username}
+            containerStyle={{
+              backgroundColor: 'background.paper',
+              borderRadius: 2
+              // border: '1px solid hsla(210,8%,51%,.13)'
+            }}
+          />
+        )}
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', gap: 2, width: '25%' }}>
         <ProfileCard username={username} displayName={profileData.displayName} avatarUrl={profileData.avatarUrl} />

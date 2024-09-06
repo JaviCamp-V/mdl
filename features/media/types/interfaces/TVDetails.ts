@@ -10,6 +10,7 @@ import ProductionCountry from './ProductionCountry';
 import { Episode, Season } from './Season';
 import { Language } from './Translation';
 
+
 export default interface TVDetails extends BaseShowDetails {
   created_by: Creator[];
   episode_run_time: number[];
@@ -36,6 +37,6 @@ export default interface TVDetails extends BaseShowDetails {
   tagline: string;
   type: TvShowType;
   external_ids: ExternalID;
-  watchStatus: WatchStatus | null;
-  recordRating: number | null;
+  watchStatus: WatchStatus | null; // This is a custom field
+  recordRating: number | null; // This is a custom field
 }

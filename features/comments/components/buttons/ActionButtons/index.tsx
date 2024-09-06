@@ -44,8 +44,6 @@ const CommentButtons: React.FC<CommentButtonsProps> = ({
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: '100%' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center' }}>
         <LikeCommentButton
-          commentType={commentType}
-          parentId={parentId}
           commentId={commentId}
           likeCount={likeCount}
           hasUserLiked={hasUserLiked}

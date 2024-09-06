@@ -4,11 +4,13 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProviders } from '@/features/media/service/tmdbService';
+import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import { blur_url } from '@/libs/common';
+
 
 interface WhereToWatchProps extends MediaDetailsProps {
   containerStyle?: any;
@@ -56,7 +58,10 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ mediaId, mediaType, c
                 gap: 1
               }}
             >
-              <Image
+              <Paper
+                elevation={2}
+                sx={{ padding: 0 }}
+                component={Image}
                 src={`https://image.tmdb.org/t/p/original/${provider.logo_path}`}
                 blurDataURL={blur_url}
                 width={60}
@@ -65,6 +70,7 @@ const WhereToWatch: React.FC<WhereToWatchProps> = async ({ mediaId, mediaType, c
                 style={{ borderRadius: '50%', border: '1px solid rgba(0, 0, 0, .14)' }}
                 priority
               />
+
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Link href="#" passHref style={{ textDecoration: 'none' }}>
                   <Typography fontSize={16} color="primary" fontWeight={700}>

@@ -7,10 +7,11 @@ import Iconify from '@/components/Icon/Iconify';
 import Avatar from '@/components/common/Avatar';
 import { userRoutes } from '@/libs/routes';
 
+
 interface ProfileCardProps {
   username: string;
   displayName: string;
-  avatarUrl: string; //
+  avatarUrl: string | null | undefined;
 }
 const ProfileCard: React.FC<ProfileCardProps> = ({ username, displayName, avatarUrl }) => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, displayName, avatar
       }}
     >
       <Avatar
-        src={avatarUrl}
+        src={avatarUrl ?? undefined}
         username={username}
         variant="square"
         sx={{ width: '100%', height: '40vh', fontSize: 100 }}

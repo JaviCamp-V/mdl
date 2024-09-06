@@ -2,9 +2,10 @@ import { Account, NextAuthOptions, Session, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Provider } from 'next-auth/providers/index';
+import { isErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 import routes from '@/libs/routes';
-import { login, refreshAuthToken, signUp } from '../services/authService';
+import { getAccount, login, refreshAuthToken, signUp } from '../services/authService';
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -24,7 +25,10 @@ const providers: Provider[] = [
         isNewUser === 'true' ? await signUp({ email, password, username }) : await login({ username, password });
       if ('errors' in response) throw new Error(JSON.stringify(response));
 
-      return { ...response, rememberMe: rememberMe && rememberMe === 'true' ? true : false } as any as User;
+      const account = await getAccount(response.accessToken);
+      if ('errors' in account) throw new Error(JSON.stringify(account));
+
+      return { ...response, ...account, rememberMe: rememberMe === 'true' } as any as User;
     }
   })
 ];
@@ -32,32 +36,44 @@ const providers: Provider[] = [
 const nextAuthOptions: NextAuthOptions = {
   providers: providers,
   callbacks: {
-    async jwt({ token, user, account }: { token: JWT; user: User; account: Account | null }) {
+    async jwt({ token, user, account, trigger }) {
       if (user) {
         token.accessToken = account?.access_token;
-        token.refreshToken = user?.rememberMe ? account?.refresh_token : null;
+        token.refreshToken = account?.rememberMe ? account?.refresh_token : null;
+        token.deviceID = account?.deviceID as any;
+        token.rememberMe = account?.rememberMe as any;
         token.user = user;
-        token.expiry = Date.now() + Number(user?.expiresIn);
+        token.expiry = Date.now() + Number(account?.expiresIn);
       }
 
-      //  if user has not checked remember me or has no refresh token or token is not expired skip refresh
-      if (!token.user?.rememberMe || !token?.refreshToken || (token.expiry && Date.now() < token.expiry - 300000)) {
+      // update user account if session update is triggered
+      if (trigger === 'update' && token.accessToken) {
+        const accountResponse = await getAccount(token.accessToken);
+        token.user = isErrorResponse(accountResponse)
+          ? { ...token.user, authError: accountResponse.message }
+          : (accountResponse as User);
+      }
+
+      // offset expiry time by 3 minutes
+      if (token.expiry && Date.now() < token.expiry - 180000) {
         return token;
       }
 
-      try {
-        const response = await refreshAuthToken();
-        const { accessToken, refreshToken, ...rest } = response;
-        token.accessToken = accessToken;
-        token.refreshToken = refreshToken;
-        token.expiry = Date.now() + Number(rest?.expiresIn);
-        token.user = { ...rest, rememberMe: true } as any;
-      } catch (error: any) {
-        const message = error?.response?.data?.message ?? error?.message;
-        logger.error(`Error refreshing token: ${message}`);
-        token.user.authError = "Can't refresh token";
+      // refresh token
+      if (!token.refreshToken) {
+        token.user.authError = 'Token expired';
+        return token;
       }
 
+      const response = await refreshAuthToken(token.refreshToken);
+      if (isErrorResponse(response)) {
+        token.user.authError = "Can't refresh token";
+        return token;
+      }
+
+      const { accessToken, expiresIn } = response;
+      token.accessToken = accessToken;
+      token.expiry = Date.now() + Number(expiresIn);
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
@@ -71,9 +87,15 @@ const nextAuthOptions: NextAuthOptions = {
       }
       account!.access_token = user.accessToken;
       account!.refresh_token = user.refreshToken;
-      account!.expiry = user.expiry;
+      account!.expiresIn = user.expiresIn;
+      account!.deviceID = user.deviceID;
+      account!.rememberMe = user.rememberMe;
       delete user?.accessToken;
       delete user?.refreshToken;
+      delete user?.deviceID;
+      delete user?.rememberMe;
+      delete user?.tokenType;
+      delete user?.expiresIn;
 
       return true;
     }

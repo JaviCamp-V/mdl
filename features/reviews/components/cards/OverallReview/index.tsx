@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { markReviewHelpful, removedHelpfulRating } from '@/features/reviews/services/reviewService';
@@ -23,8 +21,6 @@ interface OverallReviewCardProps {
   review: ExtendOverallReview;
   totalEpisodes?: number;
 }
-
-
 
 const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpisodes }) => {
   const {
@@ -62,6 +58,7 @@ const OverallReviewCard: React.FC<OverallReviewCardProps> = ({ review, totalEpis
         watchStatus={watchStatus}
         episodeWatched={episodeWatched}
         hasCompleted={hasCompleted}
+        totalEpisodes={totalEpisodes}
       />
       <Box sx={{ paddingX: 2, marginTop: 2 }}>
         <ReviewRatingCard

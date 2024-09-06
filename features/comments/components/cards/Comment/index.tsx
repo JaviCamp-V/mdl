@@ -1,7 +1,8 @@
 import React from 'react';
-import { getComments } from '@/features/comments/services/commentService';
+import { getCommentLikeCount, getComments, getUserCommentLikeStatus } from '@/features/comments/services/commentService';
 import CommentType from '@/features/comments/types/enums/CommentType';
 import Comment, { CommentPage } from '@/features/comments/types/interfaces/Comments';
+import { getUserSummary } from '@/features/profile/service/userProfileService';
 import { Box, Grid, Typography } from '@mui/material';
 import Avatar from '@/components/common/Avatar';
 import Link from '@/components/common/Link';
@@ -11,6 +12,8 @@ import { isErrorResponse } from '@/utils/handleError';
 import routes from '@/libs/routes';
 import ViewOtherRepliesButton from '../../buttons/ViewMoreButton';
 import CommentBody from './CommentBody';
+
+
 
 interface CommentCardProps {
   comment: Comment;
@@ -71,8 +74,12 @@ const CommentReplies: React.FC<CommentRepliesProps> = async ({ commentId }) => {
   );
 };
 
-const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
-  const { user, deleted, updatedAt, commentType } = comment;
+const CommentCard: React.FC<CommentCardProps> = async ({ comment }) => {
+  const { userId, deleted, updatedAt, commentType, mention, id } = comment;
+  const user = await getUserSummary(userId);
+  const mentionUser = mention ? await getUserSummary(mention.userId) : null;
+  const totalResponse = await getCommentLikeCount(id);
+  const hasLikedResponse = await getUserCommentLikeStatus(id);
   return (
     <Box
       id={`comment-${comment.id}`}
@@ -87,7 +94,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: '100%' }}>
-        <Avatar src={user.avatarUrl} username={user.username} isDeleted={deleted || !user.enabled} />
+        <Avatar src={user?.avatarUrl!} username={user.username} isDeleted={deleted || !user.enabled} />
         {commentType === CommentType.COMMENT && (
           <Box
             sx={{
@@ -103,7 +110,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
             <Box
               sx={{
                 width: '1px',
-                backgroundColor: '#36383a',
+                backgroundColor: 'hsla(210, 8%, 51%, .13)',
                 height: '95%',
                 borderRadius: '50%'
               }}
@@ -133,7 +140,13 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
             This comment has been deleted
           </Typography>
         ) : (
-          <CommentBody comment={comment} />
+          <CommentBody
+            comment={comment}
+            user={user}
+            mentionUser={mentionUser}
+            likeCount={totalResponse.total}
+            hasUserLiked={Boolean(hasLikedResponse?.hasUserLiked)}
+          />
         )}
         <React.Suspense fallback={<LoadingSkeleton height={'40vh'} />}>
           <CommentReplies commentId={comment.id} />

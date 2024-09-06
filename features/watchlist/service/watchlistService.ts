@@ -19,6 +19,7 @@ import UpdateWatchlistRequest from '../types/interfaces/UpdateWatchlistRequest';
 import WatchlistItems from '../types/interfaces/WatchlistItem';
 import WatchlistRecord from '../types/interfaces/WatchlistRecord';
 
+
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',
@@ -278,11 +279,21 @@ const cacheGetWatchlistRecord = async (id: number): Promise<WatchlistRecord | nu
     return null;
   }
 };
+
+const getUserWatchRecord = async (
+  username: string,
+  mediaType: MediaType,
+  mediaId: number
+): Promise<GeneralWatchlistRecord | undefined> => {
+  const watchlist = await cacheGetWatchlistByUsername(username);
+  return watchlist.find((item) => item.mediaType.toLowerCase() === mediaType && item.mediaId === mediaId);
+};
 export {
   authUpdateWatchlistRecord as updateWatchlistRecord,
   getWatchlist,
   cacheGetWatchlistRecord as getWatchlistRecord,
   authGetWatchlistRecordByMedia as getWatchlistRecordByMedia,
   authDeleteWatchlistRecord as deleteWatchlistRecord,
-  getUserWatchlist
+  getUserWatchlist,
+  getUserWatchRecord
 };

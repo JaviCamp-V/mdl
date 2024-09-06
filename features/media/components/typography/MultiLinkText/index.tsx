@@ -13,7 +13,7 @@ const MultiLinkText: React.FC<MultiLinkTextProps> = ({ links }) => {
       {links.map((link, index, arr) => (
         <React.Fragment key={link.label}>
           <Link key={link.label} href={link.href}>
-            {capitalCase(link.label)}
+            {link.label}
           </Link>
           {index < arr.length - 1 && <Typography sx={{ marginRight: 0.2 }}>,</Typography>}
         </React.Fragment>

@@ -10,7 +10,7 @@ interface RatingsProps extends Field {
   total?: number;
   showInput?: boolean;
 }
-const Ratings: React.FC<RatingsProps> = ({ name, total, label, max, disabled, showInput = true }) => {
+const Ratings: React.FC<RatingsProps> = ({ name, total, label, max, disabled, showInput = true, errorMessages }) => {
   const { control, formState } = useFormContext();
   const [hover, setHover] = React.useState(-1);
 

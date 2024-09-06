@@ -32,7 +32,7 @@ const TVDetailsPage: NextPage<PageProps> = ({ params: { id, slug }, searchParams
         marginTop: { xs: 1, md: 2 }
       }}
     >
-      <ContentContainer mediaId={id} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
+      <ContentContainer mediaId={Number(id)} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
     </Box>
   );
 };

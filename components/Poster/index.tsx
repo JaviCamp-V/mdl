@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
+import { blur_url } from '@/libs/common';
 
 interface PosterProps {
   src: string | null;
@@ -23,9 +24,6 @@ const DramaPoster: React.FC<PosterProps> = ({
   noRadius
 }) => {
   const path = src ? `https://image.tmdb.org/t/p/${size}${src}` : '/static/images/no_poster.jpg';
-  const blurUrl = src
-    ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsa2yqBwAFCAICLICSyQAAAABJRU5ErkJggg=='
-    : undefined;
   return (
     <Link href={`/${mediaType}/${id}`} passHref>
       <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -41,7 +39,7 @@ const DramaPoster: React.FC<PosterProps> = ({
           }}
           fill
           placeholder="blur"
-          blurDataURL={blurUrl}
+          blurDataURL={blur_url}
           priority={priority}
           unoptimized
         />

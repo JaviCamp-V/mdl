@@ -1,11 +1,15 @@
+'use client';
+
 import axios from 'axios';
 
-const urlToFile = async (url: string, filename: string) => {
+const urlToFile = async (url: string | null | undefined) => {
+  if (!url) return null;
+
   try {
     const response = await axios.get(url, { responseType: 'blob' });
     const blob = response.data;
-    const filenameWithExtension = filename.includes('.') ? filename : `${filename}.${url.split('.').pop()}`;
-    return new File([blob], filenameWithExtension, { type: blob.type });
+    const filename = url.substring(url.lastIndexOf('/') + 1);
+    return new File([blob], filename, { type: blob.type });
   } catch (error) {
     return null;
   }

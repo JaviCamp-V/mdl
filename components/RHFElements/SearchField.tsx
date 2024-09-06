@@ -4,13 +4,14 @@ import { color } from '@/libs/common';
 import SearchIcon from '../Icon/SearchIcon';
 import TextField, { TextFieldProps } from './TextField';
 
+
 type SearchFieldProps = TextFieldProps & {
   fieldColor: string;
   borderColor: string;
   onClick: () => void;
 };
 
-const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, onClick, ...props }) => {
+const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, onClick, errorMessages, ...props }) => {
   return (
     <TextField
       size="small"

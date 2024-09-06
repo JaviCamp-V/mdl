@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { updateRecommendationLike } from '@/features/recommendations/service/recommendationService';
-import Recommendation from '@/features/recommendations/types/interface/Recommendation';
+import Recommendation, { RecommendationWithLikes } from '@/features/recommendations/types/interface/Recommendation';
 import { Suggestion } from '@/features/recommendations/types/interface/Suggestion';
 import EditWatchlistButton from '@/features/watchlist/components/buttons/EditWatchlistButton';
 import { useSession } from 'next-auth/react';
@@ -15,6 +15,7 @@ import Link from '@/components/common/Link';
 import Ratings from '@/components/common/Ratings';
 import MediaType from '@/types/enums/IMediaType';
 import routes from '@/libs/routes';
+
 
 interface GroupedSuggestionCardProps {
   suggestion: Suggestion;
@@ -42,7 +43,7 @@ const LikeAction: React.FC<LikeActionProps> = ({
       enqueueSnackbar('Please login to like a recommendation', { variant: 'default' });
       return;
     }
-    const response = await updateRecommendationLike(mediaType, mediaId, recommendationID, !hasUserLiked);
+    const response = await updateRecommendationLike(recommendationID, !hasUserLiked);
     if (response && 'errors' in response) {
       response.errors.forEach((error) => {
         enqueueSnackbar(error.message, { variant: 'error' });
@@ -62,7 +63,14 @@ const LikeAction: React.FC<LikeActionProps> = ({
   );
 };
 
-const RecommendationCard: React.FC<Recommendation> = ({ reason, user, numberOfLikes, hasUserLiked, source, id }) => (
+const RecommendationCard: React.FC<RecommendationWithLikes> = ({
+  reason,
+  user,
+  numberOfLikes,
+  hasUserLiked,
+  source,
+  id
+}) => (
   <Box sx={{ backgroundColor: 'background.default', padding: 2, width: '100%' }}>
     <Typography
       fontSize={14}

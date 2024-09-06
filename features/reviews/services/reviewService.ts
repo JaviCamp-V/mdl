@@ -4,6 +4,7 @@ import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
 import { getContentDetails } from '@/features/media/service/tmdbService';
 import { getTitle } from '@/features/media/utils/tmdbUtils';
+import { getUserSummary } from '@/features/profile/service/userProfileService';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
@@ -13,9 +14,10 @@ import { getSession } from '@/utils/authUtils';
 import { formatStringDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
+import { revalidate } from '@/libs/common';
 import ReviewType from '../types/enums/ReviewType';
 import { ExtendOverallReviewWithMedia } from '../types/interfaces/ExtendReviewResponse';
-import ReviewHelpfulData from '../types/interfaces/ReviewHelpfulData';
+import ReviewHelpfulData, { HelpfulRating } from '../types/interfaces/ReviewHelpfulData';
 import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/ReviewRequest';
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
 
@@ -26,12 +28,13 @@ const endpoints = {
     markHelpful: 'user/reviews/:id/helpful'
   },
   public: {
-    getUserReviews: 'reviews',
+    getUserReviews: 'reviews/user/:userId',
     getRecentReviews: 'reviews/updates',
     getMediaOverallReviews: 'reviews/:mediaType/:mediaId',
     getMediaEpisodeReviews: 'reviews/:mediaId/:season/:episode',
     getReview: 'reviews/:id',
-    getReviewHelpful: 'reviews/:id/helpful'
+    getReviewHelpful: 'reviews/:id/helpful',
+    getUserReviewHelpfulRating: 'reviews/:id/helpful/user/:userId'
   }
 };
 
@@ -98,6 +101,7 @@ const markReviewHelpful = async (id: number, isHelpful: boolean): Promise<Generi
     const session = await getSession();
     const response = await mdlApiClient.post<null, GenericResponse>(endpoint, null, params);
     revalidateTag(`review-helpful-${id}`);
+    revalidateTag(`user-review-helpful-${id}-${session?.user?.userId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -112,7 +116,9 @@ const removedHelpfulRating = async (id: number): Promise<GenericResponse | Error
     logger.info('Removing helpful rating with: %s', id);
     const endpoint = endpoints.user.markHelpful.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponse>(endpoint);
+    const session = await getSession();
     revalidateTag(`review-helpful-${id}`);
+    revalidateTag(`user-review-helpful-${id}-${session?.user?.userId}`);
     return response;
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
@@ -188,10 +194,24 @@ const getReviewHelpful = async (id: number, userId?: number | null): Promise<Rev
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
     logger.error(`Error fetching helpful rating: ${message}`);
-    return { numberOfHelpfulReviews: 0, numberOfUnhelpfulReviews: 0, isHelpful: null };
+    return { numberOfHelpfulReviews: 0, numberOfUnhelpfulReviews: 0 };
   }
 };
 
+const getUserReviewHelpfulRating = async (id: number, userId: number): Promise<HelpfulRating | null> => {
+  try {
+    logger.info('Fetching helpful rating with id: %s userId: %s', id, userId);
+    const endpoint = endpoints.public.getUserReviewHelpfulRating
+      .replace(':id', id.toString())
+      .replace(':userId', userId.toString());
+    const response = await mdlApiClient.get<HelpfulRating>(endpoint);
+    return response;
+  } catch (error: any) {
+    const message = error?.response?.data?.message ?? error?.message;
+    logger.error(`Error fetching helpful rating: ${message}`);
+    return null;
+  }
+};
 const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[]> => {
   try {
     logger.info('Fetching recent reviews');
@@ -199,13 +219,16 @@ const getRecentReviews = async (): Promise<ExtendOverallReviewWithMedia[]> => {
     const response = await mdlApiClient.get<OverallReview[]>(endpoint);
     const withMedia = await Promise.all(
       response.map(async (review) => {
+        const user = await getUserSummary(review.userId);
+
         const type = review.mediaType.toLowerCase() as MediaType.tv | MediaType.movie;
         const details = await getContentDetails(type, review.mediaId);
 
-        if (!details) return { ...review, poster_path: null, title: 'Unknown', origin: 'Unknown' };
+        if (!details) return { ...review, poster_path: null, title: 'Unknown', origin: 'Unknown', user: user };
         const title = getTitle({ ...details, media_type: type } as any);
         const country = details.origin_country.length ? details.origin_country[0] : 'Unknown';
-        return { ...review, poster_path: details.poster_path, title, origin: country };
+
+        return { ...review, poster_path: details.poster_path, title, origin: country, user: user };
       })
     );
     return withMedia;
@@ -233,7 +256,8 @@ const getUserReviews = async (username: string, reviewType: ReviewType): Promise
 const cacheGetMediaOverallReviews = async (mediaType: MediaType.tv | MediaType.movie, mediaId: number) => {
   try {
     const getCached = unstable_cache(getMediaOverallReviews, [], {
-      tags: [`overall-reviews-${mediaType}-${mediaId}`]
+      tags: [`overall-reviews-${mediaType}-${mediaId}`],
+      revalidate
     });
 
     return await getCached(mediaType, mediaId);
@@ -246,7 +270,8 @@ const cacheGetMediaOverallReviews = async (mediaType: MediaType.tv | MediaType.m
 const cacheGetMediaEpisodeReviews = async (mediaId: number, season: number, episode: number) => {
   try {
     const getCached = unstable_cache(getMediaEpisodeReviews, [], {
-      tags: [`episode-reviews-${mediaId}-${season}-${episode}`]
+      tags: [`episode-reviews-${mediaId}-${season}-${episode}`],
+      revalidate
     });
     return await getCached(mediaId, season, episode);
   } catch (error: any) {
@@ -258,7 +283,8 @@ const cacheGetMediaEpisodeReviews = async (mediaId: number, season: number, epis
 const cacheGetReview = async (id: number) => {
   try {
     const getCached = unstable_cache(getReview, [], {
-      tags: [`review-${id}`]
+      tags: [`review-${id}`],
+      revalidate
     });
     return await getCached(id);
   } catch (error: any) {
@@ -270,7 +296,8 @@ const cacheGetReview = async (id: number) => {
 const cacheGetReviewHelpful = async (id: number) => {
   try {
     const getCached = unstable_cache(getReviewHelpful, [], {
-      tags: [`review-helpful-${id}`]
+      tags: [`review-helpful-${id}`],
+      revalidate
     });
     const session = await getSession();
     const userId = session?.user?.userId;
@@ -278,6 +305,21 @@ const cacheGetReviewHelpful = async (id: number) => {
   } catch (error: any) {
     logger.error('Error fetching comments: %s', error.message);
     return { numberOfHelpfulReviews: 0, numberOfUnhelpfulReviews: 0, isHelpful: null };
+  }
+};
+
+const cacheGetUserReviewHelpfulRating = async (id: number) => {
+  try {
+    const session = await getSession();
+    if (!session?.user?.userId) return null;
+    const getCached = unstable_cache(getUserReviewHelpfulRating, [], {
+      tags: [`user-review-helpful-${id}-${session?.user?.userId}`],
+      revalidate
+    });
+    return await getCached(id, session?.user?.userId);
+  } catch (error: any) {
+    logger.error('Error fetching comments: %s', error.message);
+    return null;
   }
 };
 
@@ -306,6 +348,7 @@ export {
   cacheGetMediaEpisodeReviews as getMediaEpisodeReviews,
   cacheGetReview as getReview,
   cacheGetReviewHelpful as getReviewHelpful,
+  cacheGetUserReviewHelpfulRating as getUserReviewHelpfulRating,
   cacheGetRecentReviews as getRecentReviews,
   cacheGetUserReviews as getUserReviews
 };

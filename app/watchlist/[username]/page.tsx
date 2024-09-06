@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
+import { getUserProfile } from '@/features/profile/service/userProfileService';
 import columns from '@/features/watchlist/components/tables/watchlist/columns';
 import { getUserWatchlist } from '@/features/watchlist/service/watchlistService';
 import WatchlistItems from '@/features/watchlist/types/interfaces/WatchlistItem';
@@ -28,7 +29,12 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, searchParams: { status } }) => {
   const response = await getUserWatchlist(username);
   const session = await getSession();
+  let displayName = session?.user?.displayName;
   const isOwner = session?.user?.username === username;
+  if (isOwner) {
+    const profile = await getUserProfile(username);
+    displayName = profile?.displayName ?? username;
+  }
   const all = 'allDramasAndFilms';
   const sections = Object.values(WatchStatus).reduce(
     (acc, status) => {
@@ -70,7 +76,7 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
           sx={{ textDecoration: 'none' }}
           passHref
         >
-          {username}{' '}
+          {displayName}{' '}
         </Typography>
         {`'s Watchlist`}
       </Typography>
