@@ -1,16 +1,15 @@
 import React from 'react';
+import Link from 'next/link';
 import Genre from '@/features/media/types/interfaces/Genre';
-import { BorderColor } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
+import MediaTitle from '../MediaTitle';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';
-import MediaTitle from '../MediaTitle';
-import Link from 'next/link';
 
 interface MediaCardProps {
   id: number;
@@ -113,7 +112,13 @@ const MediaCard: React.FC<MediaCardProps> = ({
           }}
         >
           <Box>
-              <MediaTitle  mediaType={mediaType} id={id} title={`${title} (${year})`} fontSize={16} fontWeight={"bolder"} />    
+            <MediaTitle
+              mediaType={mediaType}
+              id={id}
+              title={`${title} (${year})`}
+              fontSize={16}
+              fontWeight={'bolder'}
+            />
             <Typography fontSize={13}>
               {`${originalTitle} (${countries.find((c) => c.code === country)?.nationality} ${mediaType.toLowerCase() === 'tv' ? 'Drama' : 'Movie'})`}
             </Typography>

@@ -20,7 +20,6 @@ import UpdateWatchlistRequest from '../types/interfaces/UpdateWatchlistRequest';
 import WatchlistItems from '../types/interfaces/WatchlistItem';
 import WatchlistRecord from '../types/interfaces/WatchlistRecord';
 
-
 const endpoints = {
   watchlistByUsername: 'watchlist/{username}',
   userWatchlist: 'user/watchlist',
@@ -262,7 +261,6 @@ const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
     return [];
   }
 };
-
 
 const cacheGetWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | ErrorResponse> => {
   try {

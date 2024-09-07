@@ -26,7 +26,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ content, posterStyle })
     genres,
     origin_country
   } = content;
-  console.log(content);
   const year = release_date ? formatStringDate(release_date).getFullYear() : 0;
   const country = origin_country.map((c) => countries.find((country) => (country.code = c))?.fullName ?? c).join(', ');
   return (

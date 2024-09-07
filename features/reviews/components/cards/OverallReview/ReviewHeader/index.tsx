@@ -83,7 +83,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
               </Typography>
               {' people found this review helpful'}
             </Typography>
-            {(isHelpful !== null && isHelpful !== undefined) && (
+            {isHelpful !== null && isHelpful !== undefined && (
               <Iconify
                 icon={`mdi:${isHelpful ? 'check' : 'close'}-circle-outline`}
                 color={isHelpful ? 'success' : 'error'}

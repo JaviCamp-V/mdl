@@ -16,7 +16,15 @@ import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/I
 import MovieDetails from '../types/interfaces/MovieDetails';
 import Network, { NetworksSearchResponse } from '../types/interfaces/Network';
 import PersonDetails, { Credits, PersonRoles } from '../types/interfaces/People';
-import SearchResponse, { MediaSearchResult, MovieSearchResponse, MovieSearchResult, PersonSearchResponse, PersonSearchResult, TVSearchResponse, TVSearchResult } from '../types/interfaces/SearchResponse';
+import SearchResponse, {
+  MediaSearchResult,
+  MovieSearchResponse,
+  MovieSearchResult,
+  PersonSearchResponse,
+  PersonSearchResult,
+  TVSearchResponse,
+  TVSearchResult
+} from '../types/interfaces/SearchResponse';
 import SeasonDetails, { EpisodeDetails } from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags, TagsSearchResponse } from '../types/interfaces/Tags';
@@ -24,7 +32,6 @@ import TitleResponse, { Title } from '../types/interfaces/Title';
 import TranslationResponse, { Translation } from '../types/interfaces/Translation';
 import VideoResults from '../types/interfaces/VideosResponse';
 import WatchProviderResponse from '../types/interfaces/WatchProvider';
-
 
 const endpoints = {
   search_person: 'search/person',
@@ -232,7 +239,11 @@ const getSeasonDetails = async (id: number, seasonNumber: number): Promise<Seaso
  * @param {number} seasonNumber
  * @param {number} episodeNumber
  */
-const getEpisodeDetails = async (id: number, seasonNumber: number, episodeNumber: number): Promise<EpisodeDetails | null> => {
+const getEpisodeDetails = async (
+  id: number,
+  seasonNumber: number,
+  episodeNumber: number
+): Promise<EpisodeDetails | null> => {
   try {
     logger.info(`Fetching episode ${episodeNumber} for season ${seasonNumber} for TV show with id ${id}`);
     const endpoint =
@@ -246,7 +257,7 @@ const getEpisodeDetails = async (id: number, seasonNumber: number, episodeNumber
     logger.error(error.message);
     return null;
   }
-}
+};
 
 /**
  * Fetches a person's combined credits
@@ -499,8 +510,6 @@ const getContentDetails = async <T extends MediaType.tv | MediaType.movie>(
 // !Important only use if including watch record is not needed
 const getContentDetailsCached = unstable_cache(getContentDetails, [], { revalidate: 3600 });
 
-
-
 const getContentSummary = async (
   mediaType: MediaType.tv | MediaType.movie,
   id: number,
@@ -530,7 +539,6 @@ const getContentSummary = async (
     genres
   };
 };
-
 
 /**
  * Fetches details for a movie by its id

@@ -10,7 +10,6 @@ import ProductionCountry from './ProductionCountry';
 import { Episode, Season } from './Season';
 import { Language } from './Translation';
 
-
 export default interface TVDetails extends BaseShowDetails {
   created_by: Creator[];
   episode_run_time: number[];

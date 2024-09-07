@@ -1,11 +1,11 @@
+/* eslint-disable react/self-closing-comp */
 import React from 'react';
-import { Circle } from '@mui/icons-material';
-import { Box, Card, CardContent, Divider, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 const ChartToolTip: React.FC = (props: any) => {
-  const { active, payload, label, labelFormatter, formatter, ...rest } = props;
+  const { active, payload, label, labelFormatter, formatter } = props;
 
-  if (!active || !payload || !payload.length) return <React.Fragment />;
+  if (!active || !payload || !payload.length) return;
 
   return (
     <Paper

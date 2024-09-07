@@ -4,7 +4,6 @@ import MuiAvatar, { AvatarProps } from '@mui/material/Avatar';
 import Iconify from '@/components/Icon/Iconify';
 import { blur_url } from '@/libs/common';
 
-
 const stringToColor = (string: string): string => {
   /* eslint-disable no-bitwise */
 

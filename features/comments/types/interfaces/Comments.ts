@@ -3,7 +3,6 @@ import UserSummary from '@/types/common/UserSummary';
 import CommentType from '../enums/CommentType';
 import AddComment from './AddComment';
 
-
 export interface CommentMeta {
   commentType: CommentType;
   parentId: number;

@@ -1,5 +1,9 @@
 import React from 'react';
-import { getCommentLikeCount, getComments, getUserCommentLikeStatus } from '@/features/comments/services/commentService';
+import {
+  getCommentLikeCount,
+  getComments,
+  getUserCommentLikeStatus
+} from '@/features/comments/services/commentService';
 import CommentType from '@/features/comments/types/enums/CommentType';
 import Comment, { CommentPage } from '@/features/comments/types/interfaces/Comments';
 import { getUserSummary } from '@/features/profile/service/userProfileService';
@@ -12,8 +16,6 @@ import { isErrorResponse } from '@/utils/handleError';
 import routes from '@/libs/routes';
 import ViewOtherRepliesButton from '../../buttons/ViewMoreButton';
 import CommentBody from './CommentBody';
-
-
 
 interface CommentCardProps {
   comment: Comment;

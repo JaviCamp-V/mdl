@@ -5,7 +5,6 @@ import GenericResponse from '@/types/common/GenericResponse';
 import Values from '@/types/common/Values';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
-
 /**
  * Default configuration for Axios.
  */

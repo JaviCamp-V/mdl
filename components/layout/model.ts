@@ -1,6 +1,5 @@
 import routes from '@/libs/routes';
 
-
 const model = {
   logo: '/static/images/logo_w.webp',
   name: 'MyDramaList',

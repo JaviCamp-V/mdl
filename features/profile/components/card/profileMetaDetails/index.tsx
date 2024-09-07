@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatDateToDistance, formatShortDate, formatStringDate } from '@/utils/formatters';
 
-
 interface PersonDetailsProps {
   lastOnlineAt: string;
   joinedAt: string;

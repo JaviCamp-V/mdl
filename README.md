@@ -1,6 +1,6 @@
 # MyDramalist Clone
 
-This project is a clone of the website [MyDramalist](https://mydramalist.com/). It allows users to search for their favorite dramas and movies, read reviews, and create a watchlist of shows they want to watch. Note links in the navbar and footer are implemented as placeholders and do not lead to actual pages, check the features section for more information on the implemented features. 
+This project is a clone of the website [MyDramalist](https://mydramalist.com/). It allows users to search for their favorite dramas and movies, read reviews, and create a watchlist of shows they want to watch. Note links in the navbar and footer are implemented as placeholders and do not lead to actual pages, check the features section for more information on the implemented features.
 
 ## Uses and Dependencies
 

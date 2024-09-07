@@ -19,7 +19,6 @@ import removeProperty from '@/utils/removeProperty';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
 
-
 interface WatchlistRecordProps {
   open: boolean;
   onClose: () => void;

@@ -4,7 +4,6 @@ import { color } from '@/libs/common';
 import SearchIcon from '../Icon/SearchIcon';
 import TextField, { TextFieldProps } from './TextField';
 
-
 type SearchFieldProps = TextFieldProps & {
   fieldColor: string;
   borderColor: string;

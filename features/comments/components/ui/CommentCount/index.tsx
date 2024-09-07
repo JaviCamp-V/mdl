@@ -4,7 +4,6 @@ import CommentType from '@/features/comments/types/enums/CommentType';
 import { Typography } from '@mui/material';
 import { isErrorResponse } from '@/utils/handleError';
 
-
 interface CommentCountProps {
   commentType: CommentType;
   parentId: number;

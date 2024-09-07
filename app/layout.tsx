@@ -12,7 +12,6 @@ import NextAuthSessionProvider from '@/components/wrapper/NextAuthSessionProvide
 import NonStickSnackbarProvider from '@/components/wrapper/NonStickSnackbarProvider';
 import { getServerActionSession, getSession } from '@/utils/authUtils';
 
-
 // TODO: Find another theme solution/ there is a lag when looading the page
 const MuiThemeProvider = dynamic(() => import('@/components/wrapper/MuiThemeProvider'), { ssr: false });
 

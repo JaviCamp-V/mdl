@@ -12,7 +12,6 @@ import Iconify from '@/components/Icon/Iconify';
 import Avatar from '@/components/common/Avatar';
 import { userRoutes } from '@/libs/routes';
 
-
 interface ProfileDropdownProps {
   username: string;
   avatarUrl?: string;

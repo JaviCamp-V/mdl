@@ -46,7 +46,7 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
             onClick={() => setCurrentTranslation(translation)}
             sx={{
               padding: 0.5,
-                            textTransform: 'capitalize',
+              textTransform: 'capitalize'
             }}
           >
             {translation.name}
@@ -57,14 +57,14 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
             variant="contained"
             color="info"
             onClick={() => setShowAll(!showAll)}
-            sx={{          
+            sx={{
               textTransform: 'capitalize',
               padding: 0.5
             }}
           >
             <Iconify
               icon={showAll ? 'mdi:arrow-collapse' : 'mdi:dots-horizontal'}
-              color={"inherit"}
+              color={'inherit'}
               width={20}
               height={20}
             />
