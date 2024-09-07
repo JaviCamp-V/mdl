@@ -29,7 +29,7 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const { comments } = searchParams ?? {};
   const tabs = [
     { label: 'Details', href: '' },
-    { label: 'Episode Guide', href: 'episodes' },
+    { label: 'Episode Guide', href: 'episode-guide' },
     { label: 'Cast & Crew', href: 'credits' },
     { label: 'Reviews', href: 'reviews' },
     { label: 'Recommendations', href: 'recommendations' },
@@ -52,7 +52,14 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const formattedYear = year ? formatStringDate(year).getFullYear() : 'TBA';
 
   const TabPanel = {
-    episodes: <EpisodeGuide id={mediaId} season_number={1} name={anyDetails.name} />,
+    'episode-guide': (
+      <EpisodeGuide
+        id={mediaId}
+        name={anyDetails.name}
+        number_of_season={anyDetails.number_of_seasons ?? 0}
+        episode={sections?.length && sections.length > 1 ? sections[1] : undefined}
+      />
+    ),
     credits: <Credits mediaId={mediaId} mediaType={mediaType} view="all" />,
     reviews: (
       <ReviewDetails
@@ -85,11 +92,12 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
       external_ids={details.external_ids}
       origin_country={details.origin_country}
       last_air_date={anyDetails?.last_air_date}
-      networks={anyDetails?.networks ?? []}
+      networks={details?.production_companies ?? []}
       runtime={mediaType === MediaType.movie ? anyDetails.runtime : anyDetails.episode_run_time}
       overview={details.overview}
       vote_average={details.vote_average}
       vote_count={details.vote_count}
+      recordRating={details.recordRating}
       original_title={mediaType === MediaType.movie ? anyDetails.original_title : anyDetails.original_name}
     />
   );

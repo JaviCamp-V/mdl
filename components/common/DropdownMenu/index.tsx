@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ClickAwayListener } from '@mui/material';
+import { kMaxLength } from 'buffer';
+import { Box, ClickAwayListener } from '@mui/material';
 import Menu from '@mui/material/Menu';
 
 interface DropDownMenuProps {
@@ -56,7 +57,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ children, menuItems }) => {
           {menuItems
             .filter((menuItem) => menuItem)
             .map((menuItem, index) => (
-              <React.Fragment key={`menu-option-${index + 1}`}>{menuItem}</React.Fragment>
+              <Box key={`menu-option-${index + 1}`}>{menuItem}</Box>
             ))}
         </Menu>
       </React.Fragment>

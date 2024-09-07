@@ -10,8 +10,6 @@ import Iconify from '@/components/Icon/Iconify';
 import { isErrorResponse } from '@/utils/handleError';
 
 interface LikeCommentButtonProps {
-  commentType: CommentType;
-  parentId: number;
   commentId: number;
   likeCount: number;
   isCommentOwner: boolean;
@@ -21,8 +19,6 @@ interface LikeCommentButtonProps {
 const LikeCommentButton: React.FC<LikeCommentButtonProps> = ({
   likeCount,
   hasUserLiked,
-  commentType,
-  parentId,
   commentId,
   isAuthenticated,
   isCommentOwner
@@ -39,7 +35,7 @@ const LikeCommentButton: React.FC<LikeCommentButtonProps> = ({
       return;
     }
     setLoading(true);
-    const response = await updateCommentLikes(commentType, parentId, commentId, !hasUserLiked);
+    const response = await updateCommentLikes(commentId, !hasUserLiked);
     setLoading(false);
     if (isErrorResponse(response)) {
       response.errors.forEach((error) => {

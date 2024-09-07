@@ -83,6 +83,7 @@ const columns: DataColumn[] = [
   {
     field: 'episodeWatched',
     headerName: 'Progress',
+    sx: { display: { xs: 'none', md: 'table-cell' } },
     format: (_, values) => `${values.episodeWatched}/${values.totalEpisodes}`
   }
 ];

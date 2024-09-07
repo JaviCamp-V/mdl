@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComments, getCommentsCount } from '@/features/comments/services/commentService';
+import { getCommentsCount } from '@/features/comments/services/commentService';
 import CommentType from '@/features/comments/types/enums/CommentType';
 import { Typography } from '@mui/material';
 import { isErrorResponse } from '@/utils/handleError';

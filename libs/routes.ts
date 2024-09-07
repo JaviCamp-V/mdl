@@ -2,7 +2,7 @@ export const userRoutes = {
   profile: '/profile/{username}',
   watchlist: '/watchlist/{username}',
   custom_lists: '/profile/{username}/lists',
-  settings: 'account/settings'
+  settings: '/profile/settings'
 };
 
 const routes = {

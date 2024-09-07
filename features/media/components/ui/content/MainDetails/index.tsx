@@ -33,6 +33,7 @@ interface MainDetailsProps extends MediaDetailsProps {
   vote_count: number;
   number_of_watchers?: number;
   number_of_reviews?: number;
+  recordRating: number | null;
   original_title: string | null;
 }
 const MainDetails: React.FC<MainDetailsProps> = ({
@@ -56,6 +57,7 @@ const MainDetails: React.FC<MainDetailsProps> = ({
   vote_count,
   number_of_watchers,
   number_of_reviews,
+  recordRating,
   original_title
 }) => {
   return (
@@ -81,6 +83,7 @@ const MainDetails: React.FC<MainDetailsProps> = ({
           vote_count={vote_count}
           number_of_reviews={number_of_reviews}
           number_of_watchers={number_of_watchers}
+          recordRating={recordRating ?? 0}
         />
         <MediaBackground mediaId={mediaId} mediaType={mediaType} overview={overview} />
         <ContentTitles original_title={original_title} mediaType={mediaType} mediaId={mediaId} />

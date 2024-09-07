@@ -37,7 +37,7 @@ const SearchPage: NextPage<PageProps> = async ({ searchParams }) => {
           <SearchContainer searchParams={searchParams} />
         </React.Suspense>
       </Box>
-      <Box sx={{ width: { xs: '100%', md: '25%' }, order: { xs: 1, md: 2 } }}>
+      <Box sx={{ width: { xs: '100%', md: '30%' }, order: { xs: 1, md: 2 } }}>
         <AdvancedSearchForm />
       </Box>
     </Box>

@@ -11,6 +11,7 @@ import logger from '@/utils/logger';
 import countries from '@/libs/countries';
 import { without_genres } from '@/libs/genres';
 import ContentRatingResponse, { ContentRating } from '../types/interfaces/ContentRating';
+import ContentSummary from '../types/interfaces/ContentSummary';
 import { MediaImagesResponse, PersonImagesResponse } from '../types/interfaces/ImageResponse';
 import MovieDetails from '../types/interfaces/MovieDetails';
 import Network, { NetworksSearchResponse } from '../types/interfaces/Network';
@@ -24,7 +25,7 @@ import SearchResponse, {
   TVSearchResponse,
   TVSearchResult
 } from '../types/interfaces/SearchResponse';
-import SeasonDetails from '../types/interfaces/Season';
+import SeasonDetails, { EpisodeDetails } from '../types/interfaces/Season';
 import TVDetails from '../types/interfaces/TVDetails';
 import TagsResponse, { Tags, TagsSearchResponse } from '../types/interfaces/Tags';
 import TitleResponse, { Title } from '../types/interfaces/Title';
@@ -233,6 +234,32 @@ const getSeasonDetails = async (id: number, seasonNumber: number): Promise<Seaso
 };
 
 /**
+ * Fetches a episode's details for a TV show
+ * @param {number} id
+ * @param {number} seasonNumber
+ * @param {number} episodeNumber
+ */
+const getEpisodeDetails = async (
+  id: number,
+  seasonNumber: number,
+  episodeNumber: number
+): Promise<EpisodeDetails | null> => {
+  try {
+    logger.info(`Fetching episode ${episodeNumber} for season ${seasonNumber} for TV show with id ${id}`);
+    const endpoint =
+      `${MediaType.tv}/${endpoints.details}/${endpoints.episode.replace(':seasonNumber', seasonNumber.toString()).replace(':episodeNumber', episodeNumber.toString())}`.replace(
+        ':id',
+        id.toString()
+      );
+    const response = await tmdbClient.get<EpisodeDetails>(endpoint);
+    return response;
+  } catch (error: any) {
+    logger.error(error.message);
+    return null;
+  }
+};
+
+/**
  * Fetches a person's combined credits
  * @param {number} id
  * @returns {Promise<PersonRoles>}
@@ -416,6 +443,7 @@ const getProvidersCache = unstable_cache(getProviders, [], { revalidate });
 const getVideosCache = unstable_cache(getVideos, [], { revalidate });
 const getImagesCache = unstable_cache(getImages, [], { revalidate });
 const getSeasonDetailsCache = unstable_cache(getSeasonDetails, [], { revalidate });
+const getEpisodeDetailsCache = unstable_cache(getEpisodeDetails, [], { revalidate });
 const getPersonRolesCache = unstable_cache(getPersonRoles, [], { revalidate });
 const getRolesCache = unstable_cache(getRoles, [], { revalidate });
 const getKeywordDetailsCache = unstable_cache(getKeywordDetails, [], { revalidate });
@@ -426,15 +454,6 @@ const getMediaDetailsCache = unstable_cache(getMediaDetails, [], { revalidate })
 // const getSearchResultsByTypeCache = unstable_cache(getSearchResultsByType, [], { revalidate });
 
 // Specific functions
-/**
- * Check if the person is born in an Asian country based on the countriesConfig
- * @param {PersonSearchResult | PersonDetails} person
- * @returns {boolean}
- */
-const isAsian = ({ place_of_birth }: PersonSearchResult | PersonDetails): boolean => {
-  const asianCountries = countries.map((country) => country.fullName?.toLowerCase());
-  return !place_of_birth || asianCountries.some((c) => place_of_birth.toLowerCase().includes(c));
-};
 
 /**
  * Check if the media is an Asian TV show or movie based on the countriesConfig and not a reality show, talk show, or animated
@@ -490,6 +509,36 @@ const getContentDetails = async <T extends MediaType.tv | MediaType.movie>(
 
 // !Important only use if including watch record is not needed
 const getContentDetailsCached = unstable_cache(getContentDetails, [], { revalidate: 3600 });
+
+const getContentSummary = async (
+  mediaType: MediaType.tv | MediaType.movie,
+  id: number,
+  includeWatchRecord?: boolean
+): Promise<ContentSummary | null> => {
+  const lowerCaseMediaType = mediaType.toLowerCase() as MediaType.tv | MediaType.movie;
+  const content = includeWatchRecord
+    ? await getContentDetails(lowerCaseMediaType, id, includeWatchRecord)
+    : await getContentDetailsCached(lowerCaseMediaType, id);
+  if (!content) return null;
+  const { poster_path, overview, vote_average, genres, origin_country, recordId } = content;
+  const anyContent = content as any;
+  const title = anyContent.title ?? anyContent.name;
+  const original_title = anyContent.original_title ?? anyContent.original_name;
+  const release_date = anyContent.release_date ?? anyContent.first_air_date;
+  return {
+    mediaId: id,
+    mediaType: lowerCaseMediaType,
+    title,
+    poster_path,
+    vote_average,
+    release_date,
+    overview,
+    original_title,
+    origin_country,
+    recordId,
+    genres
+  };
+};
 
 /**
  * Fetches details for a movie by its id
@@ -864,6 +913,7 @@ export {
   getVideosCache as getVideos,
   getImagesCache as getImages,
   getSeasonDetailsCache as getSeasonDetails,
+  getEpisodeDetailsCache as getEpisodeDetails,
   getPersonRolesCache as getPersonRoles,
   getRolesCache as getRoles,
   getKeywordDetailsCache as getKeywordDetails,
@@ -875,5 +925,6 @@ export {
   getDiscoverType,
   getContentDetails,
   getSearchContent,
-  getSearchResults
+  getSearchResults,
+  getContentSummary
 };

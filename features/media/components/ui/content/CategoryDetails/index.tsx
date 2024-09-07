@@ -17,11 +17,11 @@ const ContentCategoryDetail: React.FC<ContentCategoryDetailProps> = async ({ med
   const tags = await getTags(mediaType, mediaId);
 
   const tagLinks = tags?.map((tag) => ({
-    label: tag.name,
+    label: capitalCase(tag.name),
     href: `${routes.search}?type=${mediaType}&with_keywords=${tag.id}_${tag.name}`
   }));
   const genreLinks = genres?.map((genre) => ({
-    label: genre.name,
+    label: capitalCase(genre.name),
     href: `${routes.search}?type=${mediaType}&with_genres=${genre.id}`
   }));
   const categories = { genres: genreLinks, tags: tagLinks };

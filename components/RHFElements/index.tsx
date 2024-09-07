@@ -1,13 +1,17 @@
+import { RiceBowl } from '@mui/icons-material';
 import { Field } from '@/types/common/IForm';
 import AutoCompleteField from './AutoCompleteField';
 import CheckBoxField from './CheckBoxField';
 import DatePickerField from './DatePickerField';
+import FileUpload from './FIleUpload';
 import GroupField from './GroupField';
+import ImageUpload from './ImageUpload';
 import MediaField from './MediaField';
 import MultiSearchField from './MultiSearchField';
 import PasswordField from './PasswordField';
 import RatingsField from './RatingsField';
 import ResponsiveSearchField from './ResponsiveSearchField';
+import RichTextField from './RichTextField';
 import SelectField from './SelectField';
 import SliderField from './SliderField';
 import TextField from './TextField';
@@ -26,7 +30,10 @@ const RHFElements = {
   media_select: MediaField,
   multi_search: MultiSearchField,
   group: GroupField,
-  slider: SliderField
+  slider: SliderField,
+  file: FileUpload,
+  image: ImageUpload,
+  rich_text: RichTextField
 };
 
 export type RHFElementsType = keyof typeof RHFElements;

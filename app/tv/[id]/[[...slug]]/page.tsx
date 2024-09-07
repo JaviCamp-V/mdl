@@ -21,18 +21,18 @@ export const generateMetadata = async ({ params, searchParams }: PageProps): Pro
     description: response?.overview ?? ''
   };
 };
-const TVDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams }) => {
+const TVDetailsPage: NextPage<PageProps> = ({ params: { id, slug }, searchParams }) => {
   return (
     <Box
       sx={{
-        paddingY: { xs: 2, md: 4 },
-        paddingX: { xs: 1, md: 4 },
-        marginX: { xs: 1, lg: 8 },
+        paddingY: { xs: 0.5, md: 4 },
+        paddingX: { xs: 0.5, md: 4 },
+        marginX: { xs: 0.5, sm: 1, lg: 8 },
         backgroundColor: 'background.default',
-        marginTop: 2
+        marginTop: { xs: 1, md: 2 }
       }}
     >
-      <ContentContainer mediaId={id} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
+      <ContentContainer mediaId={Number(id)} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
     </Box>
   );
 };

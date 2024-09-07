@@ -7,9 +7,10 @@ import '@fontsource/roboto/700.css';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import MainLayout from '@/components/layout';
+import HeartBeatWrapper from '@/components/wrapper/HeartBeatWrapper';
 import NextAuthSessionProvider from '@/components/wrapper/NextAuthSessionProvider';
 import NonStickSnackbarProvider from '@/components/wrapper/NonStickSnackbarProvider';
-import { getSession } from '@/utils/authUtils';
+import { getServerActionSession, getSession } from '@/utils/authUtils';
 
 // TODO: Find another theme solution/ there is a lag when looading the page
 const MuiThemeProvider = dynamic(() => import('@/components/wrapper/MuiThemeProvider'), { ssr: false });
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 
 type Props = { children: React.ReactNode };
 const RootLayout: React.FC<Props> = async ({ children }) => {
-  const session = await getSession();
+  const session = await getServerActionSession();
   return (
     <html lang="en" suppressHydrationWarning>
       <body style={{ margin: 0, padding: 0 }}>
@@ -35,7 +36,9 @@ const RootLayout: React.FC<Props> = async ({ children }) => {
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <MuiThemeProvider>
                 <NonStickSnackbarProvider>
-                  <MainLayout>{children}</MainLayout>
+                  <MainLayout>
+                    <HeartBeatWrapper>{children}</HeartBeatWrapper>
+                  </MainLayout>
                 </NonStickSnackbarProvider>
               </MuiThemeProvider>
             </AppRouterCacheProvider>

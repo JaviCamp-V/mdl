@@ -15,7 +15,10 @@ export type RHFElementsType =
   | 'slider'
   | 'group'
   | 'radio'
-  | 'multi_search';
+  | 'multi_search'
+  | 'file'
+  | 'image'
+  | 'rich_text';
 
 interface Optionable {
   options?: { value: any; label: string; disabled?: boolean }[];
@@ -67,6 +70,7 @@ export interface Field extends CheckboxField, RatingsField, DateField, Optionabl
   InputProps?: any;
   showLabel?: boolean;
   fields?: { [key: string]: Field };
+  [key: string]: any;
 }
 
 export interface FieldGroup extends Field {

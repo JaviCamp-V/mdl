@@ -34,7 +34,6 @@ const ItemPagination: React.FC<ItemPaginationProps> = ({ totalItems, itemsPerPag
           <PaginationItem
             {...item}
             sx={{
-              color: '#fff',
               margin: 0, // Remove margin,
               borderColor: 'hsla(210, 8%, 51%, .13)',
               borderRadius: 0,
@@ -44,9 +43,9 @@ const ItemPagination: React.FC<ItemPaginationProps> = ({ totalItems, itemsPerPag
                 backgroundColor: 'primary.main',
                 color: 'primary.contrastText'
               },
-              '&:hover': {
-                backgroundColor: 'primary.light'
-              },
+              // '&:hover': {
+              //   backgroundColor: 'primary.light'
+              // },
               '&.MuiPaginationItem-previousNext': {
                 '& .MuiSvgIcon-root': {
                   fill: 'primary.main'

@@ -40,16 +40,13 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
         {translations.slice(0, showAll ? translations.length - 1 : 3).map((translation) => (
           <Button
             key={translation.iso_639_1}
-            variant="outlined"
+            variant="contained"
+            color="info"
+            disabled={translation?.iso_639_1 === currentTranslation?.iso_639_1}
             onClick={() => setCurrentTranslation(translation)}
             sx={{
               padding: 0.5,
-              color: color,
-              borderColor: '#606266',
-              textTransform: 'capitalize',
-              backgroundColor: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? '#1c1c1d' : '#3a3b3c',
-              pointerEvents: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? 'none' : 'auto',
-              cursor: translation?.iso_639_1 === currentTranslation?.iso_639_1 ? 'default' : 'pointer'
+              textTransform: 'capitalize'
             }}
           >
             {translation.name}
@@ -57,19 +54,17 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
         ))}
         {translations.length > 3 && (
           <Button
-            variant="outlined"
+            variant="contained"
+            color="info"
             onClick={() => setShowAll(!showAll)}
             sx={{
-              color: color,
-              borderColor: '#606266',
               textTransform: 'capitalize',
-              backgroundColor: showAll ? '#1c1c1d' : '#3a3b3c',
               padding: 0.5
             }}
           >
             <Iconify
               icon={showAll ? 'mdi:arrow-collapse' : 'mdi:dots-horizontal'}
-              color={color}
+              color={'inherit'}
               width={20}
               height={20}
             />

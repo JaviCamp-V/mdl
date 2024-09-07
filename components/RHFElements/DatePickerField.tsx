@@ -6,7 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Field } from '@/types/common/IForm';
 
 interface DatePickerFieldProps extends Field {}
-const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, maxDate, minDate, ...rest }) => {
+const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, maxDate, minDate, sx, errorMessages, ...rest }) => {
   const { control } = useFormContext();
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -24,6 +24,9 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, maxDate, minDat
               field.onChange(date);
             }}
             slotProps={{
+              actionBar: {
+                actions: ['clear']
+              },
               textField: {
                 helperText: error ? error.message : null,
                 error: !!error,
@@ -73,7 +76,8 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({ name, maxDate, minDat
                       borderColor: 'background.paper' // Border color when focused
                       // borderRight: 'none'
                     }
-                  }
+                  },
+                  ...sx
                 }
               }
             }}

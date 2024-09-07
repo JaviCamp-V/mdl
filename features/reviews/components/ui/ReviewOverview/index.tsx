@@ -1,10 +1,10 @@
 import React from 'react';
-import Link from 'next/link';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@/components/common/Divider';
+import Link from '@/components/common/Link';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import OverallReviewCard from '../../cards/OverallReview';
 import NoReviews from '../NoReview';
@@ -28,10 +28,16 @@ const ReviewOverview: React.FC<ReviewsSummaryProps> = ({ reviews, mediaId, media
         <Typography fontSize={16} fontWeight={700} lineHeight={1}>
           Reviews
         </Typography>
-        <Link href={`/${mediaType}/${mediaId}/reviews/new`} style={{ textDecoration: 'none' }} passHref>
-          <Typography fontSize={13} fontWeight={700} color="#1675b6" textAlign={'center'}>
-            Write Review
-          </Typography>
+        <Link
+          href={`/${mediaType}/${mediaId}/reviews/new`}
+          sx={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: '#1675b6',
+            textAlign: 'center'
+          }}
+        >
+          Write Review
         </Link>
       </Box>
       <Divider marginBottom={0} />
@@ -57,8 +63,8 @@ const ReviewOverview: React.FC<ReviewsSummaryProps> = ({ reviews, mediaId, media
           </Grid>
           <Divider marginTop={0} />
           <Box paddingX={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Link href={`/${mediaType}/${mediaId}/reviews`} passHref style={{ textDecoration: 'none' }}>
-              <Typography color="primary">View all</Typography>
+            <Link href={`/${mediaType}/${mediaId}/reviews`} sx={{ fontSize: 14, fontWeight: 400 }}>
+              View all
             </Link>
           </Box>
         </React.Fragment>

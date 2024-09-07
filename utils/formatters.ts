@@ -1,4 +1,5 @@
-import { addHours, format, formatDistance, parse } from 'date-fns';
+import { addHours, format, formatDistance, intervalToDuration, parse } from 'date-fns';
+import Values from '@/types/common/Values';
 
 /**
  *
@@ -51,6 +52,32 @@ const formatRuntime = (minutes: number): string => {
   const remainingMinutes = minutes % 60;
   return hours > 0 ? `${hours} hr. ${remainingMinutes} mins` : `${remainingMinutes} mins`;
 };
+
+const formDataToValues = (formData: FormData): Values => {
+  const values: Values = {};
+  formData.forEach((value, key) => {
+    values[key] = value;
+  });
+  return values;
+};
+const valuesToFormData = (values: Values): FormData => {
+  const formData = new FormData();
+  Object.entries(values).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  return formData;
+};
+
+const formatTimeInMinutes = (minutes: number): string => {
+  const duration = intervalToDuration({ start: 0, end: minutes * 60 * 1000 });
+  const years = duration.years ? `${duration.years}y ` : '';
+  const months = duration.months ? `${duration.months}mo ` : '';
+  const days = duration.days ? `${duration.days}d ` : '';
+  const hours = duration.hours ? `${duration.hours}h ` : '';
+  const mins = duration.minutes ? `${duration.minutes}m` : '';
+  return `${years}${months}${days}${hours}${mins}`.trim() || '0m';
+};
+
 export {
   formatDate,
   formatTime,
@@ -58,5 +85,8 @@ export {
   formatRuntime,
   formatShortDate,
   formatStringDate,
-  formatDateToDistance
+  formatDateToDistance,
+  formDataToValues,
+  valuesToFormData,
+  formatTimeInMinutes
 };

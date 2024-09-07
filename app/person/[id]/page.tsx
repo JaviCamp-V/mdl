@@ -24,7 +24,7 @@ const PersonDetailsPage: NextPage<PageProps> = ({ params: { id }, searchParams }
         backgroundColor: 'background.default'
       }}
     >
-      <PersonContainer personId={id} searchParams={searchParams} />
+      <PersonContainer personId={Number(id)} searchParams={searchParams} />
     </Box>
   );
 };

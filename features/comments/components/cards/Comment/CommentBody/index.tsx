@@ -3,20 +3,26 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Comment from '@/features/comments/types/interfaces/Comments';
+import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Iconify from '@/components/Icon/Iconify';
+import UserSummary from '@/types/common/UserSummary';
 import { scrollToElementByID, scrollToTopById } from '@/utils/scrollToElement';
 import CommentButtons from '../../../buttons/ActionButtons';
 import AddCommentForm from '../../../forms/AddComment';
 
 interface CommentBodyProps {
   comment: Comment;
+  user: UserSummary;
+  mentionUser: UserSummary | null;
+  likeCount: number;
+  hasUserLiked: boolean;
 }
-const CommentBody: React.FC<CommentBodyProps> = ({ comment }) => {
-  const { user, content, commentType, parentId, hasSpoilers, id, mention } = comment;
+const CommentBody: React.FC<CommentBodyProps> = ({ comment, user, mentionUser, likeCount, hasUserLiked }) => {
+  const { content, commentType, parentId, hasSpoilers, id, mention } = comment;
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = React.useState(false);
   const [showSpoiler, setShowSpoiler] = React.useState(false);
@@ -49,7 +55,7 @@ const CommentBody: React.FC<CommentBodyProps> = ({ comment }) => {
             gap: 0.5
           }}
         >
-          {mention && (
+          {mention && mentionUser && (
             <Typography
               fontSize={14}
               fontWeight={'bolder'}
@@ -57,7 +63,7 @@ const CommentBody: React.FC<CommentBodyProps> = ({ comment }) => {
               onClick={scrollToMention}
               sx={{ pointerEvents: 'auto', cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
             >
-              {`@${mention.deleted || !mention.user.enabled ? '[Deleted]' : mention.user.username}`}
+              {`@${mention.deleted || !mentionUser.enabled ? '[Deleted]' : mentionUser.username}`}
             </Typography>
           )}
           {showSpoilerButton && (
@@ -98,8 +104,8 @@ const CommentBody: React.FC<CommentBodyProps> = ({ comment }) => {
         isCommentOwner={isCommentOwner}
         isAuthenticated={isAuthenticated}
         commentId={comment.id}
-        likeCount={comment.likeCount}
-        hasUserLiked={comment.hasUserLiked}
+        likeCount={likeCount}
+        hasUserLiked={hasUserLiked}
         onEditClick={() => setIsEditing(true)}
       />
     </React.Fragment>

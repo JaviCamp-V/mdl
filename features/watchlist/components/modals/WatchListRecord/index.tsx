@@ -15,6 +15,7 @@ import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/enums/IMediaType';
 import WatchStatus from '@/types/enums/WatchStatus';
 import { formatDate, formatStringDate } from '@/utils/formatters';
+import removeProperty from '@/utils/removeProperty';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
 
@@ -56,9 +57,9 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
     generalModel.watchStatus.options = generalModel.watchStatus.options?.map((option) => {
       let disabled = option.value !== WatchStatus.PLAN_TO_WATCH && !isReleased;
-      if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
-        disabled = lastEpisodeType !== 'finale';
-      }
+      // if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
+      //   disabled = lastEpisodeType !== 'finale';
+      // }
       return { ...option, disabled };
     });
     generalModel.episodeWatched.disabled = !isReleased || mediaType === MediaType.movie;
@@ -144,7 +145,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
   React.useEffect(() => {
     const copy = { ...formFields };
     if (watchStatus === WatchStatus.COMPLETED) {
-      methods.setValue('episodeWatched', number_of_episodes);
+      mediaType === 'tv' && methods.setValue('episodeWatched', number_of_episodes);
       copy.episodeWatched.disabled = true;
       copy.rating.disabled = false;
     } else if (watchStatus === WatchStatus.PLAN_TO_WATCH) {
@@ -246,6 +247,8 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
             onClick={onDelete}
             variant="contained"
             sx={{
+              paddingX: 2,
+              paddingY: 0.8,
               textTransform: 'capitalize',
               backgroundColor: '#f78989',
               color: '#fff',
@@ -264,7 +267,12 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
         )}
 
         <Box sx={{ display: 'flex', gap: 1, flexDirection: 'row', justifyContent: 'flex-end', width: '100%' }}>
-          <Button onClick={onClose} variant="contained" color="info" sx={{ textTransform: 'capitalize' }}>
+          <Button
+            onClick={onClose}
+            variant="contained"
+            color="info"
+            sx={{ textTransform: 'capitalize', paddingX: 2, paddingY: 0.8 }}
+          >
             Cancel
           </Button>
           <LoadingButton
@@ -272,7 +280,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
             loading={methods.formState.isSubmitting}
             onClick={methods.handleSubmit(onSubmit)}
             variant="contained"
-            sx={{ textTransform: 'capitalize' }}
+            sx={{ textTransform: 'capitalize', paddingX: 2, paddingY: 0.8 }}
           >
             Submit
           </LoadingButton>
