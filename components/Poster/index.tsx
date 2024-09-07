@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { blur_url } from '@/libs/common';
 
+
 interface PosterProps {
   src: string | null;
   id: number | string;

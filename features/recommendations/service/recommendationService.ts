@@ -2,7 +2,7 @@
 
 import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
-import { getContentDetails } from '@/features/media/service/tmdbService';
+import { getContentDetails, getContentSummary } from '@/features/media/service/tmdbService';
 import { getUserSummary } from '@/features/profile/service/userProfileService';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
@@ -13,10 +13,10 @@ import LikeData from '@/types/common/LikeData';
 import TotalResponse from '@/types/common/TotalResponse';
 import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
-import { generateErrorResponse } from '@/utils/handleError';
+import { generateErrorResponse, isErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 import MakeRecommendation from '../types/interface/MakeRecommendation';
-import Recommendation, { RecommendationWithLikes } from '../types/interface/Recommendation';
+import Recommendation, { RecommendationDetails, RecommendationWithLikes } from '../types/interface/Recommendation';
 import { Suggestion } from '../types/interface/Suggestion';
 import UpdateReason from '../types/interface/UpdateReson';
 
@@ -323,6 +323,19 @@ const getRecommendationWithLikeData = async (
   return await Promise.all(recommendations.map(mapRecommendationWithLikes));
 };
 
+const blankDetails = (mediaType: MediaType.movie | MediaType.tv, mediaId: number) => ({
+  mediaType,
+  mediaId,
+  poster_path: null,
+  recordId: null,
+  vote_average: 0,
+  title: '',
+  release_date: '',
+  overview: '',
+  original_title: '',
+  origin_country: [],
+  genres: []
+});
 const getMediaSuggestions = async (
   mediaType: MediaType.movie | MediaType.tv,
   mediaId: number
@@ -355,42 +368,12 @@ const getMediaSuggestions = async (
       groupBySuggestions.map(async (suggestion) => {
         const { mediaType, mediaId, recommendations } = suggestion;
         const lowerCaseMediaType = mediaType.toLowerCase() as MediaType.movie | MediaType.tv;
-        const details = await getContentDetails(lowerCaseMediaType, mediaId, true);
-        if (!details) {
-          return {
-            mediaType: lowerCaseMediaType,
-            mediaId,
-            recommendations: [],
-            poster_path: null,
-            recordId: null,
-            vote_average: 0,
-            title: '',
-            release_date: '',
-            overview: '',
-            original_title: '',
-            country: '',
-            genres: []
-          };
-        }
-        const { poster_path, recordId, vote_average, origin_country, overview, genres } = details;
-        const anyDetails = details as any;
-        const title = lowerCaseMediaType === MediaType.movie ? anyDetails?.title : anyDetails.name;
-        const original_title = anyDetails?.original_title ?? anyDetails?.original_name;
-        const release_date = anyDetails?.release_date ?? anyDetails?.first_air_date;
+        const details = await getContentSummary(lowerCaseMediaType, mediaId, true);
+        if (!details) return { ...blankDetails(lowerCaseMediaType, mediaId), recommendations: recommendations };
         const sortByLikes = recommendations.sort((a, b) => b.numberOfLikes - a.numberOfLikes);
         return {
-          mediaId,
-          mediaType: lowerCaseMediaType,
-          poster_path,
-          recordId,
-          vote_average,
-          title,
-          release_date,
-          recommendations: sortByLikes,
-          overview,
-          original_title,
-          country: origin_country?.length ? origin_country[0] : '',
-          genres: genres ?? []
+          ...details,
+          recommendations: sortByLikes
         };
       })
     );
@@ -403,6 +386,25 @@ const getMediaSuggestions = async (
   }
 };
 
+const getUsersSuggestions = async (userId: number): Promise<RecommendationDetails[]> => {
+  const recommendations = await cacheGetUserRecommendations(userId);
+  if (isErrorResponse(recommendations)) return [];
+
+  const suggestions = await Promise.all(
+    recommendations.map(async (rec) => {
+      const source = await getContentSummary(rec.source.mediaType, rec.source.mediaId, true);
+      const suggested = await getContentSummary(rec.suggested.mediaType, rec.suggested.mediaId, true);
+      const recommendationWithLikes = await mapRecommendationWithLikes(rec);
+      return {
+        ...recommendationWithLikes,
+        source: source ?? blankDetails(rec.source.mediaType, rec.source.mediaId),
+        suggested: suggested ?? blankDetails(rec.suggested.mediaType, rec.suggested.mediaId)
+      };
+    })
+  );
+
+  return suggestions;
+};
 const authMakeRecommendation = withAuthMiddleware(makeRecommendation, AccessLevel.MEMBER);
 const authUpdateReason = withAuthMiddleware(updateReason, AccessLevel.MEMBER);
 const authDeleteRecommendation = withAuthMiddleware(deleteRecommendation, AccessLevel.MEMBER);
@@ -413,10 +415,10 @@ export {
   authUpdateReason as updateReason,
   authDeleteRecommendation as deleteRecommendation,
   authUpdateRecommendationLike as updateRecommendationLike,
-  cacheGetUserRecommendations as getUserRecommendations,
   cacheGetMediaRecommendations as getMediaRecommendations,
   cacheGetMediaRecommendationsCount as getMediaRecommendationsCount,
   cacheGetRecommendation as getRecommendation,
   cacheGetRecommendationLikes as getRecommendationLikes,
-  getMediaSuggestions
+  getMediaSuggestions,
+  getUsersSuggestions
 };

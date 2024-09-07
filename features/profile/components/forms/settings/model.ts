@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 
+
 const formFields = {
   avatar: {
     name: 'avatar',
@@ -72,7 +73,7 @@ const formFields = {
   bio: {
     name: 'bio',
     label: 'Bio',
-    type: 'text',
+    type: 'rich_text',
     multiline: true,
     minRows: 3,
     breakpoints: { xs: 12 }

@@ -45,9 +45,9 @@ const RecommendationOverview: React.FC<RecommendationOverviewProps> = ({ mediaId
             spacing={2}
             sx={{ paddingX: 2 }}
           >
-            {suggestion.slice(0, 6).map((rec, index: number, arr) => (
+            {suggestion.slice(0, 6).map((rec) => (
               <Grid item xs={4} lg={2} key={`${rec.mediaId}-${rec.mediaType}`}>
-                <SuggestionCard suggestion={rec} />
+                <SuggestionCard content={rec} />
               </Grid>
             ))}
           </Grid>

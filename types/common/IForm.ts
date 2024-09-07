@@ -18,7 +18,8 @@ export type RHFElementsType =
   | 'radio'
   | 'multi_search'
   | 'file'
-  | 'image';
+  | 'image'
+  | 'rich_text';
 
 interface Optionable {
   options?: { value: any; label: string; disabled?: boolean }[];

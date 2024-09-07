@@ -1,6 +1,7 @@
 import React from 'react';
 import Genre from '@/features/media/types/interfaces/Genre';
-import { Grid, Typography } from '@mui/material';
+import { BorderColor } from '@mui/icons-material';
+import { Button, Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
@@ -8,6 +9,8 @@ import MediaType from '@/types/enums/IMediaType';
 import countries from '@/libs/countries';
 import DramaPoster from '../Poster';
 import Ratings from '../common/Ratings';
+import MediaTitle from '../MediaTitle';
+import Link from 'next/link';
 
 interface MediaCardProps {
   id: number;
@@ -79,8 +82,10 @@ const MediaCard: React.FC<MediaCardProps> = ({
     <Box
       sx={{
         backgroundColor: 'background.paper',
+        color: 'text.primary',
         boxShadow: '0 1px 1px rgba(0,0,0,.1)',
         border: '1px solid #3e4042',
+        borderColor: 'background.default',
         width: '100%',
         borderRadius: '4px',
         padding: 0,
@@ -89,18 +94,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
       }}
     >
       <Grid container spacing={1.5} sx={{ width: '100%', margin: 0, paddingY: 0, paddingX: 0.5 }}>
-        <Grid item xs={12} sm={12} sx={{ padding: 0, margin: 0 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 0.5 }}>
-            <Typography fontSize={18} color="primary">
-              {title}
-            </Typography>
-            <Typography fontSize={18}>{year}</Typography>
-          </Box>
-          <Typography fontSize={14}>
-            {`${originalTitle} (${countries.find((c) => c.code === country)?.nationality} ${mediaType.toLowerCase() === 'tv' ? 'Drama' : 'Movie'})`}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={3} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+        <Grid item xs={12} sm={3} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, alignItems: 'flex-start' }}>
           <Box sx={{ width: '100%', height: '25vh' }}>
             <DramaPoster src={posterPath} id={id} mediaType={mediaType} size="w342" />
           </Box>
@@ -112,12 +106,19 @@ const MediaCard: React.FC<MediaCardProps> = ({
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 0.5,
+            gap: 1,
             justifyContent: 'left',
             alignItems: 'flex-start',
             width: '100%'
           }}
         >
+          <Box>
+              <MediaTitle  mediaType={mediaType} id={id} title={`${title} (${year})`} fontSize={16} fontWeight={"bolder"} />    
+            <Typography fontSize={13}>
+              {`${originalTitle} (${countries.find((c) => c.code === country)?.nationality} ${mediaType.toLowerCase() === 'tv' ? 'Drama' : 'Movie'})`}
+            </Typography>
+          </Box>
+
           <Ratings rating={voteAverage} showText />
           <Typography
             fontSize={14}
@@ -127,7 +128,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
               WebkitFontSmoothing: 'antialiased',
               whiteSpace: 'pre-line',
               overflow: 'hidden',
-              fontSize: 14,
+              fontSize: 13,
               lineHeight: 1.5,
               textOverflow: 'ellipsis',
               display: '-webkit-box',
@@ -142,20 +143,19 @@ const MediaCard: React.FC<MediaCardProps> = ({
 
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, flexWrap: 'wrap' }}>
             {genres.slice(0, 3).map((genre) => (
-              <Box
+              <Button
+                LinkComponent={Link}
+                href={`/discover/${mediaType}?type=${mediaType}&with_genres=${genre.id}`}
+                variant="contained"
+                color="info"
                 key={genre.id}
                 sx={{
-                  backgroundColor: 'info.main',
-                  border: '1px solid #fff',
-                  borderColor: 'info.contrastText',
-                  padding: 0.5,
-                  borderRadius: '4px'
+                  paddingY: 0.5,
+                  textTransform: 'capitalize'
                 }}
               >
-                <Typography fontSize={13} sx={{ color: 'info.contrastText' }}>
-                  {genre.name}
-                </Typography>
-              </Box>
+                {genre.name}
+              </Button>
             ))}
           </Box>
         </Grid>

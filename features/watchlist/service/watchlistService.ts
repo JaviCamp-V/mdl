@@ -12,6 +12,7 @@ import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
+import { formatStringDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
 import GeneralWatchlistRecord from '../types/interfaces/GeneralWatchlistRecord';
@@ -161,7 +162,8 @@ const addAddDetailsToWatchlist = async (watchlist: GeneralWatchlistRecord): Prom
     const originalTitle =
       type === MediaType.tv ? (details as TVDetails).original_name : (details as MovieDetails).original_title;
     const country = details.origin_country.length ? details.origin_country[0] : 'Unknown';
-    const year = getYear(details as any);
+    const releaseDate = details.release_date ?? details.first_air_date;
+    const year = releaseDate ? formatStringDate(releaseDate).getFullYear() : 'TBA';
     const isAiring = type === MediaType.tv ? details.status === 'Returning Series' : false;
     const totalEpisodes = type === MediaType.tv ? (details as TVDetails).number_of_episodes : 1;
     const runtime =
@@ -260,6 +262,7 @@ const getWatchlist = async (): Promise<GeneralWatchlistRecord[]> => {
     return [];
   }
 };
+
 
 const cacheGetWatchlistRecord = async (id: number): Promise<WatchlistRecord | null | ErrorResponse> => {
   try {

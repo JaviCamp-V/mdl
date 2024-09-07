@@ -14,6 +14,7 @@ import WatchStatus from '@/types/enums/WatchStatus';
 import { getSession } from '@/utils/authUtils';
 import routes from '@/libs/routes';
 
+
 type PageProps = {
   params: { username: string };
   searchParams: { [status: string]: string };
@@ -46,10 +47,11 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
 
   const summaryFunctions = {
     dramas: (items: WatchlistItems[]) => items.filter((item) => item.mediaType.toLowerCase() === MediaType.tv).length,
-    episodes: (items: WatchlistItems[]) => items.reduce((acc, item) => acc + item.episodeWatched, 0),
+    episodes: (items: WatchlistItems[]) => items.reduce((acc, item) => acc + Number(item.episodeWatched ?? 0), 0),
     movies: (items: WatchlistItems[]) =>
       items.filter((item) => item.mediaType.toLowerCase() === MediaType.movie).length,
-    days: (items: WatchlistItems[]) => (items.reduce((acc, item) => acc + item.runtime, 0) / 1440).toFixed(2)
+    days: (items: WatchlistItems[]) =>
+      (items.reduce((acc, item) => acc + Number(item.runtime ?? 0), 0) / 1440).toFixed(2)
   };
 
   const getBackgroundColor = (watchStatus: string) => {
@@ -59,8 +61,8 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
   };
 
   const getColor = (watchStatus: string) => {
-    if (!status && watchStatus === all) return 'info.main';
-    if (watchStatus === status) return 'info.main';
+    if (!status && watchStatus === all) return '#3a3b3c';
+    if (watchStatus === status) return '#3a3b3c';
     return '#FFF';
   };
   return (
@@ -115,8 +117,8 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
             value={status ?? all}
             sx={{
               '& .MuiSelect-select': {
-                backgroundColor: 'background.paper',
-                color: '#fff!important',
+                backgroundColor: 'info.main',
+                color: 'info.contrastText',
                 borderColor: 'info.main',
                 fontSize: '15px'
               },
@@ -148,23 +150,14 @@ const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, search
                   flex: 1,
                   padding: 1,
                   textDecoration: 'none',
-                  color: `info.main`,
-                  '&.Mui-selected': {
-                    backgroundColor: '#FFF'
-                  },
-                  '&.Mui-selected:hover': {
-                    backgroundColor: '#FFF'
-                  }
+                  color: `text.primary`
                 }}
               >
                 <Link
                   href={`${routes.user.watchlist.replace('{username}', username)}${watchStatus === all ? '' : `?status=${watchStatus}`}`}
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                  <Typography
-                    fontSize={14}
-                    sx={{ color: `${getColor(watchStatus)}!important`, textDecoration: 'none' }}
-                  >
+                  <Typography fontSize={14} sx={{ color: `text.primary`, textDecoration: 'none' }}>
                     {capitalCase(watchStatus)}
                   </Typography>
                 </Link>

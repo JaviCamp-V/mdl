@@ -37,7 +37,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, displayName, avatar
         variant="square"
         sx={{ width: '100%', height: '40vh', fontSize: 100 }}
       />
-      <Button variant="contained" color="info" onClick={handleWatchlistClick} sx={{ textTransform: 'capitalize' }}>
+      <Button variant="contained" color="info" onClick={handleWatchlistClick} sx={{ textTransform: 'none' }}>
         <Iconify
           icon="material-symbols:list"
           sx={{

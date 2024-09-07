@@ -4,10 +4,10 @@ import React from 'react';
 import { updateProfile } from '@/features/profile/service/userProfileService';
 import ProfileData from '@/features/profile/types/interfaces/ProfileData';
 import { yupResolver } from '@hookform/resolvers/yup';
+import DOMPurify from 'dompurify';
 import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { json } from 'stream/consumers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/material';
 import RHFForm from '@/components/RHFElements/RHFForm';
@@ -48,11 +48,12 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ profile }) =>
   const onSubmit: SubmitHandler<FormType> = async (values) => {
     const { avatar, displayName, bio, birthday, location } = values;
     const isAvatarDirty = Boolean(methods.formState?.dirtyFields?.avatar);
+    const bioCleaned = bio ? DOMPurify.sanitize(bio, { USE_PROFILES: { html: true } }) : '';
 
     const requestData = {
       avatar: avatar ?? '',
       displayName: displayName ?? '',
-      bio: bio ?? '',
+      bio: bioCleaned,
       birthday: birthday ? formatDate(birthday) : '',
       location: location ?? '',
       updateAvatar: isAvatarDirty ? 'YES' : 'NO'
@@ -87,7 +88,7 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ profile }) =>
       username: username ?? '',
       email: email ?? '',
       location: location ?? '',
-      bio: bio ?? '',
+      bio: bio ?? ``,
       birthday: birthday ? formatStringDate(birthday) : undefined
     };
     methods.reset(defaultValues);

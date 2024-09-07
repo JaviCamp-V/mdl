@@ -30,7 +30,7 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const { comments } = searchParams ?? {};
   const tabs = [
     { label: 'Details', href: '' },
-    { label: 'Episode Guide', href: 'episodes' },
+    { label: 'Episode Guide', href: 'episode-guide' },
     { label: 'Cast & Crew', href: 'credits' },
     { label: 'Reviews', href: 'reviews' },
     { label: 'Recommendations', href: 'recommendations' },
@@ -53,7 +53,14 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const formattedYear = year ? formatStringDate(year).getFullYear() : 'TBA';
 
   const TabPanel = {
-    episodes: <EpisodeGuide id={mediaId} season_number={1} name={anyDetails.name} />,
+    'episode-guide': (
+      <EpisodeGuide
+        id={mediaId}
+        name={anyDetails.name}
+        number_of_season={anyDetails.number_of_seasons ?? 0}
+        episode={sections?.length && sections.length > 1 ? sections[1] : undefined}
+      />
+    ),
     credits: <Credits mediaId={mediaId} mediaType={mediaType} view="all" />,
     reviews: (
       <ReviewDetails
