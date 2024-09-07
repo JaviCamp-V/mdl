@@ -46,16 +46,16 @@ This application is intended for non-commercial use only.
 - **Recommendations:** Users can add and like recommendations for dramas and movies (authenticated users only).
 - **View Recommendations:** Users can view recommendations for dramas and movies.
 - **Comments:** Users can comment on dramas, movies, and persons.
+- **User Profile Page:** Add a page where users can view and edit their profile.
+- **User Settings Page:** Add a page where users can update their information, such as email and password.
+- **User Profile Picture:** Allow users to upload and display a profile picture.
+- **User Bio:** Add a rich text editor for users to create a bio with support for images and links.
 
 ## Features to Implement
 
 - **Hero Section:** Add a hero section to the home page above the drama carousel.
 - **Comments on Reviews:** Allow users to comment on reviews.
 - **Custom Lists:** Add a feature where users can create custom lists of dramas, movies, and people.
-- **User Profile Page:** Add a page where users can view and edit their profile.
-- **User Settings Page:** Add a page where users can update their information, such as email and password.
-- **User Profile Picture:** Allow users to upload and display a profile picture.
-- **User Bio:** Add a rich text editor for users to create a bio with support for images and links.
 - **Website Responsiveness:** Improve the website's responsiveness for different screen sizes.
 - **Informational Pages:** Add pages like "About Us," "Contact Us," "Privacy Policy," and "Terms of Service."
 
