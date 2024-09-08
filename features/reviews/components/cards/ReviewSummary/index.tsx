@@ -9,6 +9,7 @@ import Avatar from '@/components/common/Avatar';
 import Ratings from '@/components/common/Ratings';
 import routes from '@/libs/routes';
 
+
 interface ReviewSummaryCardProps {
   review: ExtendOverallReviewWithMedia;
 }
@@ -22,7 +23,11 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
         style={{ textDecoration: 'none' }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, paddingX: 0.5 }}>
-          <Avatar src={user.avatarUrl} sx={{ width: 15, height: 15, fontSize: 12 }} username={user.username} />
+          <Avatar
+            src={user.avatarUrl ?? undefined}
+            sx={{ width: 15, height: 15, fontSize: 12 }}
+            username={user.username}
+          />
           <Typography fontSize={14} fontWeight={'bolder'} color={'hsl(0deg 0% 100% / 87%)'}>
             {user.displayName}
           </Typography>
