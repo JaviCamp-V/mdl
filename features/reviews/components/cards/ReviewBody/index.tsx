@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import ReviewContent from '../../../typography/ReviewContent';
+import ReviewContent from '../../typography/ReviewContent';
 
 interface ReviewBodyProps {
   reviewId: number;

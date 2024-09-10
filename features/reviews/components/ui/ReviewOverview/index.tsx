@@ -12,8 +12,15 @@ import NoReviews from '../NoReview';
 interface ReviewsSummaryProps extends MediaDetailsProps {
   reviews: ExtendOverallReview[];
   totalEpisodes?: number;
+  userReviewId?: number | null;
 }
-const ReviewOverview: React.FC<ReviewsSummaryProps> = ({ reviews, mediaId, mediaType, totalEpisodes }) => {
+const ReviewOverview: React.FC<ReviewsSummaryProps> = ({
+  reviews,
+  mediaId,
+  mediaType,
+  totalEpisodes,
+  userReviewId
+}) => {
   return (
     <Box sx={{ paddingY: 2 }}>
       <Box
@@ -29,7 +36,7 @@ const ReviewOverview: React.FC<ReviewsSummaryProps> = ({ reviews, mediaId, media
           Reviews
         </Typography>
         <Link
-          href={`/${mediaType}/${mediaId}/reviews/new`}
+          href={`/${mediaType}/${mediaId}/reviews/${userReviewId ? 'edit' : 'new'}`}
           sx={{
             fontSize: 13,
             fontWeight: 700,
@@ -37,7 +44,7 @@ const ReviewOverview: React.FC<ReviewsSummaryProps> = ({ reviews, mediaId, media
             textAlign: 'center'
           }}
         >
-          Write Review
+          {`${userReviewId ? 'Edit' : 'Write a'}  review`}
         </Link>
       </Box>
       <Divider marginBottom={0} />

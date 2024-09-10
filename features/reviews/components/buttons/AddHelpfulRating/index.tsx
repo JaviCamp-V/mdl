@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { markReviewHelpful, removedHelpfulRating } from '@/features/reviews/services/reviewService';
+import { markReviewHelpful, removeHelpfulRating } from '@/features/reviews/services/reviewUpdateService';
 import { capitalCase } from 'change-case';
 import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
@@ -25,7 +25,7 @@ const AddHelpfulRatingButtons: React.FC<AddHelpfulRatingButtonsProps> = ({ revie
       return;
     }
     const response =
-      newIsHelpful === null ? await removedHelpfulRating(reviewId) : await markReviewHelpful(reviewId, newIsHelpful);
+      newIsHelpful === null ? await removeHelpfulRating(reviewId) : await markReviewHelpful(reviewId, newIsHelpful);
     const action = newIsHelpful === null ? 'removed' : 'marked';
     if (response && 'errors' in response) {
       const message = response.errors.map((error) => capitalCase(error.message)).join(', ');

@@ -1,71 +1,40 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import AuthRequired from '@/features/auth/components/ui/AuthRequired';
-import { createReview } from '@/features/reviews/services/reviewService';
-import ReviewType from '@/features/reviews/types/enums/ReviewType';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useSession } from 'next-auth/react';
-import { enqueueSnackbar } from 'notistack';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Button, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import RHFForm from '@/components/RHFElements/RHFForm';
-import MediaDetailsProps from '@/types/common/MediaDetailsProps';
-import routes from '@/libs/routes';
-import { FormType, formDefaultValues, formFields, formSchema } from './model';
+import useWriteReviewForm from './hook';
+import WriteReviewFormProps from './types';
 
-interface WriteReviewFormProps extends MediaDetailsProps {}
-const WriteReviewForm: React.FC<WriteReviewFormProps> = ({ mediaId, mediaType }) => {
+const WriteReviewForm: React.FC<WriteReviewFormProps> = (props) => {
+  const { reviewType, ...rest } = props;
   const router = useRouter();
-  const { data: session } = useSession();
   const pathname = usePathname();
-  const methods = useForm<FormType>({
-    mode: 'onChange',
-    resolver: yupResolver(formSchema),
-    defaultValues: formDefaultValues,
-    shouldFocusError: true,
-    criteriaMode: 'all'
-  });
-
-  const onSubmit: SubmitHandler<FormType> = async (formData) => {
-    const request = { ...formData, mediaId, mediaType, language: 'en' };
-    const response = await createReview(ReviewType.OVERALL, request);
-    if (response && 'errors' in response) {
-      response.errors.forEach((error) => {
-        methods.setError(error.field as keyof FormType, { type: 'manual', message: error.message });
-      });
-      enqueueSnackbar('An error occurred while updating the record', { variant: 'error' });
-      return;
-    }
-    enqueueSnackbar(response.message, { variant: 'success' });
-    router.push(`/${mediaType}/${mediaId}/reviews`);
-  };
-
-  if (!session?.user) return <AuthRequired action="write a review" sx={{ minHeight: '20vh' }} />;
+  const redirectToReviews = () => router.push(pathname?.replace(/\/new|\/edit/, ''));
+  const { formFields, methods, submitHandler } = useWriteReviewForm(reviewType, rest, redirectToReviews);
 
   return (
     <Box sx={{ paddingY: 2, paddingX: 4 }}>
-      <RHFForm fields={formFields} methods={methods} onSubmit={onSubmit} />
+      <RHFForm fields={formFields} methods={methods} onSubmit={submitHandler} />
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 2, gap: 2 }}>
-        <Button
-          variant="contained"
-          color="info"
-          onClick={() => router.push(`/${mediaType}/${mediaId}/reviews`)}
-          sx={{ textTransform: 'capitalize' }}
-        >
+        <Button variant="contained" color="info" onClick={redirectToReviews} sx={{ textTransform: 'capitalize' }}>
           Cancel
         </Button>
         <LoadingButton
-          disabled={false}
+          disabled={
+            !methods.formState.isValid ||
+            methods.formState.isSubmitting ||
+            !Object.entries(methods.formState.dirtyFields).some(([, value]) => value)
+          }
           loading={methods.formState.isSubmitting}
-          onClick={methods.handleSubmit(onSubmit)}
+          onClick={methods.handleSubmit(submitHandler)}
           variant="contained"
           sx={{ textTransform: 'capitalize' }}
         >
-          Submit Review
+          {`${rest?.review ? 'Update' : 'Submit'} Review`}
         </LoadingButton>
       </Box>
     </Box>

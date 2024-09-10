@@ -1,8 +1,10 @@
+import { min } from 'date-fns';
 import * as yup from 'yup';
 import { FieldModel } from '@/types/common/IForm';
 import getDefaultValues from '@/utils/getDefaultValues';
 
-const formFields: FieldModel = {
+
+const overallReviewFormFields: FieldModel = {
   headline: {
     name: 'headline',
     type: 'text',
@@ -119,32 +121,21 @@ const {
   rewatchValueRating,
   overallRating,
   content
-} = formFields;
+} = overallReviewFormFields;
 
-const formSchema = yup.object().shape({
+const episodeReviewFormFields = {
+  headline,
+  hasSpoilers,
+  overallRating,
+  content: {
+    ...content,
+    minRows: 3
+  }
+};
+
+const episodeReviewFormSchema = yup.object().shape({
   headline: yup.string().required().max(headline.max!, headline?.errorMessages?.max),
-  hasSpoilers: yup.boolean(),
-  hasCompleted: yup.boolean(),
-  storyRating: yup
-    .number()
-    .required()
-    .min(storyRating.min!, storyRating?.errorMessages?.min)
-    .max(storyRating.max!, storyRating?.errorMessages?.max),
-  actingRating: yup
-    .number()
-    .required()
-    .min(actingRating.min!, actingRating?.errorMessages?.min)
-    .max(actingRating.max!, actingRating?.errorMessages?.max),
-  musicRating: yup
-    .number()
-    .required()
-    .min(musicRating.min!, musicRating?.errorMessages?.min)
-    .max(musicRating.max!, musicRating?.errorMessages?.max),
-  rewatchValueRating: yup
-    .number()
-    .required()
-    .min(rewatchValueRating.min!, rewatchValueRating?.errorMessages?.min)
-    .max(rewatchValueRating.max!, rewatchValueRating?.errorMessages?.max),
+  hasSpoilers: yup.boolean().optional().nullable(),
   overallRating: yup
     .number()
     .required()
@@ -153,8 +144,45 @@ const formSchema = yup.object().shape({
   content: yup.string().required()
 });
 
-export type FormType = yup.InferType<typeof formSchema>;
+const overallReviewFormSchema = yup
+  .object()
+  .shape({
+    hasCompleted: yup.boolean().optional().nullable(),
+    storyRating: yup
+      .number()
+      .required()
+      .min(storyRating.min!, storyRating?.errorMessages?.min)
+      .max(storyRating.max!, storyRating?.errorMessages?.max),
+    actingRating: yup
+      .number()
+      .required()
+      .min(actingRating.min!, actingRating?.errorMessages?.min)
+      .max(actingRating.max!, actingRating?.errorMessages?.max),
+    musicRating: yup
+      .number()
+      .required()
+      .min(musicRating.min!, musicRating?.errorMessages?.min)
+      .max(musicRating.max!, musicRating?.errorMessages?.max),
+    rewatchValueRating: yup
+      .number()
+      .required()
+      .min(rewatchValueRating.min!, rewatchValueRating?.errorMessages?.min)
+      .max(rewatchValueRating.max!, rewatchValueRating?.errorMessages?.max)
+  })
+  .concat(episodeReviewFormSchema);
 
-const formDefaultValues = getDefaultValues(formFields) as FormType;
+export type EpisodeReviewFormType = yup.InferType<typeof episodeReviewFormSchema>;
 
-export { formFields, formSchema, formDefaultValues };
+export type OverallReviewFormType = yup.InferType<typeof overallReviewFormSchema>;
+
+const episodeReviewDefaultValues = getDefaultValues(episodeReviewFormFields) as EpisodeReviewFormType;
+const overallReviewDefaultValues = getDefaultValues(overallReviewFormFields) as OverallReviewFormType;
+
+export {
+  episodeReviewFormSchema,
+  overallReviewFormSchema,
+  episodeReviewDefaultValues,
+  overallReviewDefaultValues,
+  episodeReviewFormFields,
+  overallReviewFormFields
+};

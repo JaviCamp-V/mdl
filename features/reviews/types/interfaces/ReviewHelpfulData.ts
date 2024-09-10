@@ -1,6 +1,16 @@
+import ResponseAction from '@/types/enums/ResposneAction';
+
+
 export default interface ReviewHelpfulData {
   numberOfHelpfulReviews: number;
   numberOfUnhelpfulReviews: number;
+}
+
+export interface HelpfulRatingMetaData {
+  id: number;
+  reviewId: number;
+  userId: number;
+  action: ResponseAction;
 }
 
 export interface HelpfulRating {

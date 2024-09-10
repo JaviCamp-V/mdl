@@ -22,4 +22,11 @@ export interface PersonImagesResponse {
 
 type ImagesResponse = MediaImagesResponse | PersonImagesResponse;
 
+export type MediaImageMap = {
+  tv: MediaImagesResponse;
+  movie: MediaImagesResponse;
+  person: PersonImagesResponse;
+};
+
+
 export default ImagesResponse;

@@ -7,6 +7,7 @@ import Iconify from '@/components/Icon/Iconify';
 import MediaType from '@/types/enums/IMediaType';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
+
 interface EpisodeSwitcherButtonProps {
   mediaId: number;
   number_of_episodes: number;
@@ -24,14 +25,8 @@ const EpisodeSwitcherButton: React.FC<EpisodeSwitcherButtonProps> = ({
   number_of_seasons,
   mediaId
 }) => {
-  const hasNextEpisode = React.useMemo(
-    () => current_season < number_of_seasons || current_episode < number_of_episodes,
-    [current_episode, current_season, number_of_episodes, number_of_seasons]
-  );
-  const hasPreviousEpisode = React.useMemo(
-    () => current_season > 1 || current_episode > 1,
-    [current_episode, current_season]
-  );
+  const hasNextEpisode = current_season < number_of_seasons || current_episode < number_of_episodes;
+  const hasPreviousEpisode = current_season > 1 || current_episode > 1;
 
   const router = useRouter();
   const baseUrl = `${MediaType.tv}/${mediaId}/episode-guide`;

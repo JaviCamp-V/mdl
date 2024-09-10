@@ -1,5 +1,5 @@
 import React from 'react';
-import { getRecentReviews } from '@/features/reviews/services/reviewService';
+import { getRecentReviewsWithMedia } from '@/features/reviews/services/reviewAdvancedService';
 import { ExtendOverallReviewWithMedia } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,11 +8,12 @@ import Divider from '@/components/common/Divider';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import ReviewSummaryCard from '../../cards/ReviewSummary';
 
+
 interface RecentReviewsCarouselProps {
   containerStyle?: React.CSSProperties;
 }
 const RecentReviewsCarousel: React.FC<RecentReviewsCarouselProps> = async ({ containerStyle }) => {
-  const reviews = await getRecentReviews();
+  const reviews = await getRecentReviewsWithMedia();
   if ('errors' in reviews || reviews.length === 0) return;
 
   return (

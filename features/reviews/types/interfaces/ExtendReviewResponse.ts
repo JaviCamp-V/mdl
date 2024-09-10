@@ -3,6 +3,7 @@ import WatchStatus from '@/types/enums/WatchStatus';
 import { withHelpful } from './ReviewHelpfulData';
 import { EpisodeReview, OverallReview } from './ReviewResponse';
 
+
 interface withWatchRecord {
   watchStatus: WatchStatus | null;
   episodeWatched: number | null;
@@ -15,5 +16,4 @@ export interface ExtendedEpisodeReview extends EpisodeReview, withUserSummary, w
 export interface ExtendOverallReviewWithMedia extends OverallReview, withUserSummary {
   poster_path: string | null;
   title: string;
-  origin: string;
 }

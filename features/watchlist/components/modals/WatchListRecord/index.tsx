@@ -15,7 +15,6 @@ import { FieldModel } from '@/types/common/IForm';
 import MediaType from '@/types/enums/IMediaType';
 import WatchStatus from '@/types/enums/WatchStatus';
 import { formatDate, formatStringDate } from '@/utils/formatters';
-import removeProperty from '@/utils/removeProperty';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
 
@@ -32,6 +31,32 @@ interface WatchlistRecordProps {
   number_of_episodes: number;
   lastEpisodeType: string | null | undefined;
 }
+
+const getDefaultValues = (record: WatchlistRecord | null) => {
+  if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
+  return {
+    watchStatus: record.watchStatus ?? WatchStatus.PLAN_TO_WATCH,
+    episodeWatched: record.episodeWatched ?? defaultValues.episodeWatched,
+    rating: record.rating ?? defaultValues.rating,
+    notes: record.notes ?? defaultValues.notes,
+    priority: record.priority ?? defaultValues.priority,
+    rewatchValue: record.rewatchValue ?? defaultValues.rewatchValue,
+    rewatchCount: record.rewatchCount ?? defaultValues.rewatchCount,
+    startDate: record.startDate ? formatStringDate(record.startDate) : defaultValues.startDate,
+    endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
+  };
+};
+
+const getFormSchema = (mediaType: MediaType, number_of_episodes: number) =>
+  formSchema.test('validEpisodeWatched', '', (value, context) => {
+    if (!value?.episodeWatched) return true;
+    const totalEpisodes = mediaType === MediaType.tv ? number_of_episodes : 0;
+    if (value.episodeWatched <= totalEpisodes) return true;
+    return context.createError({
+      message: 'Episodes watched cannot be more than released episodes',
+      path: 'episodeWatched'
+    });
+  });
 
 const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
   open,
@@ -57,9 +82,6 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
     generalModel.watchStatus.options = generalModel.watchStatus.options?.map((option) => {
       let disabled = option.value !== WatchStatus.PLAN_TO_WATCH && !isReleased;
-      // if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
-      //   disabled = lastEpisodeType !== 'finale';
-      // }
       return { ...option, disabled };
     });
     generalModel.episodeWatched.disabled = !isReleased || mediaType === MediaType.movie;
@@ -72,39 +94,11 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
     const values = view === 'General' ? generalModel : advancedModel;
     setFormFields(values);
-  }, [view, lastEpisodeType, number_of_episodes, isReleased, mediaType]);
-
-  const newDefaultValues = React.useMemo(() => {
-    if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
-    return {
-      watchStatus: record.watchStatus ?? WatchStatus.PLAN_TO_WATCH,
-      episodeWatched: record.episodeWatched ?? defaultValues.episodeWatched,
-      rating: record.rating ?? defaultValues.rating,
-      notes: record.notes ?? defaultValues.notes,
-      priority: record.priority ?? defaultValues.priority,
-      rewatchValue: record.rewatchValue ?? defaultValues.rewatchValue,
-      rewatchCount: record.rewatchCount ?? defaultValues.rewatchCount,
-      startDate: record.startDate ? formatStringDate(record.startDate) : defaultValues.startDate,
-      endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
-    };
-  }, [record]);
-
-  const updatedSchema = React.useMemo(() => {
-    return formSchema.test('validEpisodeWatched', '', (value, context) => {
-      if (!value?.episodeWatched) return true;
-      const totalEpisodes = mediaType === MediaType.tv ? number_of_episodes : 0;
-      if (value.episodeWatched <= totalEpisodes) return true;
-      return context.createError({
-        message: 'Episodes watched cannot be more than released episodes',
-        path: 'episodeWatched'
-      });
-    });
-  }, [number_of_episodes, mediaType]);
-
+  }, [view, number_of_episodes, isReleased, mediaType]);
   const methods = useForm<FormType>({
     mode: 'onChange',
-    resolver: yupResolver(updatedSchema),
-    defaultValues: newDefaultValues,
+    resolver: yupResolver(getFormSchema(mediaType, number_of_episodes)),
+    defaultValues: getDefaultValues(record),
     shouldFocusError: true,
     criteriaMode: 'all'
   });

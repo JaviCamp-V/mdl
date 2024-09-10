@@ -14,36 +14,25 @@ import RHFAccordionWrapper from '@/components/RHFElements/RHFAccordionWrapper';
 import Divider from '@/components/common/Divider';
 import MediaType from '@/types/enums/IMediaType';
 import routes from '@/libs/routes';
-import {
-  AdvancedSearchFormType,
-  contentFormFields,
-  defaultValues,
-  formSchema,
-  personFormFields,
-  queryField
-} from './model';
+import { AdvancedSearchFormType, contentFormFields, defaultValues, formSchema, personFormFields, queryField } from './model';
+
 
 interface AdvancedSearchFormProps {}
 
 const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // query params and default values combined
-  const formDefaultValues = React.useMemo(() => paramsToForm(searchParams), [searchParams]);
 
   const methods = useForm<AdvancedSearchFormType>({
     mode: 'onChange',
     resolver: yupResolver(formSchema),
-    defaultValues: formDefaultValues,
+    defaultValues: paramsToForm(searchParams),
     shouldFocusError: true,
     criteriaMode: 'all'
   });
 
   const watchedType = methods.watch('type');
-  const currentFormFields = React.useMemo(() => {
-    if (watchedType === MediaType.person) return personFormFields;
-    return contentFormFields;
-  }, [watchedType]);
+  const currentFormFields = watchedType === MediaType.person ? personFormFields : contentFormFields;
 
   const onSubmit: SubmitHandler<AdvancedSearchFormType> = async (formData) => {
     const values = formToParams(formData);

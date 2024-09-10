@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Iconify from '@/components/Icon/Iconify';
 import { scrollToTopById } from '@/utils/scrollToElement';
 
+
 interface ReviewContentProps {
   reviewId: number;
   content: string;
@@ -13,9 +14,7 @@ interface ReviewContentProps {
 const minContent = 4;
 const ReviewContent: React.FC<ReviewContentProps> = ({ content, reviewId }) => {
   const [isReadMore, setIsReadMore] = React.useState(false);
-  const text = React.useMemo(() => {
-    return isReadMore ? content : content.split('\n').slice(0, minContent).join('\n');
-  }, [isReadMore, content]);
+  const text = isReadMore ? content : content.split('\n').slice(0, minContent).join('\n');
 
   const handleReadMore = (value: boolean) => {
     setIsReadMore(value);
