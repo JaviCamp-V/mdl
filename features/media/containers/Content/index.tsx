@@ -18,9 +18,9 @@ import ContentCards from '../../components/ui/content/MainTabCards';
 import Photos from '../../components/ui/content/Photos';
 import SidePanel from '../../components/ui/content/SidePanel';
 import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
-import { getContentDetails } from '../../service/tmdbService';
+import { getContentDetails } from '../../service/tmdbAdvancedService';
 import { Season } from '../../types/interfaces/Season';
-import TVDetails from '../../types/interfaces/TVDetails';
+
 
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];

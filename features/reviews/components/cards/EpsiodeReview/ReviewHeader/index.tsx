@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Ratings from '@/components/common/Ratings';
 import UserSummary from '@/types/common/UserSummary';
 import { formatDateToDistance } from '@/utils/formatters';
-import ReviewHelpfulRatingCard from '../../ReviewHelpfulRating';
+import ReviewHelpfulRatingUserCard from '../../ReviewHelpfulRatingUser';
 
 interface EpisodeReviewHeaderProps {
   reviewId: number;
@@ -36,7 +36,7 @@ const EpisodeReviewHeader: React.FC<EpisodeReviewHeaderProps> = ({
         alignItems: 'center'
       }}
     >
-      <ReviewHelpfulRatingCard user={user} numberOfHelpfulReviews={numberOfHelpfulReviews} isHelpful={isHelpful} />
+      <ReviewHelpfulRatingUserCard user={user} numberOfHelpfulReviews={numberOfHelpfulReviews} isHelpful={isHelpful} />
       <Box
         sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end', gap: 0.2 }}
       >

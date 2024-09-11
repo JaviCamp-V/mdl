@@ -1,7 +1,8 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
 import ContentContainer from '@/features/media/containers/Content';
-import { getMovieDetails } from '@/features/media/service/tmdbService';
+import { getValidContentSummary } from '@/features/media/service/tmdbViewService';
+import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
@@ -11,15 +12,15 @@ type PageProps = {
   searchParams: { [key: string]: string };
 };
 
-const getReleaseYear = (release_date: string | undefined) => {
+const getReleaseYear = (release_date: string | undefined | null) => {
   if (!release_date) return 'TBA';
   return formatStringDate(release_date).getFullYear();
 };
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { id, slug } = params;
-  const response = await getMovieDetails(id, false);
+  const response = await getValidContentSummary(MediaType.movie, id);
   const section = slug ? slug[0] : 'Details';
-  const title = `${response?.title} (${getReleaseYear(response?.release_date)}) - ${section} `;
+  const title = `${response?.title} (${getReleaseYear(response?.release_date)}) - ${capitalCase(section)} `;
   return {
     title: response?.title ? title : 'Movie Details',
     description: response?.overview ?? ''

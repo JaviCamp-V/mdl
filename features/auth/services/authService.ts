@@ -14,6 +14,7 @@ import CreateUserRequest from '../types/interfaces/CreateUserRequest';
 import RefreshTokenRequest from '../types/interfaces/ResfreshTokenRequest';
 import UserAccountResponse from '../types/interfaces/UserAccountResponse';
 
+
 const endpoints = {
   login: 'auth/login',
   logout: 'auth/logout',
@@ -95,9 +96,10 @@ const updateLastActive = async (): Promise<void> => {
     const session = await getServerActionSession();
     if (!session?.user) return;
     logger.info('Updating last active');
-
-    await mdlApiClient.post<null, GenericResponse>(endpoints.heartbeat, null);
+    const response = await mdlApiClient.post<null, GenericResponse>(endpoints.heartbeat, null);
+    logger.info(response.message);
     revalidateTag(`user-profile-${session.user.username}`);
+    revalidateTag(`user-profile-${session.user.userId}`);
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
     logger.error('Error updating last active %s', message);

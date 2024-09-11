@@ -1,7 +1,7 @@
 'use server';
 
 import React from 'react';
-import { getDiscoverType } from '@/features/media/service/tmdbService';
+import { getDiscoverType } from '@/features/media/service/tmdbAdvancedService';
 import { upcomingTvShows } from '@/features/media/utils/tmdbQueries';
 import { Link } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import MediaType from '@/types/enums/IMediaType';
 import routes from '@/libs/routes';
 import DramaList from '../DramaList';
+
 
 interface TopUpComingDramasProps {
   containerStyle?: React.CSSProperties;

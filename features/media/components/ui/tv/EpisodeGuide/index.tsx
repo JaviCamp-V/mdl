@@ -1,7 +1,7 @@
 'use server';
 
 import React from 'react';
-import { getEpisodeDetails, getSeasonDetails } from '@/features/media/service/tmdbService';
+import { getSeasonDetails } from '@/features/media/service/tmdbViewService';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';

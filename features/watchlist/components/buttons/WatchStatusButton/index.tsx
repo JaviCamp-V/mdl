@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { getWatchlistRecord } from '@/features/watchlist/service/watchlistService';
+import { getUserWatchlistRecordById } from '@/features/watchlist/service/watchlistViewService';
 import WatchlistRecord from '@/features/watchlist/types/interfaces/WatchlistRecord';
 import { capitalCase } from 'change-case';
 import { enqueueSnackbar } from 'notistack';
@@ -44,7 +44,7 @@ const WatchStatusButton: React.FC<WatchStatusButtonProps> = ({
 
   const handleClick = async () => {
     if (recordId) {
-      const recordResponse = await getWatchlistRecord(recordId);
+      const recordResponse = await getUserWatchlistRecordById(recordId);
       if (recordResponse && 'errors' in recordResponse) {
         enqueueSnackbar('Error fetching watchlist record', { variant: 'error' });
         return;

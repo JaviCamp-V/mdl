@@ -40,7 +40,7 @@ const PhotosOverview: React.FC<MediaImagesResponse & { mediaType: MediaType }> =
                 height: { xs: '15vh', sm: '25vh' }
               }}
             >
-              <DramaPoster src={poster.file_path} id={poster.file_path} mediaType={'photo'} size="w185" />
+              <DramaPoster src={poster.file_path} id={poster.file_path} mediaType={'photo'} size="w342" />
             </Box>
           </Grid>
         ))}

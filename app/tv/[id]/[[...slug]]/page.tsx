@@ -1,10 +1,12 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
 import ContentContainer from '@/features/media/containers/Content';
-import { getTVDetails } from '@/features/media/service/tmdbService';
+import { getValidContentSummary } from '@/features/media/service/tmdbViewService';
+import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
+
 
 type PageProps = {
   params: { id: number; slug?: string[] };
@@ -13,11 +15,11 @@ type PageProps = {
 
 export const generateMetadata = async ({ params, searchParams }: PageProps): Promise<Metadata> => {
   const { id, slug } = params;
-  const response = await getTVDetails(id, false);
+  const response = await getValidContentSummary(MediaType.tv, id);
   const section = slug ? slug[0] : 'Details';
-  const title = `${response?.name} (${formatStringDate(response?.first_air_date).getFullYear()}) - ${section} `;
+  const title = `${response?.title} (${response?.release_date ? formatStringDate(response?.release_date).getFullYear() : 'TBA'}) - ${capitalCase(section)} `;
   return {
-    title: response?.name ? title : 'Drama Details',
+    title: response?.title ? title : 'Drama Details',
     description: response?.overview ?? ''
   };
 };

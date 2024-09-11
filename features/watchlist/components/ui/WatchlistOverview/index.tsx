@@ -1,16 +1,15 @@
 import React from 'react';
-import { getUserWatchlist } from '@/features/watchlist/service/watchlistService';
+import { getUserWatchlistByIdWithMedia } from '@/features/watchlist/service/watchlistAdvancedService';
 import { Grid, SxProps } from '@mui/material';
 import WatchlistUpdates from '../../lists/Updates';
 import WatchlistStatistics from '../WatchlistStats';
 
 interface WatchListOverviewProps {
   containerStyle?: SxProps;
-  username: string;
+  userId: number;
 }
-const WatchlistOverview: React.FC<WatchListOverviewProps> = async ({ username, containerStyle }) => {
-  const watchlist = await getUserWatchlist(username);
-
+const WatchlistOverview: React.FC<WatchListOverviewProps> = async ({ userId, containerStyle }) => {
+  const watchlist = await getUserWatchlistByIdWithMedia(userId);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>

@@ -14,6 +14,7 @@ import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/Re
 import { ReviewMetaData } from '../types/interfaces/ReviewResponse';
 import { reviewUpdateEndpoints as endpoints } from './endpoints';
 
+
 type ReviewResponse = GenericResponse<ReviewMetaData>;
 type HelpfulRatingResponse = GenericResponse<HelpfulRatingMetaData>;
 
@@ -25,9 +26,7 @@ const createReview = async <T extends ReviewType>(
   try {
     logger.info('Creating review with: %s %s', request.mediaType, request.mediaId);
     const body = { ...request, reviewType, mediaType: request.mediaType.toUpperCase() };
-    console.log(body);
     const response = await mdlApiClient.post<CreateEpisodeReview | CreateOverallReview, ReviewResponse>(endpoint, body);
-    console.log(response);
     const { id, mediaType, mediaId, season, episode, userId } = response.data;
     tags.forEach((tag) => {
       const tagWithValues = tag

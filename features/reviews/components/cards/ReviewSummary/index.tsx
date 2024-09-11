@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ExtendOverallReviewWithMedia } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import { ExtendOverallReviewWithMediaAndUser } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MediaTitle from '@/components/MediaTitle';
@@ -9,9 +9,8 @@ import Avatar from '@/components/common/Avatar';
 import Ratings from '@/components/common/Ratings';
 import routes from '@/libs/routes';
 
-
 interface ReviewSummaryCardProps {
-  review: ExtendOverallReviewWithMedia;
+  review: ExtendOverallReviewWithMediaAndUser;
 }
 const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
   const { mediaId, poster_path, mediaType, title, user, id } = review;

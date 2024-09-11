@@ -3,7 +3,7 @@ import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
 import { getUserProfile } from '@/features/profile/service/userProfileService';
 import columns from '@/features/watchlist/components/tables/watchlist/columns';
-import { getUserWatchlist } from '@/features/watchlist/service/watchlistService';
+import { getUserWatchlistByIdWithMedia } from '@/features/watchlist/service/watchlistAdvancedService';
 import WatchlistItems from '@/features/watchlist/types/interfaces/WatchlistItem';
 import { capitalCase } from 'change-case';
 import { FormControl, MenuItem, Select, Typography } from '@mui/material';
@@ -13,6 +13,7 @@ import MediaType from '@/types/enums/IMediaType';
 import WatchStatus from '@/types/enums/WatchStatus';
 import { getSession } from '@/utils/authUtils';
 import routes from '@/libs/routes';
+
 
 type PageProps = {
   params: { username: string };
@@ -27,14 +28,13 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 };
 
 const WatchlistPage: NextPage<PageProps> = async ({ params: { username }, searchParams: { status } }) => {
-  const response = await getUserWatchlist(username);
+  const profile = await getUserProfile(username);
+
+  const response = profile ? await getUserWatchlistByIdWithMedia(profile.id) : [];
   const session = await getSession();
-  let displayName = session?.user?.displayName;
+  const displayName = profile?.displayName ?? username;
   const isOwner = session?.user?.username === username;
-  if (isOwner) {
-    const profile = await getUserProfile(username);
-    displayName = profile?.displayName ?? username;
-  }
+
   const all = 'allDramasAndFilms';
   const sections = Object.values(WatchStatus).reduce(
     (acc, status) => {

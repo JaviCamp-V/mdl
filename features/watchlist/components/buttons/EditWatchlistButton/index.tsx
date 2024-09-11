@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { getContentDetails } from '@/features/media/service/tmdbService';
+import { getValidContentDetails } from '@/features/media/service/tmdbViewService';
 import MovieDetails from '@/features/media/types/interfaces/MovieDetails';
 import TVDetails from '@/features/media/types/interfaces/TVDetails';
-import { getWatchlistRecord } from '@/features/watchlist/service/watchlistService';
+import { getUserWatchlistRecordById } from '@/features/watchlist/service/watchlistViewService';
 import WatchlistRecord from '@/features/watchlist/types/interfaces/WatchlistRecord';
 import { useSession } from 'next-auth/react';
 import { enqueueSnackbar } from 'notistack';
@@ -34,7 +34,7 @@ const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, rec
   if (!session?.user) return;
 
   const handleClick = async () => {
-    const mediaResponse = await getContentDetails(type, id, false);
+    const mediaResponse = await getValidContentDetails(type, id);
     if (mediaResponse === null) {
       enqueueSnackbar(`Error fetching ${type === MediaType.tv ? 'drama' : 'movie'} details`, { variant: 'error' });
       return;
@@ -42,7 +42,7 @@ const EditWatchlistButton: React.FC<EditWatchlistButtonProps> = ({ type, id, rec
     setMediaData(mediaResponse);
 
     if (recordId) {
-      const recordResponse = await getWatchlistRecord(recordId);
+      const recordResponse = await getUserWatchlistRecordById(recordId);
       if (recordResponse && 'errors' in recordResponse) {
         enqueueSnackbar('Error fetching watchlist record', { variant: 'error' });
         return;

@@ -2,14 +2,13 @@
 
 import { revalidateTag, unstable_cache } from 'next/cache';
 import AccessLevel from '@/features/auth/types/enums/AccessLevel';
-import { getContentDetails, getContentSummary } from '@/features/media/service/tmdbService';
+import { getContentSummary } from '@/features/media/service/tmdbAdvancedService';
 import { getUserSummary } from '@/features/profile/service/userProfileService';
 import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import HasLikedResponse from '@/types/common/HasLikedResponse';
-import LikeData from '@/types/common/LikeData';
 import TotalResponse from '@/types/common/TotalResponse';
 import MediaType from '@/types/enums/IMediaType';
 import { getSession } from '@/utils/authUtils';
@@ -392,8 +391,12 @@ const getUsersSuggestions = async (userId: number): Promise<RecommendationDetail
 
   const suggestions = await Promise.all(
     recommendations.map(async (rec) => {
-      const source = await getContentSummary(rec.source.mediaType, rec.source.mediaId, true);
-      const suggested = await getContentSummary(rec.suggested.mediaType, rec.suggested.mediaId, true);
+      const source = await getContentSummary(rec.source.mediaType.toLowerCase() as any, rec.source.mediaId, true);
+      const suggested = await getContentSummary(
+        rec.suggested.mediaType.toLowerCase() as any,
+        rec.suggested.mediaId,
+        true
+      );
       const recommendationWithLikes = await mapRecommendationWithLikes(rec);
       return {
         ...recommendationWithLikes,

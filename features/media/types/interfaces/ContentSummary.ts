@@ -2,6 +2,7 @@
 import MediaType from '@/types/enums/IMediaType';
 import Genre from './Genre';
 
+
 export default interface ContentSummary {
   mediaId: number;
   mediaType: MediaType.movie | MediaType.tv;
@@ -13,5 +14,6 @@ export default interface ContentSummary {
   original_title: string;
   origin_country: string[];
   recordId: number | null;
+  number_of_episodes?: number | null;
   genres: Genre[];
 }

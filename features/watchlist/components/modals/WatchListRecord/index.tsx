@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteWatchlistRecord, updateWatchlistRecord } from '@/features/watchlist/service/watchlistService';
+import { deleteWatchlistRecord, updateWatchlistRecord } from '@/features/watchlist/service/watchlistUpdateService';
 import UpdateWatchlistRequest from '@/features/watchlist/types/interfaces/UpdateWatchlistRequest';
 import WatchlistRecord from '@/features/watchlist/types/interfaces/WatchlistRecord';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,6 +17,7 @@ import WatchStatus from '@/types/enums/WatchStatus';
 import { formatDate, formatStringDate } from '@/utils/formatters';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
+
 
 interface WatchlistRecordProps {
   open: boolean;

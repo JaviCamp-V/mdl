@@ -13,6 +13,7 @@ import ReviewHelpfulData, { HelpfulRating } from '../types/interfaces/ReviewHelp
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
 import { reviewViewEndpoints as endpoints } from './endpoints';
 
+
 const getMediaOverallReviews = async (
   mediaType: MediaType.tv | MediaType.movie,
   mediaId: number
@@ -140,7 +141,7 @@ const getRecentReviews = async (): Promise<OverallReview[]> => {
 const getUserReviews = async <T extends ReviewType>(
   userId: number,
   reviewType: T
-): Promise<T extends ReviewType.EPISODE ? EpisodeReview[] | ErrorResponse : OverallReview[] | ErrorResponse> => {
+): Promise<T extends ReviewType.EPISODE ? EpisodeReview[] : OverallReview[]> => {
   try {
     logger.info('Fetching user reviews with user: %s reviewType: %s', userId, reviewType);
     const endpointTemplate = endpoints.getUserReviews.endpoint;
@@ -148,7 +149,8 @@ const getUserReviews = async <T extends ReviewType>(
     const params = new URLSearchParams({ reviewType: reviewType.toString() });
     return await mdlApiClient.get<T extends ReviewType.EPISODE ? EpisodeReview[] : OverallReview[]>(endpoint, params);
   } catch (error: any) {
-    return handleServerError(error, 'fetching user reviews');
+    handleServerError(error, 'fetching user reviews');
+    return [];
   }
 };
 
@@ -240,7 +242,7 @@ const cacheGetRecentReviews = unstable_cache(getRecentReviews, [], {
 const cacheGetUserReviews = async <T extends ReviewType>(
   userId: number,
   reviewType: T
-): Promise<T extends ReviewType.EPISODE ? EpisodeReview[] | ErrorResponse : OverallReview[] | ErrorResponse> => {
+): Promise<T extends ReviewType.EPISODE ? EpisodeReview[] : OverallReview[]> => {
   try {
     const tags = endpoints.getUserReviews.tags;
     const getCached = unstable_cache(getUserReviews, [], {
@@ -251,7 +253,8 @@ const cacheGetUserReviews = async <T extends ReviewType>(
     });
     return await getCached(userId, reviewType);
   } catch (error: any) {
-    return handleServerError(error, 'fetching user reviews from cache');
+    handleServerError(error, 'fetching user reviews from cache');
+    return [];
   }
 };
 

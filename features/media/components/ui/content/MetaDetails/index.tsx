@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTVContentRating } from '@/features/media/service/tmdbService';
+import { getTVContentRating } from '@/features/media/service/tmdbViewService';
 import { lookupShow } from '@/features/media/service/tvMazeService';
 import Network from '@/features/media/types/interfaces/Network';
 import { sentenceCase } from 'change-case';
@@ -10,6 +10,7 @@ import { formatRuntime, formatShortDate, formatStringDate } from '@/utils/format
 import countries from '@/libs/countries';
 import routes from '@/libs/routes';
 import MultiLinkText from '../../../typography/MultiLinkText';
+
 
 interface MetaDetailsProps extends MediaDetailsProps {
   tvdb_id: number | null;
