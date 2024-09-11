@@ -3,6 +3,7 @@
 import React from 'react';
 import RecommendationDetails from '@/features/recommendations/components/ui/RecDetails';
 import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
+import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -17,13 +18,25 @@ import ContentCards from '../../components/ui/content/MainTabCards';
 import Photos from '../../components/ui/content/Photos';
 import SidePanel from '../../components/ui/content/SidePanel';
 import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
-import { getContentDetails } from '../../service/tmdbService';
+import { getContentDetails } from '../../service/tmdbAdvancedService';
+import { Season } from '../../types/interfaces/Season';
 
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];
   searchParams?: { [key: string]: string };
 }
 
+const getSeasonAndEpisode = (episode_section: string | undefined, seasons: Season[]) => {
+  try {
+    const [season_part, episode_part] = episode_section ? episode_section.split('-') : [];
+    const season = season_part ? Number(season_part.replace('s', '')) : 0;
+    const episode_number =
+      season && episode_part == 'ep_finale' ? seasons[season].episode_count : Number(episode_part.replace('ep', ''));
+    return { season, episode_number };
+  } catch (error) {
+    return { season: 0, episode_number: 0 };
+  }
+};
 const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, mediaId, sections, searchParams }) => {
   const tab = sections ? sections[0] : '';
   const { comments } = searchParams ?? {};
@@ -51,13 +64,19 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
   const year = mediaType === MediaType.movie ? anyDetails.release_date : anyDetails.first_air_date;
   const formattedYear = year ? formatStringDate(year).getFullYear() : 'TBA';
 
+  const episode_section =
+    MediaType.tv && tab === 'episode-guide' && sections?.length && sections.length > 1 ? sections[1] : undefined;
+  const { season, episode_number } = episode_section
+    ? getSeasonAndEpisode(episode_section, anyDetails?.seasons ?? [])
+    : { season: 0, episode_number: 0 };
   const TabPanel = {
     'episode-guide': (
       <EpisodeGuide
         id={mediaId}
         name={anyDetails.name}
         number_of_season={anyDetails.number_of_seasons ?? 0}
-        episode={sections?.length && sections.length > 1 ? sections[1] : undefined}
+        season_number={season}
+        episode_number={episode_number}
       />
     ),
     credits: <Credits mediaId={mediaId} mediaType={mediaType} view="all" />,
@@ -65,7 +84,12 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
       <ReviewDetails
         mediaType={mediaType}
         mediaId={details.id}
-        section={sections?.slice(1)}
+        reviewType={ReviewType.OVERALL}
+        section={
+          sections?.length && sections.length > 1 && ['new', 'edit'].includes(sections[1])
+            ? (sections[1] as 'edit' | 'new')
+            : 'all'
+        }
         totalEpisodes={mediaType === MediaType.tv ? anyDetails.number_of_episodes : 0}
       />
     ),
@@ -148,6 +172,22 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
             cardStyle={cardStyle}
             commentPage={comments}
           />
+        )}
+        {tab === 'episode-guide' && season && episode_number && (
+          <Box sx={{ width: '100%', padding: 0, margin: 0, paddingTop: 2, paddingBottom: 2, ...cardStyle }}>
+            <ReviewDetails
+              mediaType={mediaType}
+              mediaId={mediaId}
+              reviewType={ReviewType.EPISODE}
+              seasonNumber={season}
+              episodeNumber={episode_number}
+              section={
+                sections?.length && sections.length > 2 && ['new', 'edit']?.includes(sections[2])
+                  ? (sections[2] as 'new' | 'edit')
+                  : 'all'
+              }
+            />
+          </Box>
         )}
       </Grid>
       <Grid item xs={0} md={3.5} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', paddingLeft: 4 }}>

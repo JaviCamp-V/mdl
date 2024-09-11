@@ -13,5 +13,6 @@ export default interface ContentSummary {
   original_title: string;
   origin_country: string[];
   recordId: number | null;
+  number_of_episodes?: number | null;
   genres: Genre[];
 }

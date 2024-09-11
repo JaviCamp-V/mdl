@@ -1,7 +1,7 @@
 'use server';
 
 import React from 'react';
-import { getRoles } from '@/features/media/service/tmdbService';
+import { getRoles } from '@/features/media/service/tmdbViewService';
 import { MediaSearchResult } from '@/features/media/types/interfaces/SearchResponse';
 import { camelCase, capitalCase } from 'change-case';
 import { Typography } from '@mui/material';

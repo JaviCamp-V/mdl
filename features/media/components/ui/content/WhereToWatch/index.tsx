@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProviders } from '@/features/media/service/tmdbService';
+import { getProviders } from '@/features/media/service/tmdbViewService';
 import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';

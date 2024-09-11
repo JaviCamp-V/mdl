@@ -1,7 +1,7 @@
 'use server';
 
 import React from 'react';
-import { getEpisodeDetails, getSeasonDetails } from '@/features/media/service/tmdbService';
+import { getSeasonDetails } from '@/features/media/service/tmdbViewService';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -17,21 +17,22 @@ import EpisodeDetails from '../EpsiodeDetails';
 interface EpisodeGuideProps {
   id: number;
   number_of_season: number;
-  episode?: string | null | undefined;
+  season_number: number;
+  episode_number: number;
   name: string;
 }
 const hasAired = (date: string) => formatStringDate(date).getTime() < new Date().getTime();
-const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({ id, name, number_of_season, episode }) => {
-  if (episode) {
-    const [season_part, episode_part] = episode.split('-');
-    const season = Number(season_part.replace('s', ''));
-    const episode_number = episode_part == 'ep_finale' ? episode_part : Number(episode_part.replace('ep', ''));
-    const seasonDetails = await getSeasonDetails(id, season);
+const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({
+  id,
+  name,
+  number_of_season,
+  season_number,
+  episode_number
+}) => {
+  if (season_number && episode_number) {
+    const seasonDetails = await getSeasonDetails(id, season_number);
     if (!seasonDetails) return <NotFound type="episode guide" />;
-    const episodeDetails =
-      episode_part === 'ep_finale'
-        ? seasonDetails?.episodes[seasonDetails.episodes.length - 1]
-        : seasonDetails?.episodes.find((ep) => ep.episode_number === episode_number);
+    const episodeDetails = seasonDetails?.episodes.find((ep) => ep.episode_number === episode_number);
     if (!episodeDetails) return <NotFound type="episode guide" />;
     return (
       <EpisodeDetails

@@ -1,15 +1,14 @@
 import React from 'react';
-import { getUserWatchlist, getWatchlist } from '@/features/watchlist/service/watchlistService';
+import { getWatchlist } from '@/features/watchlist/service/watchlistViewService';
 import WatchlistItems from '@/features/watchlist/types/interfaces/WatchlistItem';
 import { capitalCase } from 'change-case';
 import { parseISO } from 'date-fns';
 import { Box, SxProps, Typography } from '@mui/material';
 import MediaTitle from '@/components/MediaTitle';
 import DramaPoster from '@/components/Poster';
-import Link from '@/components/common/Link';
 import MediaType from '@/types/enums/IMediaType';
 import WatchStatus from '@/types/enums/WatchStatus';
-import { formatShortDate, formatStringDate } from '@/utils/formatters';
+import { formatShortDate } from '@/utils/formatters';
 import EditWatchlistButton from '../../buttons/EditWatchlistButton';
 
 interface WatchlistUpdatesProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTVContentRating } from '@/features/media/service/tmdbService';
+import { getTVContentRating } from '@/features/media/service/tmdbViewService';
 import { lookupShow } from '@/features/media/service/tvMazeService';
 import Network from '@/features/media/types/interfaces/Network';
 import { sentenceCase } from 'change-case';

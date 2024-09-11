@@ -1,5 +1,7 @@
 import React from 'react';
 import UserRecommendations from '@/features/recommendations/components/ui/UserRecs';
+import UserReviewDetails from '@/features/reviews/components/ui/UseReviewDetails';
+import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import WatchlistOverview from '@/features/watchlist/components/ui/WatchlistOverview';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
@@ -19,6 +21,13 @@ interface UserProfileContainerProps {
   searchParams: { [key: string]: string };
 }
 
+const getReviewTypeAnId = (sections?: string[]) => {
+  if (!sections || sections[0] !== 'reviews' || sections.length < 2) return null;
+  const review_identifier = sections[1];
+  if (/^\d+$/.test(review_identifier)) return { reviewId: Number(review_identifier) };
+  const reviewType = review_identifier?.toUpperCase() as ReviewType;
+  return [ReviewType.EPISODE, ReviewType.OVERALL].includes(reviewType) ? { reviewType } : null;
+};
 const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ username, sections, searchParams }) => {
   const tab = sections ? sections[0] : '';
   const { comments } = searchParams ?? {};
@@ -36,8 +45,16 @@ const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ usern
   const profileData = await getUserProfile(username);
   if (!profileData) return <NotFound type={'profile'} />;
 
+  const reviewTypeAndId = getReviewTypeAnId(sections);
   const TabPanel = {
-    reviews: <React.Fragment>Reviews</React.Fragment>,
+    reviews: (
+      <UserReviewDetails
+        userId={profileData.id}
+        username={profileData.username}
+        reviewType={reviewTypeAndId?.reviewType}
+        reviewId={reviewTypeAndId?.reviewId}
+      />
+    ),
     recommendations: <UserRecommendations userId={profileData.id} />,
     lists: <React.Fragment>Lists</React.Fragment>,
     stats: <React.Fragment>Stats</React.Fragment>
@@ -108,11 +125,10 @@ const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ usern
 
         {!tab && (
           <WatchlistOverview
-            username={username}
+            userId={profileData.id}
             containerStyle={{
               backgroundColor: 'background.paper',
               borderRadius: 2
-              // border: '1px solid hsla(210,8%,51%,.13)'
             }}
           />
         )}

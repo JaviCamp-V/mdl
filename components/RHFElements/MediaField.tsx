@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { getSearchContent } from '@/features/media/service/tmdbService';
+import { getSearchContent } from '@/features/media/service/tmdbAdvancedService';
 import { MediaSearchResult, MovieSearchResult, TVSearchResult } from '@/features/media/types/interfaces/SearchResponse';
 import { useFormContext } from 'react-hook-form';
 import { Autocomplete, Paper, PaperProps, TextField } from '@mui/material';

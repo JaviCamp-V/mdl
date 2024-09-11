@@ -3,7 +3,7 @@ import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SearchResults from '../../components/lists/SearchResults';
-import { getSearchResults } from '../../service/tmdbService';
+import { getSearchResults } from '../../service/tmdbAdvancedService';
 import { getAllValidParams } from '../../utils/tmdbAdvancedSearch';
 
 interface SearchContainerProps {

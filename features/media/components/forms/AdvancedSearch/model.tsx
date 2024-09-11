@@ -1,4 +1,4 @@
-import { getSearchKeyword, getSearchNetwork } from '@/features/media/service/tmdbService';
+import { getSearchKeyword, getSearchNetwork } from '@/features/media/service/tmdbViewService';
 import Gender from '@/features/media/types/enums/Gender';
 import SortType from '@/features/media/types/enums/SortType';
 import Network from '@/features/media/types/interfaces/Network';

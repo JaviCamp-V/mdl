@@ -95,9 +95,10 @@ const updateLastActive = async (): Promise<void> => {
     const session = await getServerActionSession();
     if (!session?.user) return;
     logger.info('Updating last active');
-
-    await mdlApiClient.post<null, GenericResponse>(endpoints.heartbeat, null);
+    const response = await mdlApiClient.post<null, GenericResponse>(endpoints.heartbeat, null);
+    logger.info(response.message);
     revalidateTag(`user-profile-${session.user.username}`);
+    revalidateTag(`user-profile-${session.user.userId}`);
   } catch (error: any) {
     const message = error?.response?.data?.message ?? error?.message;
     logger.error('Error updating last active %s', message);

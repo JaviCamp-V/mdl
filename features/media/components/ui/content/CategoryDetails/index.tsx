@@ -2,7 +2,7 @@
 
 import React from 'react';
 import MultiLinkText from '@/features/media/components/typography/MultiLinkText';
-import { getTags } from '@/features/media/service/tmdbService';
+import { getTags } from '@/features/media/service/tmdbViewService';
 import Genre from '@/features/media/types/interfaces/Genre';
 import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';

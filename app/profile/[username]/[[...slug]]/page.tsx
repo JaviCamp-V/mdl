@@ -1,5 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import PersonContainer from '@/features/media/containers/Person';
 import UserProfileContainer from '@/features/profile/containers/profile';
 import Box from '@mui/material/Box';
@@ -8,6 +9,8 @@ type PageProps = {
   params: { username: string; slug?: string[] };
   searchParams: { [key: string]: string };
 };
+
+export const revalidate = 3600 / 2;
 
 const UserProfilePage: NextPage<PageProps> = ({ params: { username, slug }, searchParams }) => {
   return (

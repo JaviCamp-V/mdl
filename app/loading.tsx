@@ -20,7 +20,7 @@ const LoadingPage = () => {
         marginX: { xs: 2, lg: 8 }
       }}
     >
-      <Image src={model.logo} width={250} height={40} alt="Footer logo" priority />
+      <Image src={model.logo} width={250} height={40} alt=" logo" priority />
 
       <Box sx={{ width: 250 }}>
         <LinearProgress />

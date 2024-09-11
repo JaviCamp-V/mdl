@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDiscoverType } from '@/features/media/service/tmdbService';
+import { getDiscoverType } from '@/features/media/service/tmdbAdvancedService';
 import Box from '@mui/material/Box';
 import Carousel from '@/components/Carousel/swiper/index';
 import MediaType from '@/types/enums/IMediaType';

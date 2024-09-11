@@ -39,10 +39,15 @@ const formatTime = (date: Date): string => {
 };
 
 const formatDateToDistance = (date: string): string => {
-  const formatString = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
-  const formattedDate = parse(date, formatString, new Date());
-  // account for api time difference
-  return formatDistance(formattedDate, addHours(new Date(), 5), { addSuffix: true });
+  try {
+    const trimmedDate = date.substring(0, 23);
+    const formatString = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    const formattedDate = parse(trimmedDate, formatString, new Date());
+    // account for api time difference
+    return formatDistance(formattedDate, addHours(new Date(), 5), { addSuffix: true });
+  } catch (error) {
+    return '';
+  }
 };
 
 const formatDigitsWithPadding = (num: number, digits: number): string => num.toString().padStart(digits, '0');

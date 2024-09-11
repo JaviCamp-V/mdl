@@ -1,20 +1,9 @@
 import React from 'react';
-import Link from 'next/link';
-import { markReviewHelpful, removedHelpfulRating } from '@/features/reviews/services/reviewService';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
-import { capitalCase } from 'change-case';
-import { useSession } from 'next-auth/react';
-import { enqueueSnackbar } from 'notistack';
-import { Avatar, Box, Button, Chip, Typography } from '@mui/material';
-import Iconify from '@/components/Icon/Iconify';
-import Divider from '@/components/common/Divider';
-import WatchStatus from '@/types/enums/WatchStatus';
-import { formatDateToDistance } from '@/utils/formatters';
-import { scrollToElementByID } from '@/utils/scrollToElement';
-import routes from '@/libs/routes';
-import AddHelpfulRatingButtons from '../../buttons/AddHelpfulRaing';
+import { Box } from '@mui/material';
+import AddHelpfulRatingButtons from '../../buttons/AddHelpfulRating';
 import ReviewRatingCard from '../Ratings';
-import ReviewBody from './ReviewBody';
+import ReviewBody from '../ReviewBody';
 import ReviewHeader from './ReviewHeader';
 
 interface OverallReviewCardProps {

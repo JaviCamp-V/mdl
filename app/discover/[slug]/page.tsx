@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata, NextPage } from 'next';
 import AdvancedSearchForm from '@/features/media/components/forms/AdvancedSearch';
 import SearchResults from '@/features/media/components/lists/SearchResults';
-import { getDiscoverType } from '@/features/media/service/tmdbService';
+import { getDiscoverType } from '@/features/media/service/tmdbAdvancedService';
 import { getTopAiring, mostPopular, trending, upcomingTvShows } from '@/features/media/utils/tmdbQueries';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';

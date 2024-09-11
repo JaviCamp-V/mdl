@@ -5,7 +5,7 @@
  * @returns The URL for embedding the YouTube video with specified parameters.
  */
 const generateYoutubeEmbedLink = (key: string, autoplay: boolean = false) =>
-  `https://www.youtube.com/embed/${key}?rel=0&controls=0&showinfo=0&modestbranding=1&autoplay=${autoplay ? 1 : 0}`;
+  `https://www.youtube.com/embed/${key}?rel=0&showinfo=0&modestbranding=1&autoplay=${autoplay ? 1 : 0}`;
 
 /**
  * Generates a URL for a YouTube video thumbnail.

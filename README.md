@@ -10,6 +10,8 @@ This project is a clone of the website [MyDramalist](https://mydramalist.com/). 
 - **Axios** - For making HTTP requests to the external and internal APIs.
 - **React Hook Form** - For managing form state and validation.
 - **Yup** - For schema validation of forms.
+- **Cloudinary** - For image upload and hosting.
+- **Mui-TipTap** - For rich text editing for bio
 
 ## Live Demo
 

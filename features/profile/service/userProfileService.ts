@@ -6,10 +6,8 @@ import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
 import UserSummary from '@/types/common/UserSummary';
 import { getServerActionSession } from '@/utils/authUtils';
-import { formDataToValues, formatDate } from '@/utils/formatters';
 import { generateErrorResponse } from '@/utils/handleError';
 import logger from '@/utils/logger';
-import { formSchema as profileFormSchema } from '../components/forms/settings/model';
 import ProfileData from '../types/interfaces/ProfileData';
 import UpdateProfile from '../types/interfaces/UpdateProfile';
 import { deleteImage, uploadImageV2 } from './cloundairyService';
@@ -105,7 +103,7 @@ const updateProfile = async (formData: FormData): Promise<GenericResponse | Erro
       if (avatar) {
         avatarUrl = await uploadImageV2(session.user.userId, avatar);
       } else if (avatarUrl) {
-        const isDeleted = await deleteImage(session.user.userId);
+        const isDeleted: boolean = await deleteImage(session.user.userId);
         avatarUrl = isDeleted ? null : avatarUrl;
       }
     }
