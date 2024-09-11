@@ -1,4 +1,4 @@
-import ResponseAction from '@/types/enums/ResposneAction';
+import ResponseAction from '@/types/enums/ResponseAction';
 
 export default interface ReviewHelpfulData {
   numberOfHelpfulReviews: number;
