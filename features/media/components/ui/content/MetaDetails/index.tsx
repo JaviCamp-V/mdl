@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTVContentRating } from '@/features/media/service/tmdbService';
+import { getTVContentRating } from '@/features/media/service/tmdbViewService';
 import { lookupShow } from '@/features/media/service/tvMazeService';
 import Network from '@/features/media/types/interfaces/Network';
 import { sentenceCase } from 'change-case';
@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import { formatRuntime, formatShortDate, formatStringDate } from '@/utils/formatters';
 import countries from '@/libs/countries';
+import routes from '@/libs/routes';
+import MultiLinkText from '../../../typography/MultiLinkText';
 
 interface MetaDetailsProps extends MediaDetailsProps {
   tvdb_id: number | null;
@@ -57,7 +59,10 @@ const mapTvDetails = async (props: MetaDetailsProps) => {
   const episodes = props.number_of_episodes || 'N/A';
   const airs = `${formatReleaseDate(props.release_date)} - ${formatReleaseDate(props.last_air_date)}`;
   const duration = getDuration(props.runtime);
-  const originalNetwork = props.networks.map(({ name }) => name).join(', ') || 'N/A';
+  const originalNetwork = props.networks?.map((network) => ({
+    label: network.name,
+    href: `${routes.search}?type=${props.mediaType}&with_companies=${network.id}_${network.name}`
+  }));
   return { episodes, airs, airsOn, duration, originalNetwork, contentRating };
 };
 
@@ -83,11 +88,15 @@ const MetaDetails: React.FC<MetaDetailsProps> = async (props) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {Object.entries(data).map(([key, value]) => (
-        <Box key={key} sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box key={key} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           <Typography fontSize={14} paddingRight={1} fontWeight={'bolder'}>
             {sentenceCase(key)}:
           </Typography>
-          <Typography fontSize={14}>{value}</Typography>
+          {key === 'originalNetwork' ? (
+            <MultiLinkText links={value as any} />
+          ) : (
+            <Typography fontSize={14}>{value as string}</Typography>
+          )}
         </Box>
       ))}
     </Box>

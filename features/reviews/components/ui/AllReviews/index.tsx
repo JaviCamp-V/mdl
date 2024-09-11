@@ -1,36 +1,71 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import ReviewType from '@/features/reviews/types/enums/ReviewType';
+import {
+  ExtendEpisodeReviewWithMediaHelpful,
+  ExtendOverallReview,
+  ExtendOverallReviewWithMediaHelpful,
+  ExtendedEpisodeReview
+} from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import { withHelpful } from '@/features/reviews/types/interfaces/ReviewHelpfulData';
+import { BaseReviewResponse } from '@/features/reviews/types/interfaces/ReviewResponse';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Divider from '@/components/common/Divider';
-import ItemPagination from '@/components/common/ItemPagination';
+import PaginatedList from '@/components/common/PagninatedList';
 import SelectField from '@/components/common/Select';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
+import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
-import { scrollToTop } from '@/utils/scrollToElement';
+import { scrollToTopById } from '@/utils/scrollToElement';
+import ManageReviewButton from '../../buttons/ManageReviewButton';
+import ReviewTypeSwitcher from '../../buttons/ReviewTypeSwitcher';
+import EpisodeReviewCard from '../../cards/EpsiodeReview';
 import OverallReviewCard from '../../cards/OverallReview';
+import UserReviewCard from '../../cards/UserReview';
 import NoReviews from '../NoReview';
 
-interface AllReviewsProps extends MediaDetailsProps {
+interface OverallReviewsProps {
+  reviewType: ReviewType.OVERALL;
+  userReview: ExtendOverallReview | null;
   reviews: ExtendOverallReview[];
   totalEpisodes?: number;
 }
+interface EpisodeReviewsProps {
+  reviewType: ReviewType.EPISODE;
+  userReview: ExtendedEpisodeReview | null;
+  reviews: ExtendedEpisodeReview[];
+  seasonNumber: number;
+  episodeNumber: number;
+}
 
-const createdAtComparator = (a: ExtendOverallReview, b: ExtendOverallReview) => {
+type ReviewProps = OverallReviewsProps | EpisodeReviewsProps;
+
+type MediaReviewsProps = MediaDetailsProps &
+  ReviewProps & {
+    view: 'media';
+  };
+
+type UserReviewsProps = {
+  view: 'user';
+  reviewType: ReviewType;
+  username: string;
+  reviews: (ExtendOverallReviewWithMediaHelpful | ExtendEpisodeReviewWithMediaHelpful)[];
+};
+
+type AllReviewsProps = MediaReviewsProps | UserReviewsProps;
+
+const createdAtComparator = (a: BaseReviewResponse, b: BaseReviewResponse) => {
   return formatStringDate(a.createdAt).getTime() - formatStringDate(b.createdAt).getTime();
 };
-const helpfulComparator = (a: ExtendOverallReview, b: ExtendOverallReview) => {
+const helpfulComparator = (a: withHelpful, b: withHelpful) => {
   return b.helpful.numberOfHelpfulReviews - a.helpful.numberOfHelpfulReviews;
 };
 
-const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, totalEpisodes }) => {
-  const [page, setPage] = React.useState<number>(1);
+const AllReviews: React.FC<AllReviewsProps> = (props) => {
+  const { reviews, view, reviewType } = props;
+  const [switchPage, setSwitchPage] = React.useState<number>();
   const [sortedBy, setSortedBy] = React.useState<'helpful' | 'recent'>();
-  const router = useRouter();
   const sortedReviews = React.useMemo(() => {
     if (!sortedBy) return reviews;
     return reviews.sort((a, b) => {
@@ -44,16 +79,45 @@ const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, to
     setSortedBy(by);
   };
 
-  const onPageChange = (page: number) => {
-    setPage(page);
-    scrollToTop();
+  const onViewUserReview = () => {
+    if (view !== 'media') return;
+    const userReview = props?.userReview;
+    const whichPage = sortedReviews.findIndex((review) => review.id === userReview?.id);
+    const page = Math.floor(whichPage / 10) + 1;
+    setSwitchPage(page);
+    scrollToTopById(`review-${userReview?.id}`);
   };
 
   if (sortedReviews.length === 0)
-    return <NoReviews mediaId={mediaId} mediaType={mediaType} containerStyle={{ minHeight: '40vh' }} />;
+    return (
+      <NoReviews
+        view={view}
+        mediaId={view === 'media' ? props.mediaId : 0}
+        mediaType={view === 'media' ? props.mediaType : MediaType.tv}
+        reviewType={reviewType}
+        seasonNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.seasonNumber : undefined}
+        episodeNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.episodeNumber : undefined}
+        containerStyle={{ minHeight: '10vh' }}
+      />
+    );
+
+  const renderReview = (
+    review:
+      | ExtendOverallReview
+      | ExtendedEpisodeReview
+      | ExtendEpisodeReviewWithMediaHelpful
+      | ExtendOverallReviewWithMediaHelpful
+  ) => {
+    if (view === 'user') return <UserReviewCard review={review as any} username={props.username} />;
+
+    if (reviewType === ReviewType.OVERALL) {
+      return <OverallReviewCard review={review as ExtendOverallReview} totalEpisodes={props?.totalEpisodes} />;
+    }
+    return <EpisodeReviewCard review={review as ExtendedEpisodeReview} />;
+  };
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <Box
         sx={{
           display: 'flex',
@@ -72,45 +136,24 @@ const AllReviews: React.FC<AllReviewsProps> = ({ reviews, mediaType, mediaId, to
           value={sortedBy ?? 'helpful'}
           onChange={onChange}
         />
-        <Button
-          variant="contained"
-          onClick={() => router.push(`/${mediaType}/${mediaId}/reviews/new`)}
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {' '}
-          Write Review{' '}
-        </Button>
+        {view === 'media' ? (
+          <ManageReviewButton
+            reviewType={reviewType as any}
+            review={props?.userReview as any}
+            formMode={reviewType === ReviewType.OVERALL ? 'page' : 'modal'}
+            mediaId={props?.mediaId}
+            mediaType={props?.mediaType}
+            onViewReview={onViewUserReview}
+            seasonNumber={reviewType === ReviewType.EPISODE ? props.seasonNumber : 0}
+            episodeNumber={reviewType === ReviewType.EPISODE ? props.episodeNumber : 0}
+          />
+        ) : (
+          <ReviewTypeSwitcher currentReviewType={reviewType} username={props.username} />
+        )}
       </Box>
       <Divider marginBottom={0} />
 
-      <Grid
-        container
-        spacing={0}
-        sx={{ borderRight: '1px solid hsla(210,8%,51%,.13)', borderLeft: '1px solid hsla(210,8%,51%,.13)' }}
-      >
-        {sortedReviews.slice((page - 1) * 10, page * 10).map((review: ExtendOverallReview, index: number, arr) => (
-          <Grid
-            item
-            xs={12}
-            key={review.id}
-            sx={{ borderBottom: index !== arr.length - 1 ? '1px solid hsla(210,8%,51%,.13)' : 'none' }}
-          >
-            <OverallReviewCard review={review} totalEpisodes={totalEpisodes} />
-          </Grid>
-        ))}
-      </Grid>
-      <Divider marginTop={0} />
-
-      {reviews.length > 10 && (
-        <Box sx={{ margin: 2 }}>
-          <ItemPagination
-            totalItems={reviews.length}
-            itemsPerPage={10}
-            currentPage={page}
-            onPageChange={onPageChange}
-          />
-        </Box>
-      )}
+      <PaginatedList items={sortedReviews} itemsPerPage={10} renderItem={renderReview} switchPage={switchPage} />
     </Box>
   );
 };

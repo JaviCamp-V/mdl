@@ -17,6 +17,12 @@ const nextConfig = {
         hostname: 'image.tmdb.org',
         port: '',
         pathname: '/t/p/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**'
       }
     ]
   }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
 import ContentContainer from '@/features/media/containers/Content';
-import { getTVDetails } from '@/features/media/service/tmdbService';
+import { getValidContentSummary } from '@/features/media/service/tmdbViewService';
+import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
@@ -13,26 +14,26 @@ type PageProps = {
 
 export const generateMetadata = async ({ params, searchParams }: PageProps): Promise<Metadata> => {
   const { id, slug } = params;
-  const response = await getTVDetails(id, false);
+  const response = await getValidContentSummary(MediaType.tv, id);
   const section = slug ? slug[0] : 'Details';
-  const title = `${response?.name} (${formatStringDate(response?.first_air_date).getFullYear()}) - ${section} `;
+  const title = `${response?.title} (${response?.release_date ? formatStringDate(response?.release_date).getFullYear() : 'TBA'}) - ${capitalCase(section)} `;
   return {
-    title: response?.name ? title : 'Drama Details',
+    title: response?.title ? title : 'Drama Details',
     description: response?.overview ?? ''
   };
 };
-const TVDetailsPage: NextPage<PageProps> = async ({ params: { id, slug }, searchParams }) => {
+const TVDetailsPage: NextPage<PageProps> = ({ params: { id, slug }, searchParams }) => {
   return (
     <Box
       sx={{
-        paddingY: { xs: 2, md: 4 },
-        paddingX: { xs: 1, md: 4 },
-        marginX: { xs: 1, lg: 8 },
+        paddingY: { xs: 0.5, md: 4 },
+        paddingX: { xs: 0.5, md: 4 },
+        marginX: { xs: 0.5, sm: 1, lg: 8 },
         backgroundColor: 'background.default',
-        marginTop: 2
+        marginTop: { xs: 1, md: 2 }
       }}
     >
-      <ContentContainer mediaId={id} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
+      <ContentContainer mediaId={Number(id)} mediaType={MediaType.tv} sections={slug} searchParams={searchParams} />
     </Box>
   );
 };

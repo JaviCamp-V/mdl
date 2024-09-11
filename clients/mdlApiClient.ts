@@ -1,8 +1,8 @@
 import { cookies, headers } from 'next/headers';
-import RefreshTokenRequest from '@/features/auth/types/interfaces/ResfreshTokenRequest';
 import axios from 'axios';
 import { JWT, getToken } from 'next-auth/jwt';
-import getDeviceId from '@/utils/getDevice';
+import GenericResponse from '@/types/common/GenericResponse';
+import Values from '@/types/common/Values';
 import { X_API_KEY, X_Device_ID } from '@/libs/common';
 
 /**
@@ -53,20 +53,27 @@ const getRefreshToken = async (): Promise<string> => {
 };
 
 /**
+ * Retrieves the device ID from the cookies and headers.
+ * @returns A promise that resolves to the device ID.
+ */
+const getDeviceId = async (): Promise<string> => {
+  const token = await getNextAuthToken();
+  return token?.deviceID ?? '';
+};
+
+const bearerProtectedRoutes = ['user', 'admin', 'heartbeat'];
+
+/**
  * Interceptor to add headers conditionally based on the endpoint.
  */
 instance.interceptors.request.use(async (config) => {
-  if (!config?.url?.startsWith('user') && !config?.url?.startsWith('admin')) {
-    // Add API Key and Device ID for /auth/ endpoints
-    config.headers[X_API_KEY] = process.env.MDL_API_KEY;
-  }
-  if (config?.url?.startsWith('auth/')) {
-    config.headers[X_Device_ID] = getDeviceId();
-  }
-  if (config?.url?.startsWith('user/') || config?.url?.startsWith('admin') || config?.url?.startsWith('auth/logout')) {
+  if (bearerProtectedRoutes.some((route) => config?.url?.startsWith(route))) {
     const token = await getBearerToken();
     config.headers['Authorization'] = `Bearer ${token}`;
+    return config;
   }
+
+  config.headers[X_API_KEY] = process.env.MDL_API_KEY;
   return config;
 });
 
@@ -77,8 +84,8 @@ instance.interceptors.request.use(async (config) => {
  * @param params - Optional URL search parameters.
  * @returns A promise that resolves to the response data.
  */
-const post = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams): Promise<T2> => {
-  const response = await instance.post<T2>(endpoint, request, { params });
+const post = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchParams, headers?: Values): Promise<T2> => {
+  const response = await instance.post<T2>(endpoint, request, { params, headers });
   return response.data;
 };
 /**
@@ -112,8 +119,8 @@ const patch = async <T1, T2>(endpoint: string, request: T1, params?: URLSearchPa
  * @param params - Optional query parameters.
  * @returns A promise that resolves to the response data.
  */
-const get = async <T>(url: string, params?: any): Promise<T> => {
-  const response = await instance.get<T>(url, { params });
+const get = async <T>(url: string, params?: any, headers?: any): Promise<T> => {
+  const response = await instance.get<T>(url, { params, headers });
   return response.data;
 };
 
@@ -128,17 +135,19 @@ const del = async <T>(url: string): Promise<T> => {
   const response = await instance.delete<T>(url);
   return response.data;
 };
-
-/**
- * send refresh token request
- */
-
-const refreshToken = async <T>(url: string): Promise<any> => {
-  const refreshToken = await getRefreshToken();
-  const response = await post<RefreshTokenRequest, T>(url, { refreshToken });
-  return response;
+const logout = async (url: string): Promise<GenericResponse> => {
+  const token = await getNextAuthToken();
+  const accessToken = token?.accessToken;
+  const deviceId = token?.deviceID;
+  const headers = {
+    [X_Device_ID]: deviceId,
+    Authorization: `Bearer ${accessToken}`
+  };
+  const response = await instance.delete<GenericResponse>(url, { headers });
+  return response.data;
 };
+
 // Export the HTTP methods for use in other parts of the application.
-const methods = { get, post, put, patch, del, refreshAuthToken: refreshToken };
+const methods = { get, post, put, patch, del, logout };
 
 export default methods;

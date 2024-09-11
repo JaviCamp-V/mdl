@@ -12,7 +12,7 @@ interface MuiThemeProviderProps {
 }
 const MuiThemeProvider: React.FC<MuiThemeProviderProps> = ({ children }) => {
   const { resolvedTheme } = useTheme();
-  const defaultTheme = React.useMemo(() => (resolvedTheme === 'light' ? light : dark), [resolvedTheme]);
+  const defaultTheme = resolvedTheme === 'light' ? light : dark;
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />

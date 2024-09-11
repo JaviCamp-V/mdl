@@ -1,7 +1,6 @@
-'use server';
-
+// Server Component
 import React from 'react';
-import { getDiscoverType } from '@/features/media/service/tmdbService';
+import { getDiscoverType } from '@/features/media/service/tmdbAdvancedService';
 import { getTopAiring } from '@/features/media/utils/tmdbQueries';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';

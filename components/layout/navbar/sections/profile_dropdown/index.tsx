@@ -6,14 +6,15 @@ import { logout } from '@/features/auth/services/authService';
 import { capitalCase } from 'change-case';
 import { signOut } from 'next-auth/react';
 import { Divider, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Iconify from '@/components/Icon/Iconify';
+import Avatar from '@/components/common/Avatar';
 import { userRoutes } from '@/libs/routes';
 
 interface ProfileDropdownProps {
   username: string;
+  avatarUrl?: string;
 }
 
 const icons = {
@@ -23,7 +24,7 @@ const icons = {
   settings: 'mdi:mixer-settings-vertical',
   logout: 'mdi:logout'
 };
-const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
+const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username, avatarUrl }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (anchorEl !== event.currentTarget) setAnchorEl(event.currentTarget);
@@ -51,7 +52,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
         aria-expanded={anchorEl ? 'true' : undefined}
         sx={{ margin: 0, padding: 0 }}
       >
-        <Avatar sx={{ width: 25, height: 25 }}>{username?.charAt(0)?.toUpperCase() || 'U'}</Avatar>
+        <Avatar sx={{ width: 30, height: 30 }} username={username ?? 'U'} src={avatarUrl} />
         <Iconify icon="mdi:arrow-down-drop" fontSize="small" sx={{ color: 'white' }} />
       </IconButton>
       <Menu
@@ -80,7 +81,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
         {Object.entries(userRoutes).map(([key, value]) => (
           <MenuItem key={key} onClick={() => handleMenuItemClick(value)}>
             <ListItemIcon>
-              <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'white' }} />
+              <Iconify icon={(icons as any)[key]} fontSize="small" sx={{ color: 'text.primary' }} />
             </ListItemIcon>
             <ListItemText>{capitalCase(key)}</ListItemText>
           </MenuItem>
@@ -88,7 +89,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ username }) => {
         <Divider />
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
-            <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'white' }} />
+            <Iconify icon={icons.logout} fontSize="small" sx={{ color: 'text.primary' }} />
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>
         </MenuItem>

@@ -1,7 +1,6 @@
-'use server';
-
+// Server Component
 import React from 'react';
-import { getImages } from '@/features/media/service/tmdbService';
+import { getImages } from '@/features/media/service/tmdbViewService';
 import Box from '@mui/material/Box';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import FullPhotoGallery from './FullPhotoGallery';

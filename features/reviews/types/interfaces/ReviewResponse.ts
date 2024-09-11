@@ -1,7 +1,16 @@
-import UserSummary from '@/types/common/UserSummary';
-import WatchStatus from '@/types/enums/WatchStatus';
+import MediaDetailsProps from '@/types/common/MediaDetailsProps';
+import ResponseAction from '@/types/enums/ResponseAction';
 import ReviewType from '../enums/ReviewType';
 import { ReviewBase } from './ReviewRequest';
+
+export interface ReviewMetaData extends MediaDetailsProps {
+  id: number;
+  reviewType: ReviewType;
+  season: number;
+  episode: number;
+  userId: number;
+  action: ResponseAction;
+}
 
 export interface BaseReviewResponse extends ReviewBase {
   id: number;
@@ -9,10 +18,8 @@ export interface BaseReviewResponse extends ReviewBase {
   updatedAt: string;
   createdBy: string;
   updatedBy: string;
-  user: UserSummary;
+  userId: number;
   commentCount: number;
-  watchStatus: WatchStatus | null;
-  episodeWatched: number | null;
 }
 
 export interface EpisodeReview extends BaseReviewResponse {

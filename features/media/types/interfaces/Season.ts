@@ -1,3 +1,5 @@
+import { Cast, Crew } from './People';
+
 export interface Episode {
   air_date: string;
   episode_number: number;
@@ -14,6 +16,10 @@ export interface Episode {
   vote_count: number;
 }
 
+export interface EpisodeDetails extends Episode {
+  crew: Crew[];
+  guest_stars: Cast[];
+}
 export interface Season {
   air_date: string;
   episode_count: number;

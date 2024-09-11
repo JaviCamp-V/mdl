@@ -10,7 +10,7 @@ type SearchFieldProps = TextFieldProps & {
   onClick: () => void;
 };
 
-const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, onClick, ...props }) => {
+const SearchField: React.FC<SearchFieldProps> = ({ fieldColor, borderColor, sx, onClick, errorMessages, ...props }) => {
   return (
     <TextField
       size="small"

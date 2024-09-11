@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ExtendOverallReviewWithMedia } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import { ExtendOverallReviewWithMediaAndUser } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MediaTitle from '@/components/MediaTitle';
@@ -10,7 +10,7 @@ import Ratings from '@/components/common/Ratings';
 import routes from '@/libs/routes';
 
 interface ReviewSummaryCardProps {
-  review: ExtendOverallReviewWithMedia;
+  review: ExtendOverallReviewWithMediaAndUser;
 }
 const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
   const { mediaId, poster_path, mediaType, title, user, id } = review;
@@ -22,7 +22,11 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
         style={{ textDecoration: 'none' }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, paddingX: 0.5 }}>
-          <Avatar src={user.avatarUrl} sx={{ width: 15, height: 15, fontSize: 12 }} username={user.username} />
+          <Avatar
+            src={user.avatarUrl ?? undefined}
+            sx={{ width: 15, height: 15, fontSize: 12 }}
+            username={user.username}
+          />
           <Typography fontSize={14} fontWeight={'bolder'} color={'hsl(0deg 0% 100% / 87%)'}>
             {user.displayName}
           </Typography>

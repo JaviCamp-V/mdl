@@ -49,7 +49,7 @@ const AuthContent: React.FC = () => {
   return (
     <React.Fragment>
       <NotificationsAlert />
-      <ProfileDropdown username={session.user?.username ?? 'U'} />
+      <ProfileDropdown username={session.user?.username ?? 'U'} avatarUrl={session.user.avatarUrl ?? undefined} />
     </React.Fragment>
   );
 };

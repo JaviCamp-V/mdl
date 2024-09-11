@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next/types';
 import PersonContainer from '@/features/media/containers/Person';
-import { getPersonDetails } from '@/features/media/service/tmdbService';
+import { getPersonDetails } from '@/features/media/service/tmdbViewService';
 import Box from '@mui/material/Box';
 
 type PageProps = {
@@ -14,6 +14,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   const response = await getPersonDetails(id);
   return { title: response?.name ?? `Person ${id} Details` };
 };
+
 const PersonDetailsPage: NextPage<PageProps> = ({ params: { id }, searchParams }) => {
   return (
     <Box
@@ -24,7 +25,7 @@ const PersonDetailsPage: NextPage<PageProps> = ({ params: { id }, searchParams }
         backgroundColor: 'background.default'
       }}
     >
-      <PersonContainer personId={id} searchParams={searchParams} />
+      <PersonContainer personId={Number(id)} searchParams={searchParams} />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { getSearchKeyword, getSearchNetwork } from '@/features/media/service/tmdbService';
+import { getSearchKeyword, getSearchNetwork } from '@/features/media/service/tmdbViewService';
 import Gender from '@/features/media/types/enums/Gender';
 import SortType from '@/features/media/types/enums/SortType';
 import Network from '@/features/media/types/interfaces/Network';
@@ -202,6 +202,7 @@ const contentSortBy = {
   name: 'contentSortBy',
   label: 'Sort By',
   type: 'select',
+  size: 'small',
   placeholder: 'Select Sort By',
   options: Object.values(SortType).map((value) => ({ value, label: capitalCase(value) })),
   errorMessages: { invalid: 'must be a valid sort type' },
@@ -210,6 +211,8 @@ const contentSortBy = {
 
 const personSortBy = {
   name: 'personSortBy',
+  size: 'small',
+
   label: 'Sort By',
   type: 'select',
   placeholder: 'Select Sort By',

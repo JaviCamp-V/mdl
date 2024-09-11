@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteWatchlistRecord, updateWatchlistRecord } from '@/features/watchlist/service/watchlistService';
+import { deleteWatchlistRecord, updateWatchlistRecord } from '@/features/watchlist/service/watchlistUpdateService';
 import UpdateWatchlistRequest from '@/features/watchlist/types/interfaces/UpdateWatchlistRequest';
 import WatchlistRecord from '@/features/watchlist/types/interfaces/WatchlistRecord';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -32,6 +32,32 @@ interface WatchlistRecordProps {
   lastEpisodeType: string | null | undefined;
 }
 
+const getDefaultValues = (record: WatchlistRecord | null) => {
+  if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
+  return {
+    watchStatus: record.watchStatus ?? WatchStatus.PLAN_TO_WATCH,
+    episodeWatched: record.episodeWatched ?? defaultValues.episodeWatched,
+    rating: record.rating ?? defaultValues.rating,
+    notes: record.notes ?? defaultValues.notes,
+    priority: record.priority ?? defaultValues.priority,
+    rewatchValue: record.rewatchValue ?? defaultValues.rewatchValue,
+    rewatchCount: record.rewatchCount ?? defaultValues.rewatchCount,
+    startDate: record.startDate ? formatStringDate(record.startDate) : defaultValues.startDate,
+    endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
+  };
+};
+
+const getFormSchema = (mediaType: MediaType, number_of_episodes: number) =>
+  formSchema.test('validEpisodeWatched', '', (value, context) => {
+    if (!value?.episodeWatched) return true;
+    const totalEpisodes = mediaType === MediaType.tv ? number_of_episodes : 0;
+    if (value.episodeWatched <= totalEpisodes) return true;
+    return context.createError({
+      message: 'Episodes watched cannot be more than released episodes',
+      path: 'episodeWatched'
+    });
+  });
+
 const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
   open,
   onClose,
@@ -56,9 +82,6 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
     generalModel.watchStatus.options = generalModel.watchStatus.options?.map((option) => {
       let disabled = option.value !== WatchStatus.PLAN_TO_WATCH && !isReleased;
-      if (!disabled && option.value === WatchStatus.COMPLETED && mediaType === MediaType.tv) {
-        disabled = lastEpisodeType !== 'finale';
-      }
       return { ...option, disabled };
     });
     generalModel.episodeWatched.disabled = !isReleased || mediaType === MediaType.movie;
@@ -71,39 +94,11 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
     const values = view === 'General' ? generalModel : advancedModel;
     setFormFields(values);
-  }, [view, lastEpisodeType, number_of_episodes, isReleased, mediaType]);
-
-  const newDefaultValues = React.useMemo(() => {
-    if (!record) return { ...defaultValues, watchStatus: WatchStatus.PLAN_TO_WATCH, startDate: new Date() };
-    return {
-      watchStatus: record.watchStatus ?? WatchStatus.PLAN_TO_WATCH,
-      episodeWatched: record.episodeWatched ?? defaultValues.episodeWatched,
-      rating: record.rating ?? defaultValues.rating,
-      notes: record.notes ?? defaultValues.notes,
-      priority: record.priority ?? defaultValues.priority,
-      rewatchValue: record.rewatchValue ?? defaultValues.rewatchValue,
-      rewatchCount: record.rewatchCount ?? defaultValues.rewatchCount,
-      startDate: record.startDate ? formatStringDate(record.startDate) : defaultValues.startDate,
-      endDate: record.endDate ? formatStringDate(record.endDate) : defaultValues.endDate
-    };
-  }, [record]);
-
-  const updatedSchema = React.useMemo(() => {
-    return formSchema.test('validEpisodeWatched', '', (value, context) => {
-      if (!value?.episodeWatched) return true;
-      const totalEpisodes = mediaType === MediaType.tv ? number_of_episodes : 0;
-      if (value.episodeWatched <= totalEpisodes) return true;
-      return context.createError({
-        message: 'Episodes watched cannot be more than released episodes',
-        path: 'episodeWatched'
-      });
-    });
-  }, [number_of_episodes, mediaType]);
-
+  }, [view, number_of_episodes, isReleased, mediaType]);
   const methods = useForm<FormType>({
     mode: 'onChange',
-    resolver: yupResolver(updatedSchema),
-    defaultValues: newDefaultValues,
+    resolver: yupResolver(getFormSchema(mediaType, number_of_episodes)),
+    defaultValues: getDefaultValues(record),
     shouldFocusError: true,
     criteriaMode: 'all'
   });
@@ -144,7 +139,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
   React.useEffect(() => {
     const copy = { ...formFields };
     if (watchStatus === WatchStatus.COMPLETED) {
-      methods.setValue('episodeWatched', number_of_episodes);
+      mediaType === 'tv' && methods.setValue('episodeWatched', number_of_episodes);
       copy.episodeWatched.disabled = true;
       copy.rating.disabled = false;
     } else if (watchStatus === WatchStatus.PLAN_TO_WATCH) {
@@ -246,6 +241,8 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
             onClick={onDelete}
             variant="contained"
             sx={{
+              paddingX: 2,
+              paddingY: 0.8,
               textTransform: 'capitalize',
               backgroundColor: '#f78989',
               color: '#fff',
@@ -264,7 +261,12 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
         )}
 
         <Box sx={{ display: 'flex', gap: 1, flexDirection: 'row', justifyContent: 'flex-end', width: '100%' }}>
-          <Button onClick={onClose} variant="contained" color="info" sx={{ textTransform: 'capitalize' }}>
+          <Button
+            onClick={onClose}
+            variant="contained"
+            color="info"
+            sx={{ textTransform: 'capitalize', paddingX: 2, paddingY: 0.8 }}
+          >
             Cancel
           </Button>
           <LoadingButton
@@ -272,7 +274,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
             loading={methods.formState.isSubmitting}
             onClick={methods.handleSubmit(onSubmit)}
             variant="contained"
-            sx={{ textTransform: 'capitalize' }}
+            sx={{ textTransform: 'capitalize', paddingX: 2, paddingY: 0.8 }}
           >
             Submit
           </LoadingButton>

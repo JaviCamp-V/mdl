@@ -24,7 +24,7 @@ const model = {
     Home: [
       { label: 'Feeds', href: '#' },
       { label: 'Articles', href: '#' },
-      { label: 'Feeds', href: '#' }
+      { label: 'Trailers', href: '#' }
     ],
     Explore: [
       { label: 'Top 100', href: '#' },

@@ -1,7 +1,6 @@
-'use server';
-
+// Server Component
 import React from 'react';
-import { getCredits } from '@/features/media/service/tmdbService';
+import { getCredits } from '@/features/media/service/tmdbViewService';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import CastOverview from './CastOverview';
 import CrewSummary from './CrewSummary';

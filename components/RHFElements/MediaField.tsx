@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { getSearchContent } from '@/features/media/service/tmdbService';
+import { getSearchContent } from '@/features/media/service/tmdbAdvancedService';
 import { MediaSearchResult, MovieSearchResult, TVSearchResult } from '@/features/media/types/interfaces/SearchResponse';
 import { useFormContext } from 'react-hook-form';
 import { Autocomplete, Paper, PaperProps, TextField } from '@mui/material';
@@ -12,6 +12,7 @@ import useDebounce from '@/hooks/useDebounce';
 import { Field } from '@/types/common/IForm';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
+import { blur_url } from '@/libs/common';
 import countries from '@/libs/countries';
 
 interface MediaFieldProps extends Field {}
@@ -55,6 +56,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ props, content }) => {
   const { media_type, poster_path, origin_country } = content;
   const path = poster_path ? `https://image.tmdb.org/t/p/w342${poster_path}` : '/static/images/no_poster.jpg';
 
+  const blurUrl = poster_path ? blur_url : undefined;
   const origin = origin_country?.map((c) => countries.find((co) => co.code === c)?.nationality).join(', ') ?? 'N/A';
   const first_air_date = media_type === MediaType.tv ? content.first_air_date : content.release_date;
   const year = first_air_date ? formatStringDate(first_air_date).getFullYear() : 'TBA';
@@ -76,7 +78,15 @@ const MediaItem: React.FC<MediaItemProps> = ({ props, content }) => {
         }
       }}
     >
-      <Image src={path} alt={name} width={45} height={64} style={{ borderRadius: 2 }} />
+      <Image
+        src={path}
+        alt={name}
+        width={45}
+        height={64}
+        style={{ borderRadius: 2 }}
+        placeholder="blur"
+        blurDataURL={blurUrl}
+      />
       <Box>
         <Typography fontSize={14} fontWeight={600} color="primary">
           {name}

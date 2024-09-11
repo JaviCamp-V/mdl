@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
+import { blur_url } from '@/libs/common';
 
 interface PosterProps {
   src: string | null;
@@ -37,6 +38,8 @@ const DramaPoster: React.FC<PosterProps> = ({
             objectFit: 'cover'
           }}
           fill
+          placeholder="blur"
+          blurDataURL={blur_url}
           priority={priority}
           unoptimized
         />

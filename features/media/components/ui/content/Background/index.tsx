@@ -1,7 +1,6 @@
-'use server';
-
+// Server Component
 import React from 'react';
-import { getTranslations } from '@/features/media/service/tmdbService';
+import { getTranslations } from '@/features/media/service/tmdbViewService';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import LanguageSwitcher from './LanguageSwitcher';
 

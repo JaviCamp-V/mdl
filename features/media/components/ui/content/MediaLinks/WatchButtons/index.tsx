@@ -1,8 +1,7 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import PlayButton from '@/features/media/components/buttons/PlayButton';
-import { getVideos } from '@/features/media/service/tmdbService';
+import { getVideos } from '@/features/media/service/tmdbViewService';
 import VideoType from '@/features/media/types/enums/VideoType';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 

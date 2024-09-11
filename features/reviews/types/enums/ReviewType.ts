@@ -1,6 +1,6 @@
 enum ReviewType {
-  OVERALL,
-  EPISODE
+  OVERALL = 'OVERALL',
+  EPISODE = 'EPISODE'
 }
 
 export default ReviewType;

@@ -6,9 +6,11 @@ import withAuthMiddleware from '@/middleware/withAuthMiddleware';
 import mdlApiClient from '@/clients/mdlApiClient';
 import ErrorResponse from '@/types/common/ErrorResponse';
 import GenericResponse from '@/types/common/GenericResponse';
+import HasLikedResponse from '@/types/common/HasLikedResponse';
 import TotalResponse from '@/types/common/TotalResponse';
-import { getSession } from '@/utils/authUtils';
-import { generateErrorResponse } from '@/utils/handleError';
+import { getServerActionSession, getSession } from '@/utils/authUtils';
+import { generateErrorResponse, isErrorResponse } from '@/utils/handleError';
+import handleServerError from '@/utils/handleServerError';
 import logger from '@/utils/logger';
 import CommentType from '../types/enums/CommentType';
 import AddComment, { CommentBody } from '../types/interfaces/AddComment';
@@ -23,16 +25,18 @@ const endpoints = {
   },
   public: {
     getComments: 'comments/:commentType/:parentId',
-    getCommentsCount: 'comments/:commentType/:parentId/count',
+    getCommentsCount: 'comments/:commentType/:parentId/total',
     getUserComments: 'comments/user/:userId',
-    getUserCommentsCount: 'comments/user/:userId/count'
+    getUserCommentsCount: 'comments/user/:userId/total',
+    getCommentLikeCount: 'comments/:commentId/likes',
+    geUserCommentLikeStatus: 'comments/:commentId/likes/user/:userId'
   }
 };
 
 type CommentResponse = GenericResponse<CommentMeta>;
 const addComment = async (commentData: AddComment): Promise<CommentResponse | ErrorResponse> => {
   try {
-    logger.info('Adding comment on : %s &s', commentData.commentType, commentData.parentId);
+    logger.info('Adding comment on : %s %s', commentData.commentType, commentData.parentId);
     const endpoint = endpoints.user.addComment;
     const response = await mdlApiClient.post<AddComment, CommentResponse>(endpoint, commentData);
     if (response.data) {
@@ -41,10 +45,7 @@ const addComment = async (commentData: AddComment): Promise<CommentResponse | Er
     }
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error adding comment:  %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'adding comment');
   }
 };
 
@@ -58,10 +59,7 @@ const updateComment = async (commentId: number, commentBody: CommentBody): Promi
     }
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error updating comment: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'updating comment');
   }
 };
 
@@ -78,56 +76,48 @@ const deleteComment = async (
     revalidateTag(`count-${commentType}-${parentId}`);
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error deleting comment: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'deleting comment');
   }
 };
 
-const updateCommentLikes = async (
-  CommentType: CommentType,
-  parentId: number,
-  commentId: number,
-  like: boolean
-): Promise<GenericResponse | ErrorResponse> => {
+const updateCommentLikes = async (commentId: number, like: boolean): Promise<GenericResponse | ErrorResponse> => {
   try {
+    const session = await getServerActionSession();
+    if (!session?.user) {
+      logger.error('Error updating comment like: User not authenticated');
+      return generateErrorResponse(401, 'User not authenticated');
+    }
     logger.info('%s comment like with id: %s', like ? 'Liking' : 'Unliking', commentId);
+
     const endpoint = endpoints.user.likeComment.replace(':commentId', commentId.toString());
     const response = like
       ? await mdlApiClient.post<null, GenericResponse>(endpoint, null)
       : await mdlApiClient.del<GenericResponse>(endpoint);
-    revalidateTag(`comments-${CommentType}-${parentId}`);
+
+    revalidateTag(`comment-like-count-${commentId}`);
+    revalidateTag(`comment-like-status-${commentId}-${session.user.userId}`);
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error updating comment like: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'updating comment like');
   }
 };
 
 const getComments = async (
   commentType: CommentType,
   parentId: number,
-  page?: number,
-  userId?: number | null
+  page?: number
 ): Promise<CommentPage | ErrorResponse> => {
   try {
     logger.info('Fetching comments for %s with id: %s', commentType, parentId);
 
     const params = new URLSearchParams({ page: page ? page.toString() : '0' });
-    if (userId) params.append('userId', userId.toString());
     const endpoint = endpoints.public.getComments
       .replace(':commentType', commentType)
       .replace(':parentId', parentId.toString());
     const response = await mdlApiClient.get<CommentPage>(endpoint, params);
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error fetching comments: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'fetching comments');
   }
 };
 
@@ -140,39 +130,32 @@ const getCommentsCount = async (commentType: CommentType, parentId: number): Pro
     const response = await mdlApiClient.get<TotalResponse>(endpoint);
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error fetching comments count: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    return handleServerError(error, 'fetching comments count');
   }
 };
-
-const getUserComments = async (userId: number, page?: number): Promise<CommentPage | ErrorResponse> => {
+const getCommentLikeCount = async (commentId: number): Promise<TotalResponse> => {
   try {
-    logger.info('Fetching comments for user with id: %s', userId);
-    const params = new URLSearchParams({ page: page ? page.toString() : '0' });
-    const endpoint = endpoints.public.getUserComments.replace(':userId', userId.toString());
-    const response = await mdlApiClient.get<CommentPage>(endpoint, params);
-    return response;
-  } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error fetching user comments: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
-  }
-};
-
-const getUserCommentsCount = async (userId: number): Promise<TotalResponse | ErrorResponse> => {
-  try {
-    logger.info('Fetching comments count for user with id: %s', userId);
-    const endpoint = endpoints.public.getUserCommentsCount.replace(':userId', userId.toString());
+    logger.info('Fetching comment like count for comment with id: %s', commentId);
+    const endpoint = endpoints.public.getCommentLikeCount.replace(':commentId', commentId.toString());
     const response = await mdlApiClient.get<TotalResponse>(endpoint);
     return response;
   } catch (error: any) {
-    const message = error?.response?.data?.message ?? error?.message;
-    const status = error?.response?.status ?? 408;
-    logger.error('Error fetching user comments count: %s', message);
-    return error.response.data ?? generateErrorResponse(status, message);
+    handleServerError(error, 'fetching comment like count');
+    return { total: 0 };
+  }
+};
+
+const getUserCommentLikeStatus = async (commentId: number, userId: number): Promise<HasLikedResponse | null> => {
+  try {
+    logger.info('Fetching comment like status for comment with id: %s', commentId);
+    const endpoint = endpoints.public.geUserCommentLikeStatus
+      .replace(':commentId', commentId.toString())
+      .replace(':userId', userId.toString());
+    const response = await mdlApiClient.get<HasLikedResponse>(endpoint);
+    return response;
+  } catch (error: any) {
+    handleServerError(error, 'fetching comment like status');
+    return null;
   }
 };
 
@@ -196,7 +179,7 @@ const getCommentsCacheHandler = async (
     });
     const session = await getSession();
     const userId = session?.user?.userId;
-    return await getCached(commentType, parentId, page, userId);
+    return await getCached(commentType, parentId, page);
   } catch (error: any) {
     logger.error('Error fetching comments: %s', error.message);
     return generateErrorResponse(500, error.message);
@@ -219,6 +202,37 @@ const getCachedCommentsCount = async (
   }
 };
 
+const getCachedCommentLikeCount = async (commentId: number): Promise<TotalResponse> => {
+  try {
+    const tagged = `comment-like-count-${commentId}`;
+    const getCached = unstable_cache(getCommentLikeCount, [], {
+      tags: [tagged]
+    });
+    return await getCached(commentId);
+  } catch (error: any) {
+    logger.error('Error fetching comment like count: %s', error.message);
+    return { total: 0 };
+  }
+};
+
+const getCachedUserCommentLikeStatus = async (commentId: number): Promise<HasLikedResponse | null> => {
+  try {
+    const session = await getServerActionSession();
+    if (!session?.user) {
+      return null;
+    }
+    const { userId } = session.user;
+    const tagged = `comment-like-status-${commentId}-${userId}`;
+    const getCached = unstable_cache(getUserCommentLikeStatus, [], {
+      tags: [tagged]
+    });
+    return await getCached(commentId, userId);
+  } catch (error: any) {
+    logger.error('Error fetching comment like status: %s', error.message);
+    return null;
+  }
+};
+
 const refreshCommentsCache = (commentType: CommentType, parentId: number): void => {
   const tagged = `count-${commentType}-${parentId}`;
   revalidateTag(tagged);
@@ -230,5 +244,7 @@ export {
   updateCommentLikesHandler as updateCommentLikes,
   getCommentsCacheHandler as getComments,
   getCachedCommentsCount as getCommentsCount,
+  getCachedCommentLikeCount as getCommentLikeCount,
+  getCachedUserCommentLikeStatus as getUserCommentLikeStatus,
   refreshCommentsCache
 };

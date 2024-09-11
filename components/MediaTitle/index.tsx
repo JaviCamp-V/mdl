@@ -8,26 +8,23 @@ interface MediaTitleProps {
   id: number;
   mediaType: string;
   fontSize?: number | string;
-  fontWeight?: number;
+  fontWeight?: number | string;
+  whiteSpace?: 'nowrap' | 'normal' | 'pre' | 'pre-line' | 'pre-wrap';
 }
-const MediaTitle: React.FC<MediaTitleProps> = ({ mediaType, id, title, fontSize, fontWeight = 700 }) => {
+const MediaTitle: React.FC<MediaTitleProps> = ({
+  mediaType,
+  id,
+  title,
+  fontSize,
+  fontWeight = 700,
+  whiteSpace = 'nowrap'
+}) => {
   return (
-    <Box>
-      <Link href={`/${mediaType}/${id}`} passHref style={{ textDecoration: 'none', fontSize }}>
-        <Typography
-          color="primary"
-          fontSize={fontSize}
-          fontWeight={fontWeight}
-          sx={{
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}
-        >
-          {title}
-        </Typography>
-      </Link>
-    </Box>
+    <Link href={`/${mediaType}/${id}`} passHref style={{ textDecoration: 'none', fontSize, whiteSpace }}>
+      <Typography color="primary" fontSize={fontSize} fontWeight={fontWeight} sx={{ whiteSpace }}>
+        {title}
+      </Typography>
+    </Link>
   );
 };
 

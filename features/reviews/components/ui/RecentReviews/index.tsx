@@ -1,6 +1,6 @@
 import React from 'react';
-import { getRecentReviews } from '@/features/reviews/services/reviewService';
-import { ExtendOverallReviewWithMedia } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
+import { getRecentReviewsWithMedia } from '@/features/reviews/services/reviewAdvancedService';
+import { ExtendOverallReviewWithMediaAndUser } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Carousel from '@/components/Carousel/swiper/index';
@@ -12,8 +12,8 @@ interface RecentReviewsCarouselProps {
   containerStyle?: React.CSSProperties;
 }
 const RecentReviewsCarousel: React.FC<RecentReviewsCarouselProps> = async ({ containerStyle }) => {
-  const reviews = await getRecentReviews();
-  if ('errors' in reviews || reviews.length === 0) return;
+  const reviews = await getRecentReviewsWithMedia();
+  if (reviews.length === 0) return;
 
   return (
     <Box paddingY={0}>
@@ -30,7 +30,7 @@ const RecentReviewsCarousel: React.FC<RecentReviewsCarouselProps> = async ({ con
       <React.Suspense fallback={<LoadingSkeleton width={'100%'} height={'30vh'} />}>
         <Box marginX={2} sx={{ minHeight: '30vh' }}>
           <Carousel>
-            {reviews?.map((review: ExtendOverallReviewWithMedia) => (
+            {reviews?.map((review: ExtendOverallReviewWithMediaAndUser) => (
               <ReviewSummaryCard key={review.id} review={review} />
             ))}
           </Carousel>

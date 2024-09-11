@@ -12,7 +12,17 @@ export type TextFieldProps = MuiTextFieldProps &
     hideError?: boolean;
   };
 
-const TextField: React.FC<TextFieldProps> = ({ name, hideError, label, sx, min, max, inputProps, ...props }) => {
+const TextField: React.FC<TextFieldProps> = ({
+  name,
+  hideError,
+  label,
+  sx,
+  min,
+  max,
+  inputProps,
+  errorMessages,
+  ...props
+}) => {
   const { control } = useFormContext();
   const getHelperText = (error: any) => {
     if (error && !hideError) return error.message;

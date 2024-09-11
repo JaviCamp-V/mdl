@@ -9,6 +9,7 @@ import ExternalID from '@/features/media/types/interfaces/ExternalID';
 import { Episode } from '@/features/media/types/interfaces/Season';
 import RecommendationDetails from '@/features/recommendations/components/ui/RecDetails';
 import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
+import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import { Box, SxProps } from '@mui/material';
 import LoadingSkeleton from '@/components/common/LoadingSkeleton';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
@@ -39,7 +40,13 @@ const ContentCards: React.FC<ContentCardsProps> = ({
     cast_overview: <Credits mediaId={mediaId} mediaType={mediaType} view={view} />,
     photos_overview: <Photos mediaId={mediaId} mediaType={mediaType} view={view} />,
     reviews: (
-      <ReviewDetails mediaType={mediaType} mediaId={mediaId} section={view} totalEpisodes={number_of_episodes} />
+      <ReviewDetails
+        reviewType={ReviewType.OVERALL}
+        mediaType={mediaType}
+        mediaId={mediaId}
+        section={view}
+        totalEpisodes={number_of_episodes}
+      />
     ),
     recommendations: <RecommendationDetails mediaId={mediaId} mediaType={mediaType} section={view} />,
     comments: (

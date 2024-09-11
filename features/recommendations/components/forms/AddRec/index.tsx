@@ -18,6 +18,7 @@ import Button from '@mui/material/Button';
 import RHFForm from '@/components/RHFElements/RHFForm';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import ImageType from '@/types/enums/ImageType';
+import { blur_url } from '@/libs/common';
 import { FormType, formDefaultValues, formFields, formSchema } from './model';
 
 interface AddRecommendationProps extends MediaDetailsProps {}
@@ -120,6 +121,8 @@ const AddRecommendation: React.FC<AddRecommendationProps> = ({ mediaId, mediaTyp
               {watchFields && (
                 <Image
                   src={getImagePath(watchFields.poster_path, ImageType.poster, 'w500')}
+                  placeholder="blur"
+                  blurDataURL={blur_url}
                   alt={watchFields?.mediaId.toString()}
                   fill
                   style={{

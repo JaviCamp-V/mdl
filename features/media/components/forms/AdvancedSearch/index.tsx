@@ -28,22 +28,17 @@ interface AdvancedSearchFormProps {}
 const AdvancedSearchForm: React.FC<AdvancedSearchFormProps> = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // query params and default values combined
-  const formDefaultValues = React.useMemo(() => paramsToForm(searchParams), [searchParams]);
 
   const methods = useForm<AdvancedSearchFormType>({
     mode: 'onChange',
     resolver: yupResolver(formSchema),
-    defaultValues: formDefaultValues,
+    defaultValues: paramsToForm(searchParams),
     shouldFocusError: true,
     criteriaMode: 'all'
   });
 
   const watchedType = methods.watch('type');
-  const currentFormFields = React.useMemo(() => {
-    if (watchedType === MediaType.person) return personFormFields;
-    return contentFormFields;
-  }, [watchedType]);
+  const currentFormFields = watchedType === MediaType.person ? personFormFields : contentFormFields;
 
   const onSubmit: SubmitHandler<AdvancedSearchFormType> = async (formData) => {
     const values = formToParams(formData);

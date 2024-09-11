@@ -3,7 +3,7 @@ import { capitalCase } from 'change-case';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SearchResults from '../../components/lists/SearchResults';
-import { getSearchResults } from '../../service/tmdbService';
+import { getSearchResults } from '../../service/tmdbAdvancedService';
 import { getAllValidParams } from '../../utils/tmdbAdvancedSearch';
 
 interface SearchContainerProps {
@@ -19,7 +19,7 @@ const SearchContainer: React.FC<SearchContainerProps> = async ({ searchParams: {
   });
   return (
     <React.Fragment>
-      <Box id='search-results' sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+      <Box id="search-results" sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
         <Typography>
           {`Search results`}
           {query && (

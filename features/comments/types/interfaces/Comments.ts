@@ -9,13 +9,11 @@ export interface CommentMeta {
   id: number;
   deleted: boolean;
   updatedAt: string;
-  user: UserSummary;
+  userId: number;
 }
 export default interface Comment extends AddComment, CommentMeta {
   mention: CommentMeta;
   createdAt: string;
-  likeCount: number;
-  hasUserLiked: boolean;
 }
 
 export interface CommentPage extends GenericPage<Comment> {}

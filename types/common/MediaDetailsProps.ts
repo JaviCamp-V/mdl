@@ -1,3 +1,4 @@
+import exp from 'constants';
 import MediaType from '../enums/IMediaType';
 
 export default interface MediaDetailsProps {
