@@ -8,7 +8,8 @@ import NotFound from '@/components/common/NotFound';
 import MediaType from '@/types/enums/IMediaType';
 import PersonMainDetails from '../../components/ui/person/MainDeatils';
 import PersonDetailsSidePanel from '../../components/ui/person/SidePanel';
-import { getPersonDetails } from '../../service/tmdbService';
+import { getPersonDetails } from '../../service/tmdbViewService';
+
 
 interface PersonContainerProps {
   personId: number;
