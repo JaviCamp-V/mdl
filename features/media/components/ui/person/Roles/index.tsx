@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import { getRoles } from '@/features/media/service/tmdbViewService';
 import { MediaSearchResult } from '@/features/media/types/interfaces/SearchResponse';

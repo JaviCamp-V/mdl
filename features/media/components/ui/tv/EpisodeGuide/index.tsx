@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import { getSeasonDetails } from '@/features/media/service/tmdbViewService';
 import { Typography } from '@mui/material';

@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import { getImages } from '@/features/media/service/tmdbViewService';
 import Box from '@mui/material/Box';

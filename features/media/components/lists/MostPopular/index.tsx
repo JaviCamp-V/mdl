@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import { getDiscoverType } from '@/features/media/service/tmdbAdvancedService';
 import { mostPopular } from '@/features/media/utils/tmdbQueries';

@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import RecommendationDetails from '@/features/recommendations/components/ui/RecDetails';
 import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
