@@ -13,7 +13,7 @@ interface RecentReviewsCarouselProps {
 }
 const RecentReviewsCarousel: React.FC<RecentReviewsCarouselProps> = async ({ containerStyle }) => {
   const reviews = await getRecentReviewsWithMedia();
-  if ('errors' in reviews || reviews.length === 0) return;
+  if (reviews.length === 0) return;
 
   return (
     <Box paddingY={0}>

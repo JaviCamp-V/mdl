@@ -24,8 +24,7 @@ const getRecentReviewsWithMedia = async (): Promise<ExtendOverallReviewWithMedia
         const details = await getValidContentSummary(type, review.mediaId);
         if (!details) return { ...review, poster_path: null, title: 'Unknown', origin: 'Unknown', user: user };
         const { title, poster_path } = details;
-
-        return { ...review, poster_path, title, origin, user: user };
+        return { ...review, poster_path, title, user: user };
       })
     );
     return withMedia;
@@ -75,20 +74,28 @@ const getExtendedEpisodeReviews = async (
   return withExtended.sort((a, b) => b.helpful.numberOfHelpfulReviews - a.helpful.numberOfHelpfulReviews);
 };
 
-const getExtendedReview = async (reviewId: number): Promise<ExtendedEpisodeReview | ExtendOverallReview | null> => {
+const getExtendedReview = async (
+  reviewId: number
+): Promise<ExtendOverallReviewWithMediaHelpful | ExtendEpisodeReviewWithMediaHelpful | null> => {
   const review = await getReview(reviewId);
   if (!review) return null;
   const helpfulData = await getReviewHelpful(review.id);
   const helpfulRating = await getUserReviewHelpfulRating(review.id);
-  const user = await getUserSummary(review.userId);
-  const withUserAndHelpful = { ...review, user, helpful: { ...helpfulData, isHelpful: helpfulRating?.helpful } };
-  if (review.reviewType === ReviewType.EPISODE) return withUserAndHelpful as ExtendedEpisodeReview;
+  const content = await getValidContentSummary(review.mediaType.toLowerCase() as any, review.mediaId);
+  const withMediaAndHelpful = {
+    ...review,
+    title: content?.title,
+    poster_path: content?.poster_path,
+    number_of_episodes: content?.number_of_episodes,
+    helpful: { ...helpfulData, isHelpful: helpfulRating?.helpful }
+  };
+  if (review.reviewType === ReviewType.EPISODE) return withMediaAndHelpful as ExtendEpisodeReviewWithMediaHelpful;
   const watchRecord = await getUserWatchlistRecord(review.mediaType, review.mediaId, review.userId);
   return {
-    ...withUserAndHelpful,
+    ...withMediaAndHelpful,
     watchStatus: watchRecord ? watchRecord?.watchStatus : null,
     episodeWatched: watchRecord ? watchRecord?.episodeWatched : null
-  } as ExtendOverallReview;
+  } as any as ExtendOverallReviewWithMediaHelpful;
 };
 
 const getExtendedUserReviews = async (

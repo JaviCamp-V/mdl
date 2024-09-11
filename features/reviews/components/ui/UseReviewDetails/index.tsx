@@ -2,8 +2,7 @@ import React from 'react';
 import { getExtendedReview, getExtendedUserReviews } from '@/features/reviews/services/reviewAdvancedService';
 import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import Typography from '@mui/material/Typography';
-import EpisodeReviewCard from '../../cards/EpsiodeReview';
-import OverallReviewCard from '../../cards/OverallReview';
+import UserReviewCard from '../../cards/UserReview';
 import AllReviews from '../AllReviews';
 
 interface UserReviewDetailsProps {
@@ -15,8 +14,9 @@ interface UserReviewDetailsProps {
 interface SingleReviewProps {
   reviewId: number;
   userId: number;
+  username: string;
 }
-const SingleReview: React.FC<SingleReviewProps> = async ({ reviewId, userId }) => {
+const SingleReview: React.FC<SingleReviewProps> = async ({ reviewId, userId, username }) => {
   const review = await getExtendedReview(reviewId);
   if (!review || review.userId !== userId)
     return (
@@ -25,11 +25,7 @@ const SingleReview: React.FC<SingleReviewProps> = async ({ reviewId, userId }) =
       </Typography>
     );
 
-  return review.reviewType === ReviewType.EPISODE ? (
-    <EpisodeReviewCard review={review} />
-  ) : (
-    <OverallReviewCard review={review} />
-  );
+  return <UserReviewCard review={review} username={username} />;
 };
 const UserReviewDetails: React.FC<UserReviewDetailsProps> = async ({
   reviewId,
@@ -37,7 +33,7 @@ const UserReviewDetails: React.FC<UserReviewDetailsProps> = async ({
   userId,
   username
 }) => {
-  if (reviewId) return <SingleReview reviewId={reviewId} userId={userId} />;
+  if (reviewId) return <SingleReview reviewId={reviewId} userId={userId} username={username} />;
 
   const reviews = await getExtendedUserReviews(userId, reviewType);
 
