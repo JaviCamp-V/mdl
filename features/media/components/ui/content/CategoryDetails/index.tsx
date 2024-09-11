@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import MultiLinkText from '@/features/media/components/typography/MultiLinkText';
 import { getTags } from '@/features/media/service/tmdbViewService';

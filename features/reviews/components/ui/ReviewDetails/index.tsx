@@ -1,5 +1,4 @@
-'use server';
-
+// Server Component
 import React from 'react';
 import AuthRequired from '@/features/auth/components/ui/AuthRequired';
 import {
@@ -11,7 +10,6 @@ import ReviewType from '@/features/reviews/types/enums/ReviewType';
 import { ExtendOverallReview } from '@/features/reviews/types/interfaces/ExtendReviewResponse';
 import { User } from 'next-auth';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
-import UserSummary from '@/types/common/UserSummary';
 import { getSession } from '@/utils/authUtils';
 import WriteReviewForm from '../../forms/WriteReview';
 import AllReviews from '../AllReviews';
@@ -84,6 +82,7 @@ const ReviewDetails: React.FC<ReviewDetailsProps> = async (props) => {
 
   return (
     <AllReviews
+      view="media"
       reviewType={reviewType}
       reviews={reviews as any}
       mediaId={mediaId}
