@@ -2,7 +2,6 @@
 import MediaType from '@/types/enums/IMediaType';
 import Genre from './Genre';
 
-
 export default interface ContentSummary {
   mediaId: number;
   mediaType: MediaType.movie | MediaType.tv;

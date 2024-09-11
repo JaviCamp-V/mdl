@@ -1,4 +1,3 @@
-//<Icon icon="mdi:visibility" />
 import React from 'react';
 import Iconify, { IconifyProps } from './Iconify';
 

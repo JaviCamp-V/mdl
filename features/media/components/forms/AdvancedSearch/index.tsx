@@ -14,8 +14,14 @@ import RHFAccordionWrapper from '@/components/RHFElements/RHFAccordionWrapper';
 import Divider from '@/components/common/Divider';
 import MediaType from '@/types/enums/IMediaType';
 import routes from '@/libs/routes';
-import { AdvancedSearchFormType, contentFormFields, defaultValues, formSchema, personFormFields, queryField } from './model';
-
+import {
+  AdvancedSearchFormType,
+  contentFormFields,
+  defaultValues,
+  formSchema,
+  personFormFields,
+  queryField
+} from './model';
 
 interface AdvancedSearchFormProps {}
 

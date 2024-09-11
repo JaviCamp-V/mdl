@@ -18,7 +18,6 @@ import { formatDate, formatStringDate } from '@/utils/formatters';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
 
-
 interface WatchlistRecordProps {
   open: boolean;
   onClose: () => void;

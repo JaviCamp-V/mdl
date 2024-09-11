@@ -6,9 +6,22 @@ import { getUserWatchlistRecord } from '@/features/watchlist/service/watchlistVi
 import MediaType from '@/types/enums/IMediaType';
 import handleServerError from '@/utils/handleServerError';
 import ReviewType from '../types/enums/ReviewType';
-import { ExtendEpisodeReviewWithMediaHelpful, ExtendOverallReview, ExtendOverallReviewWithMediaAndUser, ExtendOverallReviewWithMediaHelpful, ExtendedEpisodeReview } from '../types/interfaces/ExtendReviewResponse';
-import { getMediaEpisodeReviews, getMediaOverallReviews, getRecentReviews, getReview, getReviewHelpful, getUserReviewHelpfulRating, getUserReviews } from './reviewViewService';
-
+import {
+  ExtendEpisodeReviewWithMediaHelpful,
+  ExtendOverallReview,
+  ExtendOverallReviewWithMediaAndUser,
+  ExtendOverallReviewWithMediaHelpful,
+  ExtendedEpisodeReview
+} from '../types/interfaces/ExtendReviewResponse';
+import {
+  getMediaEpisodeReviews,
+  getMediaOverallReviews,
+  getRecentReviews,
+  getReview,
+  getReviewHelpful,
+  getUserReviewHelpfulRating,
+  getUserReviews
+} from './reviewViewService';
 
 /**
  * This is for review services that depend on  other feature services
@@ -127,4 +140,10 @@ const getExtendedUserReviews = async (
   return withExtended.sort((a, b) => b.helpful.numberOfHelpfulReviews - a.helpful.numberOfHelpfulReviews);
 };
 
-export { getRecentReviewsWithMedia, getExtendedOverallReviews, getExtendedEpisodeReviews, getExtendedReview, getExtendedUserReviews };
+export {
+  getRecentReviewsWithMedia,
+  getExtendedOverallReviews,
+  getExtendedEpisodeReviews,
+  getExtendedReview,
+  getExtendedUserReviews
+};

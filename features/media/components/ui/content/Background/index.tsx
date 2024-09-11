@@ -5,7 +5,6 @@ import { getTranslations } from '@/features/media/service/tmdbViewService';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import LanguageSwitcher from './LanguageSwitcher';
 
-
 interface MediaOverviewProps extends MediaDetailsProps {
   overview: string;
 }

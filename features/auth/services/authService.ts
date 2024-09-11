@@ -14,7 +14,6 @@ import CreateUserRequest from '../types/interfaces/CreateUserRequest';
 import RefreshTokenRequest from '../types/interfaces/ResfreshTokenRequest';
 import UserAccountResponse from '../types/interfaces/UserAccountResponse';
 
-
 const endpoints = {
   login: 'auth/login',
   logout: 'auth/logout',

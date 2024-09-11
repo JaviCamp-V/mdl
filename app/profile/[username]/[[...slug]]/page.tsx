@@ -5,7 +5,6 @@ import PersonContainer from '@/features/media/containers/Person';
 import UserProfileContainer from '@/features/profile/containers/profile';
 import Box from '@mui/material/Box';
 
-
 type PageProps = {
   params: { username: string; slug?: string[] };
   searchParams: { [key: string]: string };

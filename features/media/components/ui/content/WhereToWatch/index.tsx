@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import { blur_url } from '@/libs/common';
 
-
 interface WhereToWatchProps extends MediaDetailsProps {
   containerStyle?: any;
   title: string;

@@ -1,7 +1,6 @@
 import { addHours, format, formatDistance, intervalToDuration, parse } from 'date-fns';
 import Values from '@/types/common/Values';
 
-
 /**
  *
  * @param date
@@ -41,7 +40,7 @@ const formatTime = (date: Date): string => {
 
 const formatDateToDistance = (date: string): string => {
   try {
-    const trimmedDate = date.substring(0, 23); 
+    const trimmedDate = date.substring(0, 23);
     const formatString = "yyyy-MM-dd'T'HH:mm:ss.SSS";
     const formattedDate = parse(trimmedDate, formatString, new Date());
     // account for api time difference

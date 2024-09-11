@@ -21,7 +21,6 @@ import EpisodeGuide from '../../components/ui/tv/EpisodeGuide';
 import { getContentDetails } from '../../service/tmdbAdvancedService';
 import { Season } from '../../types/interfaces/Season';
 
-
 interface ContentContainerProps extends MediaDetailsProps {
   sections?: string[];
   searchParams?: { [key: string]: string };

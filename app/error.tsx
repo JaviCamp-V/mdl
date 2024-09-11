@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-
 type Props = {
   error: Error & { digest?: string };
   reset: () => void;
@@ -42,10 +41,10 @@ const ErrorBoundary: React.FunctionComponent<Props> = ({ error, reset }) => {
         }}
       >
         <Typography fontSize={24} paddingBottom={2} color={'primary'} fontWeight={700}>
-          Oops! something went wrong. Please try again later.
+          {` Oops! something went wrong. Please try again later.`}
         </Typography>
         <Typography fontSize={16} sx={{ opacity: 0.6 }}>
-          We're sorry, but it seems there was an error loading this page. Please try again or return to the home page.
+          {`  We're sorry, but it seems there was an error loading this page. Please try again or return to the home page.`}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button onClick={reset} variant="contained" color="primary" sx={{ textTransform: 'capitalize' }}>

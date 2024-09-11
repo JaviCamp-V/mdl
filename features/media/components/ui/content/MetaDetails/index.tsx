@@ -11,7 +11,6 @@ import countries from '@/libs/countries';
 import routes from '@/libs/routes';
 import MultiLinkText from '../../../typography/MultiLinkText';
 
-
 interface MetaDetailsProps extends MediaDetailsProps {
   tvdb_id: number | null;
   imdb_id: string | null;

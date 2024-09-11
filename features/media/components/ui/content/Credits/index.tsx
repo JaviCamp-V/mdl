@@ -7,7 +7,6 @@ import CastOverview from './CastOverview';
 import CrewSummary from './CrewSummary';
 import FullCredits from './FullCredits';
 
-
 interface CreditsProps extends MediaDetailsProps {
   view: 'overview' | 'creator' | 'all';
 }

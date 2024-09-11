@@ -5,7 +5,6 @@ export const userRoutes = {
   settings: '/profile/settings'
 };
 
-
 const routes = {
   drama: '/drama/:id',
   tv: '/tv/:id',

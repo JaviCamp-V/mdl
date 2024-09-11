@@ -17,7 +17,8 @@ const PaginatedList = <T,>({ items, itemsPerPage, renderItem, id, switchPage }: 
   const [page, setPage] = React.useState<number>(1);
   const onPageChange = (page: number) => {
     setPage(page);
-    id ? scrollToTopById(id) : scrollToTop();
+    if (id) return scrollToTopById(id);
+    scrollToTop();
   };
 
   React.useEffect(() => {

@@ -13,7 +13,6 @@ import ReviewHelpfulData, { HelpfulRating } from '../types/interfaces/ReviewHelp
 import { EpisodeReview, OverallReview } from '../types/interfaces/ReviewResponse';
 import { reviewViewEndpoints as endpoints } from './endpoints';
 
-
 const getMediaOverallReviews = async (
   mediaType: MediaType.tv | MediaType.movie,
   mediaId: number

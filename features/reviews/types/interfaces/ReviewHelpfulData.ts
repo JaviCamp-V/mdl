@@ -1,6 +1,5 @@
 import ResponseAction from '@/types/enums/ResposneAction';
 
-
 export default interface ReviewHelpfulData {
   numberOfHelpfulReviews: number;
   numberOfUnhelpfulReviews: number;

@@ -14,7 +14,6 @@ import MediaType from '@/types/enums/IMediaType';
 import { formatDigitsWithPadding, formatShortDate, formatStringDate } from '@/utils/formatters';
 import EpisodeDetails from '../EpsiodeDetails';
 
-
 interface EpisodeGuideProps {
   id: number;
   number_of_season: number;

@@ -14,7 +14,6 @@ import { CreateEpisodeReview, CreateOverallReview } from '../types/interfaces/Re
 import { ReviewMetaData } from '../types/interfaces/ReviewResponse';
 import { reviewUpdateEndpoints as endpoints } from './endpoints';
 
-
 type ReviewResponse = GenericResponse<ReviewMetaData>;
 type HelpfulRatingResponse = GenericResponse<HelpfulRatingMetaData>;
 

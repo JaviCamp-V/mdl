@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Iconify from '@/components/Icon/Iconify';
 import { scrollToTopById } from '@/utils/scrollToElement';
 
-
 interface ReviewContentProps {
   reviewId: number;
   content: string;

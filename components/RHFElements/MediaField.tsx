@@ -15,7 +15,6 @@ import { formatStringDate } from '@/utils/formatters';
 import { blur_url } from '@/libs/common';
 import countries from '@/libs/countries';
 
-
 interface MediaFieldProps extends Field {}
 
 const Wrapper: React.FC<PaperProps> = ({ children, ...rest }) => {

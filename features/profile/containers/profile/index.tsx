@@ -15,7 +15,6 @@ import PersonDetails from '../../components/card/profileMetaDetails';
 import ProfileBio from '../../components/typography/Bio';
 import { getUserProfile } from '../../service/userProfileService';
 
-
 interface UserProfileContainerProps {
   username: string;
   sections?: string[];

@@ -4,7 +4,6 @@ import { capitalCase } from 'change-case';
 import Typography from '@mui/material/Typography';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 
-
 interface ContentTitlesProps extends MediaDetailsProps {
   original_title: string | null;
 }

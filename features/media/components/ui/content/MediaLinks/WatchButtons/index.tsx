@@ -6,7 +6,6 @@ import { getVideos } from '@/features/media/service/tmdbViewService';
 import VideoType from '@/features/media/types/enums/VideoType';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 
-
 const WatchButtons: React.FC<MediaDetailsProps> = async ({ mediaId, mediaType }) => {
   const response = await getVideos(mediaType, mediaId);
   const trailer = response.results.find((video) => video.type === VideoType.Trailer && video.site === 'YouTube');

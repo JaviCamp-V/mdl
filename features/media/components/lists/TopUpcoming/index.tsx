@@ -10,7 +10,6 @@ import MediaType from '@/types/enums/IMediaType';
 import routes from '@/libs/routes';
 import DramaList from '../DramaList';
 
-
 interface TopUpComingDramasProps {
   containerStyle?: React.CSSProperties;
 }

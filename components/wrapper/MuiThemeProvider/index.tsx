@@ -7,7 +7,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import dark from '@/theme/dark';
 import light from '@/theme/light';
 
-
 interface MuiThemeProviderProps {
   children: React.ReactNode;
 }

@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import MediaType from '@/types/enums/IMediaType';
 import { formatStringDate } from '@/utils/formatters';
 
-
 type PageProps = {
   params: { id: number; slug?: string[] };
   searchParams: { [key: string]: string };

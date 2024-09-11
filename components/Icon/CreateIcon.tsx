@@ -1,6 +1,3 @@
-//<Icon icon="mdi:add-circle" /
-//<Icon icon="ic:round-add" />
-//<Icon icon="mdi:add" />
 import React from 'react';
 import Iconify, { IconifyProps } from './Iconify';
 

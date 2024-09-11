@@ -7,7 +7,6 @@ import Iconify from '@/components/Icon/Iconify';
 import MediaType from '@/types/enums/IMediaType';
 import { formatDigitsWithPadding } from '@/utils/formatters';
 
-
 interface EpisodeSwitcherButtonProps {
   mediaId: number;
   number_of_episodes: number;

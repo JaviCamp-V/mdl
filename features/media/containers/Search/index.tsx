@@ -6,7 +6,6 @@ import SearchResults from '../../components/lists/SearchResults';
 import { getSearchResults } from '../../service/tmdbAdvancedService';
 import { getAllValidParams } from '../../utils/tmdbAdvancedSearch';
 
-
 interface SearchContainerProps {
   searchParams: { [key: string]: string };
 }

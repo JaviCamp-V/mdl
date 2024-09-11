@@ -7,7 +7,6 @@ import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import FullPhotoGallery from './FullPhotoGallery';
 import PhotosOverview from './PhotosOverview';
 
-
 interface PhotosProps extends MediaDetailsProps {
   view: 'overview' | 'all';
 }

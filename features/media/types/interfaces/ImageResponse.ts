@@ -28,5 +28,4 @@ export type MediaImageMap = {
   person: PersonImagesResponse;
 };
 
-
 export default ImagesResponse;
