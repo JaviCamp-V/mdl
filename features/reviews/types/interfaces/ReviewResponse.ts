@@ -1,5 +1,5 @@
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
-import ResponseAction from '@/types/enums/ResposneAction';
+import ResponseAction from '@/types/enums/ResponseAction';
 import ReviewType from '../enums/ReviewType';
 import { ReviewBase } from './ReviewRequest';
 
