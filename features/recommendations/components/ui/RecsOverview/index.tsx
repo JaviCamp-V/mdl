@@ -1,6 +1,5 @@
 import React from 'react';
 import { Suggestion } from '@/features/recommendations/types/interface/Suggestion';
-import NoReviews from '@/features/reviews/components/ui/NoReview';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -9,6 +8,7 @@ import Link from '@/components/common/Link';
 import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import SuggestionCard from '../../cards/SuggestionCard';
 import NoRecommendation from '../NoRec';
+
 
 interface RecommendationOverviewProps extends MediaDetailsProps {
   suggestion: Suggestion[];
