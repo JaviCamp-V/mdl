@@ -88,11 +88,8 @@ const RichTextField: React.FC<RichTextFieldProps> = ({ name }) => {
     immediatelyRender: true
   });
 
-  // T
   React.useEffect(() => {
-    if (watchValue) {
-      editor?.commands.setContent(watchValue);
-    }
+      editor?.commands.setContent( watchValue ?? `<p></p>`); 
   }, [watchValue]);
 
   return (
