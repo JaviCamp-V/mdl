@@ -32,7 +32,7 @@ const TabsList: React.FC<TabsListProps> = ({ tabs, activeTab, baseUrl }) => {
         <LinkTab
           key={tab.label}
           label={tab.label}
-          href={ tab?.absolute ? tab.href :`/${baseUrl}/${tab.href}`}
+          href={tab?.absolute ? tab.href : `/${baseUrl}/${tab.href}`}
           selected={tab.href === activeTab}
           sx={{
             textDecoration: 'none',

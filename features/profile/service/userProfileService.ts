@@ -12,7 +12,6 @@ import ProfileData from '../types/interfaces/ProfileData';
 import UpdateProfile from '../types/interfaces/UpdateProfile';
 import { deleteImage, uploadImageV2 } from './cloundairyService';
 
-
 const endpoints = {
   user: {
     updateProfile: 'user/profile'

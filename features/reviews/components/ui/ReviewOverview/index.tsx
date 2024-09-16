@@ -49,7 +49,7 @@ const ReviewOverview: React.FC<ReviewsSummaryProps> = ({
       </Box>
       <Divider marginBottom={0} />
       {reviews.length === 0 ? (
-        <NoReviews mediaId={mediaId} mediaType={mediaType} view='media' />
+        <NoReviews mediaId={mediaId} mediaType={mediaType} view="media" />
       ) : (
         <React.Fragment>
           <Grid

@@ -20,8 +20,17 @@ const MediaTitle: React.FC<MediaTitleProps> = ({
   whiteSpace = 'nowrap'
 }) => {
   return (
-    <Link href={`/${mediaType}/${id}`} passHref style={{ textDecoration: 'none', fontSize, whiteSpace, textOverflow:  'ellipsis' }}>
-      <Typography color="primary" fontSize={fontSize} fontWeight={fontWeight} sx={{whiteSpace, textOverflow:  'ellipsis',overflow: 'hidden',}}>
+    <Link
+      href={`/${mediaType}/${id}`}
+      passHref
+      style={{ textDecoration: 'none', fontSize, whiteSpace, textOverflow: 'ellipsis' }}
+    >
+      <Typography
+        color="primary"
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        sx={{ whiteSpace, textOverflow: 'ellipsis', overflow: 'hidden' }}
+      >
         {title}
       </Typography>
     </Link>
