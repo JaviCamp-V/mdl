@@ -20,7 +20,7 @@ const DramaCard: React.FC<DramaCardProps> = ({ title, country, src, id }) => {
       <Box sx={{ width: '100%', height: { xs: '20vh', sm: '28vh', md: '25vh', lg: '30vh', xl: '35vh' } }}>
         <DramaPoster src={src} id={id} mediaType={MediaType.tv} size="w342" />
       </Box>
-      <Box sx={{ width: '100%', paddingTop: 1 }}>
+      <Box sx={{ width: '100%', paddingTop: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>
         <MediaTitle id={id} title={title} mediaType={MediaType.tv} fontSize={14} />
         <Typography sx={{ opacity: 0.6, fontSize: 14 }}>{`${origin} Drama`}</Typography>
       </Box>

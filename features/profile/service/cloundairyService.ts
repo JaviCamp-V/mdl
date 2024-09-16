@@ -1,5 +1,6 @@
+'use server';
+
 import { UploadApiOptions, UploadApiResponse, v2 as cloudinary } from 'cloudinary';
-import 'server-only';
 import logger from '@/utils/logger';
 
 cloudinary.config({
@@ -24,23 +25,33 @@ const uploadConfig: UploadApiOptions = {
   timeout: +(process.env.CLOUDINARY_TIMEOUT ?? 3000)
 };
 
-const uploadImageV2 = async (userId: number, file: File): Promise<string | null> => {
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = new Uint8Array(arrayBuffer);
-  logger.info('Uploading image to cloudinary...');
-  const results = await new Promise<UploadApiResponse | null>((resolve, reject) => {
-    cloudinary.uploader
-      .upload_stream({ ...uploadConfig, public_id: `avatar-${userId}` }, (error, response) => {
-        if (error || response === undefined) {
-          logger.error(error);
-          reject(null);
-          return;
-        }
-        logger.info('Image uploaded to cloudinary.');
-        resolve(response);
-      })
-      .end(buffer);
-  });
-  return results ? results.secure_url : null;
+const uploadImageV2 = async (imageData: FormData): Promise<string | null> => {
+  const userId = imageData.get('userId');
+  const file = imageData.get('file') as File;
+  if (!userId || !file) {
+    return null;
+  }
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
+    logger.info('Uploading image to cloudinary...');
+    const results = await new Promise<UploadApiResponse | null>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({ ...uploadConfig, public_id: `avatar-${userId}` }, (error, response) => {
+          if (error || response === undefined) {
+            logger.error(error);
+            reject(null);
+            return;
+          }
+          logger.info('Image uploaded to cloudinary.');
+          resolve(response);
+        })
+        .end(buffer);
+    });
+    return results ? results.secure_url : null;
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };
 export { uploadImageV2, deleteImage };

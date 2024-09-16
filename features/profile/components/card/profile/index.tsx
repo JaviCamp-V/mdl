@@ -1,7 +1,5 @@
-'use client';
-
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Box, Button } from '@mui/material';
 import Iconify from '@/components/Icon/Iconify';
 import Avatar from '@/components/common/Avatar';
@@ -13,10 +11,6 @@ interface ProfileCardProps {
   avatarUrl: string | null | undefined;
 }
 const ProfileCard: React.FC<ProfileCardProps> = ({ username, displayName, avatarUrl }) => {
-  const router = useRouter();
-  const handleWatchlistClick = () => {
-    router.push(userRoutes.watchlist.replace('{username}', username));
-  };
   return (
     <Box
       sx={{
@@ -36,7 +30,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, displayName, avatar
         variant="square"
         sx={{ width: '100%', height: '40vh', fontSize: 100 }}
       />
-      <Button variant="contained" color="info" onClick={handleWatchlistClick} sx={{ textTransform: 'none' }}>
+      <Button
+        LinkComponent={Link}
+        href={userRoutes.watchlist.replace('{username}', username.toLowerCase())}
+        variant="contained"
+        color="info"
+        sx={{ textTransform: 'none' }}
+      >
         <Iconify
           icon="material-symbols:list"
           sx={{

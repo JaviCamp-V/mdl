@@ -19,12 +19,7 @@ const TranslationSwitcher: React.FC<TranslationSwitcherProps> = ({ translations 
   return (
     <Box sx={{ marginBottom: 1 }}>
       <Box>
-        <Typography
-          fontSize={14}
-          whiteSpace="pre-line"
-          lineHeight={1.5}
-          sx={{ WebkitFontSmoothing: 'antialiased', whiteSpace: 'pre-line' }}
-        >
+        <Typography fontSize={14} whiteSpace="pre-wrap" lineHeight={1.5} sx={{ WebkitFontSmoothing: 'antialiased' }}>
           {currentTranslation?.data?.overview}
         </Typography>
       </Box>

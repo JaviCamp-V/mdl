@@ -35,10 +35,12 @@ const formModel: FieldModel = {
     label: 'Password',
     placeholder: 'Enter your password',
     type: 'password',
-    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    autocomplete: 'new-password',
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/,
     errorMessages: {
       required: 'Password is required',
-      invalid: 'Password must be at least 8 characters'
+      invalid:
+        'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character'
     },
     breakpoints: { xs: 12 }
   },

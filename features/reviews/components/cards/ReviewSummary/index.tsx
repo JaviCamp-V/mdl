@@ -18,7 +18,7 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
   const overlay = (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, paddingTop: 0.2 }}>
       <Link
-        href={`${routes.user.profile.replace('{username}', user.username)}/reviews/${id}`}
+        href={`${routes.user.profile.replace('{username}', user.username.toLowerCase())}/reviews/${id}`}
         style={{ textDecoration: 'none' }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, paddingX: 0.5 }}>
@@ -42,7 +42,12 @@ const ReviewSummaryCard: React.FC<ReviewSummaryCardProps> = ({ review }) => {
       }}
     >
       <Box sx={{ width: '100%', height: { xs: '20vh', sm: '28vh', md: '25vh', lg: '30vh', xl: '35vh' } }}>
-        <DramaPoster src={poster_path} id={`${user.username}/reviews/${id}`} mediaType={'profile'} overlay={overlay} />
+        <DramaPoster
+          src={poster_path}
+          id={`${user.username.toLowerCase()}/reviews/${id}`}
+          mediaType={'profile'}
+          overlay={overlay}
+        />
       </Box>
       <Box sx={{ marginTop: 0.5, width: '100%' }}>
         <MediaTitle title={title} mediaType={mediaType.toLowerCase()} id={mediaId} fontSize={14} />

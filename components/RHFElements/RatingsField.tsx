@@ -21,12 +21,12 @@ const Ratings: React.FC<RatingsProps> = ({ name, total, label, max, disabled, sh
         sx={{
           display: 'flex',
           flexDirection: showInput ? 'column' : 'row',
-          gap: 2,
+          gap: 1.5,
           alignItems: showInput ? 'flex-start' : 'center',
           justifyContent: 'left'
         }}
       >
-        <FormLabel sx={{ marginBottom: 0.5, fontSize: '14px', color: 'info.contrastText' }}>{label}</FormLabel>
+        <FormLabel sx={{ fontSize: '14px', color: 'info.contrastText' }}>{label}</FormLabel>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', gap: 2 }}>
           {showInput && (
             <Box sx={{ width: '25%' }}>

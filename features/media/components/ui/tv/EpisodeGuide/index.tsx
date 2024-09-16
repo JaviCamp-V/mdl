@@ -54,9 +54,11 @@ const EpisodeGuide: React.FC<EpisodeGuideProps> = async ({
       <Grid container spacing={2} sx={{ width: '100%', marginRight: 2 }}>
         {filteredSeasons.map((season) => (
           <Grid item xs={12} key={season?.id}>
-            <Typography fontSize={16} fontWeight={700} color="primary" marginBottom={2}>
-              {`${name} - ${season?.name}`}
-            </Typography>
+            {number_of_season > 1 && (
+              <Typography fontSize={16} fontWeight={700} color="primary" marginBottom={2}>
+                {`${name} - ${season?.name}`}
+              </Typography>
+            )}
             <Grid container spacing={2}>
               {season.episodes.map((episode) => (
                 <Grid

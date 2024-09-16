@@ -88,19 +88,6 @@ const AllReviews: React.FC<AllReviewsProps> = (props) => {
     scrollToTopById(`review-${userReview?.id}`);
   };
 
-  if (sortedReviews.length === 0)
-    return (
-      <NoReviews
-        view={view}
-        mediaId={view === 'media' ? props.mediaId : 0}
-        mediaType={view === 'media' ? props.mediaType : MediaType.tv}
-        reviewType={reviewType}
-        seasonNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.seasonNumber : undefined}
-        episodeNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.episodeNumber : undefined}
-        containerStyle={{ minHeight: '10vh' }}
-      />
-    );
-
   const renderReview = (
     review:
       | ExtendOverallReview
@@ -134,6 +121,7 @@ const AllReviews: React.FC<AllReviewsProps> = (props) => {
             { label: 'Most Recent', value: 'recent' }
           ]}
           value={sortedBy ?? 'helpful'}
+          disabled={sortedReviews.length === 0}
           onChange={onChange}
         />
         {view === 'media' ? (
@@ -152,8 +140,19 @@ const AllReviews: React.FC<AllReviewsProps> = (props) => {
         )}
       </Box>
       <Divider marginBottom={0} />
-
-      <PaginatedList items={sortedReviews} itemsPerPage={10} renderItem={renderReview} switchPage={switchPage} />
+      {sortedReviews.length === 0 ? (
+        <NoReviews
+          view={view}
+          mediaId={view === 'media' ? props.mediaId : 0}
+          mediaType={view === 'media' ? props.mediaType : MediaType.tv}
+          reviewType={reviewType}
+          seasonNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.seasonNumber : undefined}
+          episodeNumber={view === 'media' && reviewType === ReviewType.EPISODE ? props.episodeNumber : undefined}
+          containerStyle={{ minHeight: '10vh' }}
+        />
+      ) : (
+        <PaginatedList items={sortedReviews} itemsPerPage={10} renderItem={renderReview} switchPage={switchPage} />
+      )}
     </Box>
   );
 };

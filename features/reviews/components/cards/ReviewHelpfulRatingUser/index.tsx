@@ -20,7 +20,7 @@ const ReviewHelpfulRatingUserCard: React.FC<ReviewRatingCardProps> = ({ user, nu
       />
       <ReviewHelpfulRatingCard
         title={user.displayName}
-        titleLink={`${routes.user.profile?.replace('{username}', user.username)}/reviews`}
+        titleLink={`${routes.user.profile?.replace('{username}', user.username.toLowerCase())}/reviews`}
         numberOfHelpfulReviews={numberOfHelpfulReviews}
         isHelpful={isHelpful}
         username={user.username}

@@ -51,7 +51,8 @@ const TextField: React.FC<TextFieldProps> = ({
               },
               '& .MuiInputLabel-root': {
                 fontSize: '14px',
-                color: 'info.contrastText'
+                color: 'info.contrastText!important',
+                opacity: 1
               },
               '& .MuiOutlinedInput-notchedOutline': {
                 border: 'none'

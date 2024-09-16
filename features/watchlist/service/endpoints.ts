@@ -25,7 +25,7 @@ const viewEndpoints = {
 
 const updateEndpoints = {
   updateWatchlist: {
-    endpoint: 'watchlist',
+    endpoint: 'user/watchlist',
     tags: [
       'watchlist-userId-{userId}',
       'watchlist-username-{username}',
@@ -40,7 +40,7 @@ const updateEndpoints = {
     endpoint: 'user/watchlist/:id',
     tags: [
       'watchlist-userId-{userId}',
-      'watchlist-username-{username}',
+      'watchlsist-username-{username}',
       'watchlist-{mediaType}-{mediaId}-userId-{userId}',
       'total-watchlist-{mediaType}-{mediaId}',
       'watch-status-total-watchlist-{mediaType}-{mediaId}',

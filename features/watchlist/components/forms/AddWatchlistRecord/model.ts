@@ -47,7 +47,7 @@ const generalModel: FieldModel = {
     errorMessages: { max: 'Notes cannot exceed 255 characters' },
     breakpoints: { xs: 12 },
     multiline: true,
-    rows: 3
+    rows: 4
   }
 };
 
