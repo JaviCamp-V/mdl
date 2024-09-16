@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
-import { Avatar, Button } from '@mui/material';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { Field } from '@/types/common/IForm';
 import { getExpectedFileTypes } from '@/utils/fileUtil';
 import { blur_url } from '@/libs/common';
@@ -91,6 +91,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ name }) => {
           sx={{ textTransform: 'capitalize', width: '100%', whiteSpace: 'nowrap', paddingX: 2, paddingY: 1 }}
         >
           {image ? 'Change Image' : 'Upload Image'}
+          <input {...getInputProps()} />
         </Button>
         {image && (
           <Button

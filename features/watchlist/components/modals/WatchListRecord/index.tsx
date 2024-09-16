@@ -18,6 +18,7 @@ import { formatDate, formatStringDate } from '@/utils/formatters';
 import { FormType, advancedModel, defaultValues, formSchema, generalModel } from '../../forms/AddWatchlistRecord/model';
 import WatchRecordHistoryList from './history';
 
+
 interface WatchlistRecordProps {
   open: boolean;
   onClose: () => void;
@@ -137,6 +138,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
   const watchStatus = methods.watch('watchStatus');
   React.useEffect(() => {
+    if (view !== 'General' || !formFields?.episodeWatched || !formFields?.rating) return;
     const copy = { ...formFields };
     if (watchStatus === WatchStatus.COMPLETED) {
       mediaType === 'tv' && methods.setValue('episodeWatched', number_of_episodes);
@@ -150,7 +152,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
       copy.rating.disabled = false;
     }
     setFormFields(copy);
-  }, [watchStatus]);
+  }, [watchStatus, view]);
 
   return (
     <Dialog

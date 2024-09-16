@@ -68,7 +68,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ history, type, runtime }) => 
             fontSize: 12
           }}
         />
-        <Typography fontSize={14}>{formatDateToDistance(history.timestamp)}</Typography>
+        <Typography fontSize={14}
+         sx={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '100%'}}
+        >{formatDateToDistance(history.timestamp)}</Typography>
       </Box>
     </Box>
   );

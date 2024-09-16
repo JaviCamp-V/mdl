@@ -15,6 +15,7 @@ import PersonDetails from '../../components/card/profileMetaDetails';
 import ProfileBio from '../../components/typography/Bio';
 import { getUserProfile } from '../../service/userProfileService';
 
+
 interface UserProfileContainerProps {
   username: string;
   sections?: string[];
@@ -36,8 +37,13 @@ const UserProfileContainer: React.FC<UserProfileContainerProps> = async ({ usern
     { label: 'Reviews', href: 'reviews' },
     { label: 'Recommendations', href: 'recommendations' },
     { label: 'Lists', href: 'lists' },
-    { label: 'Stats', href: 'Stats' },
-    { label: 'Watchlist', href: routes.user.watchlist.replace('{username}', username) }
+    { label: 'Stats', href: 'stats' },
+    {
+      label: 'Watchlist',
+      href: routes.user.watchlist.replace('{username}', username.toLowerCase()),
+      absolute: true,
+      sx: { display: { xs: 'flex', md: 'none' } }
+    }
   ];
 
   if (tab !== '' && !tabs.find((link) => link.href === tab)) return <NotFound type="profile" />;

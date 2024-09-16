@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Color from '@tiptap/extension-color';
 import Link from '@tiptap/extension-link';
@@ -55,7 +57,6 @@ const extensions = [
   TextStyle,
   Color,
   TextAlign,
-  ListItem,
   ResizableImage,
   Link.extend({
     inclusive: false
@@ -83,7 +84,8 @@ const RichTextField: React.FC<RichTextFieldProps> = ({ name }) => {
     extensions,
     onUpdate({ editor }) {
       setValue(name, editor.getHTML(), { shouldValidate: true, shouldDirty: true, shouldTouch: true });
-    }
+    },
+    immediatelyRender: true
   });
 
   // T

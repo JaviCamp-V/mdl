@@ -3,23 +3,26 @@ import { plusDays } from '@/utils/dateUtils';
 import { formatDate } from '@/utils/formatters';
 
 export const trending = new URLSearchParams({
-  sort_by: 'popularity.desc'
+  sort_by: 'vote_count.desc',
+  'vote_average.gte': '7.5',
+  'vote_count.gte': '200'
 });
 
 export const startingThisWeek = new URLSearchParams({
   sort_by: 'popularity.desc',
   with_release_type: '2|3',
-
+  first_air_date_year: new Date().getFullYear().toString(),
   'first_air_date.gte': formatDate(startOfWeek(new Date())),
   'first_air_date.lte': formatDate(lastDayOfWeek(new Date()))
 });
 
 export const endingThisWeek = new URLSearchParams({
-  sort_by: 'popularity.desc',
-  with_release_type: '2|3',
-
+  first_air_date_year: new Date().getFullYear().toString(),
+  'air_date.lte': formatDate(lastDayOfWeek(new Date())),
   'air_date.gte': formatDate(startOfWeek(new Date())),
-  'air_date.lte': formatDate(plusDays(endOfWeek(new Date()), 1))
+  sort_by: 'popularity.desc',
+  with_status: '0|4',
+  with_type: '2|4'
 });
 
 export const upcomingTvShows = new URLSearchParams({

@@ -3,15 +3,18 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+
 type SelectFieldProps = {
   options: { label: string; value: string }[];
   value: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 };
-const SelectField: React.FC<SelectFieldProps> = ({ onChange, value, options }) => {
+const SelectField: React.FC<SelectFieldProps> = ({ onChange, value, options, disabled }) => {
   return (
     <FormControl>
       <Select
+        disabled={disabled}
         value={value}
         onChange={(e) => onChange(e.target.value as string)}
         sx={{
@@ -43,21 +46,7 @@ const SelectField: React.FC<SelectFieldProps> = ({ onChange, value, options }) =
         }}
       >
         {options.map((options) => (
-          <MenuItem
-            key={options.label}
-            value={options.value}
-            sx={
-              {
-                // color: `info.main`,
-                // '&.Mui-selected': {
-                //   backgroundColor: '#FFF'
-                // },
-                // '&.Mui-selected:hover': {
-                //   backgroundColor: '#FFF'
-                // }
-              }
-            }
-          >
+          <MenuItem key={options.label} value={options.value}>
             {options.label}
           </MenuItem>
         ))}

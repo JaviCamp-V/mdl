@@ -43,7 +43,7 @@ const ReviewHelpfulRatingCard: React.FC<ReviewRatingCardProps> = ({
         )}
       </Box>
       <Link
-        href={`${routes.user.profile?.replace('{username}', username)}/reviews`}
+        href={`${routes.user.profile?.replace('{username}', username.toLowerCase())}/reviews`}
         sx={{ fontSize: 13, fontWeight: 'bolder' }}
       >
         Other reviews by this user

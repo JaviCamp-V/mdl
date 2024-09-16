@@ -3,6 +3,7 @@ import React from 'react';
 import RecommendationDetails from '@/features/recommendations/components/ui/RecDetails';
 import ReviewDetails from '@/features/reviews/components/ui/ReviewDetails';
 import ReviewType from '@/features/reviews/types/enums/ReviewType';
+import { getWatchlistRecordTotalByMedia } from '@/features/watchlist/service/watchlistViewService';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -172,7 +173,7 @@ const ContentContainer: React.FC<ContentContainerProps> = async ({ mediaType, me
             commentPage={comments}
           />
         )}
-        {tab === 'episode-guide' && season && episode_number && (
+        {Boolean(tab === 'episode-guide' && season && episode_number) && (
           <Box sx={{ width: '100%', padding: 0, margin: 0, paddingTop: 2, paddingBottom: 2, ...cardStyle }}>
             <ReviewDetails
               mediaType={mediaType}
