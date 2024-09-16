@@ -126,7 +126,7 @@ const CommentCard: React.FC<CommentCardProps> = async ({ comment }) => {
             <Typography fontSize={14} fontWeight={'bolder'} color="primary">{`[Deleted]`}</Typography>
           ) : (
             <Link
-              href={routes.user.profile.replace('{username}', user.username)}
+              href={routes.user.profile.replace('{username}', user.username.toLowerCase())}
               sx={{ fontSize: 14, fontWeight: 'bolder' }}
             >
               {user.displayName}

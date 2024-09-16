@@ -3,7 +3,7 @@ import { Accept } from 'react-dropzone';
 export type RHFAllowedFileTypes = 'image' | 'video' | 'audio' | 'document';
 
 const acceptTypesMap = {
-  image: ['image/png', 'image/jpeg', 'image/jpg'],
+  image: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'],
   video: ['video/mp4', 'video/mkv', 'video/avi'],
   audio: ['audio/mp3', 'audio/wav', 'audio/ogg'],
   document: ['application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint']
@@ -13,6 +13,8 @@ const mimeTypesExtMap = {
   'image/png': ['.png'],
   'image/jpeg': ['.jpeg', '.jpg'],
   'image/jpg': ['.jpeg', '.jpg'],
+  'image/gif': ['.gif'],
+  'image/webp': ['.webp'],
   'video/mp4': ['.mp4'],
   'video/mkv': ['.mkv'],
   'video/avi': ['.avi'],

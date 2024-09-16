@@ -9,7 +9,6 @@ import MediaDetailsProps from '@/types/common/MediaDetailsProps';
 import SuggestionCard from '../../cards/SuggestionCard';
 import NoRecommendation from '../NoRec';
 
-
 interface RecommendationOverviewProps extends MediaDetailsProps {
   suggestion: Suggestion[];
 }

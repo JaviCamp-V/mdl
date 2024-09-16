@@ -137,6 +137,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
 
   const watchStatus = methods.watch('watchStatus');
   React.useEffect(() => {
+    if (view !== 'General' || !formFields?.episodeWatched || !formFields?.rating) return;
     const copy = { ...formFields };
     if (watchStatus === WatchStatus.COMPLETED) {
       mediaType === 'tv' && methods.setValue('episodeWatched', number_of_episodes);
@@ -150,7 +151,7 @@ const WatchlistRecordModal: React.FC<WatchlistRecordProps> = ({
       copy.rating.disabled = false;
     }
     setFormFields(copy);
-  }, [watchStatus]);
+  }, [watchStatus, view]);
 
   return (
     <Dialog

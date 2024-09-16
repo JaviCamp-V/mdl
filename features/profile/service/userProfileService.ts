@@ -101,7 +101,10 @@ const updateProfile = async (formData: FormData): Promise<GenericResponse | Erro
     if (updateProfilePic) {
       // Note: Upload avatar image to cloudinary or delete it if it's null
       if (avatar) {
-        avatarUrl = await uploadImageV2(session.user.userId, avatar);
+        const imageData = new FormData();
+        imageData.append('userId', session.user.userId.toString());
+        imageData.append('file', avatar);
+        avatarUrl = await uploadImageV2(imageData);
       } else if (avatarUrl) {
         const isDeleted: boolean = await deleteImage(session.user.userId);
         avatarUrl = isDeleted ? null : avatarUrl;

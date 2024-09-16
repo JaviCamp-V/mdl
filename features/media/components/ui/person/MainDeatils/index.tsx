@@ -60,7 +60,9 @@ const PersonMainDetails: React.FC<PersonMainDetailsProps> = ({ person }) => {
                   gender={gender}
                 />
               </Box>
-              <Typography fontSize={14}>{biography || 'No biography added'}</Typography>
+              <Typography fontSize={14} lineHeight={1.5} sx={{ whiteSpace: 'pre-wrap' }}>
+                {biography || 'No biography added'}
+              </Typography>
             </Box>
           </Box>
         </Box>

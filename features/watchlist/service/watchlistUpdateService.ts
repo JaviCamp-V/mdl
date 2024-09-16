@@ -27,7 +27,7 @@ const updateWatchlistRecord = async (
   request: UpdateWatchlistRequest
 ): Promise<GenericResponseWithData | ErrorResponse> => {
   try {
-    logger.info('Updating watchlist record with : ', request.mediaType, request.mediaId);
+    logger.info('Updating watchlist record with: %s%s', request.mediaType, request.mediaId);
     const { endpoint, tags } = endpoints.updateWatchlist;
     const response = await mdlApiClient.post<UpdateWatchlistRequest, GenericResponseWithData>(endpoint, request);
     const session = await getSession();
@@ -59,7 +59,7 @@ const updateWatchlistRecord = async (
 
 const deleteWatchlistRecord = async (id: number): Promise<GenericResponseWithData | ErrorResponse> => {
   try {
-    logger.info('Deleting watchlist record with id: ', id);
+    logger.info('Deleting watchlist record with id: %s', id);
     const { endpoint, tags } = endpoints.deleteWatchlistRecordById;
     const endpointWithId = endpoint.replace(':id', id.toString());
     const response = await mdlApiClient.del<GenericResponseWithData>(endpointWithId);

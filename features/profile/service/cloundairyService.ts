@@ -24,7 +24,12 @@ const uploadConfig: UploadApiOptions = {
   timeout: +(process.env.CLOUDINARY_TIMEOUT ?? 3000)
 };
 
-const uploadImageV2 = async (userId: number, file: File): Promise<string | null> => {
+const uploadImageV2 = async (imageData: FormData): Promise<string | null> => {
+  const userId = imageData.get('userId');
+  const file = imageData.get('file') as File;
+  if (!userId || !file) {
+    return null;
+  }
   const arrayBuffer = await file.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
   logger.info('Uploading image to cloudinary...');
